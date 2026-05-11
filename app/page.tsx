@@ -85,21 +85,21 @@ export default function Home() {
                 Your Terms.
               </span>
               <br />
-              Enforced by Code.
+              Agent Rights Checkout.
             </h1>
           </div>
 
           <p className="max-w-lg text-base leading-relaxed text-muted md:text-lg animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100">
             Sello is the{" "}
-            <strong className="text-cream">MIT License for AI content</strong> —
+            <strong className="text-cream">Agent Rights Checkout</strong> —
             one{" "}
             <code className="font-mono text-primary text-sm bg-primary/10 px-1 py-0.5">
               &lt;meta name="sello"&gt;
             </code>{" "}
-            tag that tells every AI agent what it can do with your work, and
-            collects{" "}
-            <strong className="text-cream">automatic USDC micropayments</strong>{" "}
-            when they comply.
+            tag that enables machine-readable rights signaling, allowing AI agents to comply with your work and
+            issue{" "}
+            <strong className="text-cream">x402-style settlements</strong>{" "}
+            automatically.
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
@@ -332,7 +332,7 @@ export default function Home() {
                 href="/register"
                 className="stamp-button inline-flex px-8 py-4 group"
               >
-                Seal My Content
+                Create AI Checkout
                 <svg
                   className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                   fill="none"
@@ -590,9 +590,9 @@ export default function Home() {
           <div className="space-y-2 pt-4">
             <div className="flex flex-wrap justify-center gap-6 text-[10px] font-mono uppercase tracking-widest text-muted">
               <span>Solana Devnet ✓</span>
-              <span>x402 Standard ✓</span>
+              <span>x402-style settlement ✓</span>
               <span>ElevenLabs Voice ✓</span>
-              <span>EU CDSM Art. 4 ✓</span>
+              <span>EU CDSM Art. 4-aware ✓</span>
             </div>
             <div className="flex flex-col items-center gap-2 pt-4">
               <a

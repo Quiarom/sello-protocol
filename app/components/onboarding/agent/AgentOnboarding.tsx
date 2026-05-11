@@ -70,22 +70,22 @@ const STEP_META: Record<number, { title: string; description: string }> = {
   1: {
     title: "Agent Purpose",
     description:
-      "Define how your AI agent will interact with the machine-readable web.",
+      "Define how your AI agent will interact with the machine-readable rights checkout.",
   },
   2: {
     title: "Identity & Budget",
     description:
-      "Initialize your agent with a wallet and automated spending boundaries.",
+      "Initialize your agent with a wallet and automated rights settlement boundaries.",
   },
   3: {
     title: "Live Simulation",
     description:
-      "Watch the x402 protocol in action: Detect, Negotiate, and Settle.",
+      "Watch the Agent Rights Checkout in action: Detect, Negotiate, and Settle.",
   },
   4: {
     title: "Technical Integration",
     description:
-      "Ready to go live? Get the instructions to install the Sello Skill in your bot.",
+      "Ready to go live? Get the instructions to install the Sello Skill for automated compliance.",
   },
 };
 

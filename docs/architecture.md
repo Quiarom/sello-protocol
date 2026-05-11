@@ -1,61 +1,54 @@
-# Architecture
+# Architecture: Sello Protocol
 
-## Sello Protocol
-
-Sello Protocol is a Proof of Consent layer for AI agents using web content.
-Creators publish machine-readable usage terms, anchor those terms on Solana,
-and can record usage receipts when agents use the content responsibly.
+Sello Protocol is the **Rights Checkout for AI agents** using web content. It enables newsrooms to publish machine-readable rules, settle rights usage via x402, and record **Proof of Consent** on Solana.
 
 ## Proof of Consent
 
-Proof of Consent means the creator made their terms public in a form that
-software can inspect. Sello does not prevent every misuse. It creates a public
-timestamp and a repeatable verification path:
+Proof of Consent is the machine-readable evidence that usage terms were published for a content hash by a wallet or entity at a specific time. It is **not** a deed of legal ownership; it is a cryptographic notary of intent and settlement.
 
-1. Read the Sello tag and policy files.
-2. Verify the matching Solana record.
-3. Follow the permitted use rules.
-4. Record a UsageReceipt when paid or licensed use happens.
+1. **Publish**: Creator publishes rules in HTML metadata and on-chain (ContentSello).
+2. **Checkout**: Agent detects rules and executes an automated rights checkout.
+3. **Settle**: Agent pays (x402-style settlement) and unlocks the asset.
+4. **Receipt**: Solana records the UsageReceipt (Proof of Consent).
 
-## Sello Standards
+## The Web Signal Layer
 
-The web layer is intentionally simple:
+Sello uses a multi-layered signaling strategy to ensure any agent can detect rights:
 
-- `<meta name="sello">` on the article page.
-- `/llms.txt` for direct agent instructions.
-- `/tdm-policy.json` for TDM-compatible policy.
-- `/rsl.txt` for crawler rights signaling.
+- **Sello Tag**: `<meta name="sello">` for per-page rights and payment endpoints.
+- **llms.txt**: Human/AI hybrid rules at the domain root.
+- **tdm-policy.json**: JSON-LD compliant policy for scrapers.
+- **rsl.txt**: Technical rights signaling for advanced crawlers.
 
-## Solana Sello Program
+## Solana Protocol (Anchor)
 
-The Anchor program lives in `anchor/programs/sello`.
+The Anchor program (`anchor/programs/sello`) manages the source of truth for rights and receipts.
 
-PDA seeds:
+### PDA Seeds
 
-- ProtocolConfig: `["config", authority]`
-- ContentSello: `["sello", creator, content_hash]`
-- UsageReceipt: `["receipt", content_sello, payer, timestamp_le_bytes]`
-- VoiceConsent: `["voice", creator]`
+- **ProtocolConfig**: `["config", authority]` - Fee and treasury settings.
+- **ContentSello**: `["sello", creator, content_hash]` - The "Rights Registry" for a specific piece of content.
+- **UsageReceipt**: `["receipt", content_sello, payer, timestamp]` - The "Proof of Consent" record.
+- **VoiceConsent**: `["voice", creator]` - Authorized voice IDs for narration.
 
-Accounts:
+### Accounts
 
-- `ContentSello`: creator, content hash, license type, allowed uses,
-  attribution requirement, price, status, timestamp, and usage count.
-- `UsageReceipt`: content record, payer, usage type, amount, timestamp.
-- `VoiceConsent`: optional voice consent for narration flows.
-- `ProtocolConfig`: optional treasury and fee configuration.
+- **ContentSello**: Stores the machine-readable terms (Price, Attribution, Allowed Uses, No-Train).
+- **UsageReceipt**: Records the act of consent (Who paid, what they did, when).
 
 ## Aval Newsrooms Demo
 
-Aval Newsrooms is the first product surface. The clean demo focuses on one
-publisher, one article, and one license. This keeps the submission testable and
-avoids overstating integrations that are not production-ready in this folder.
+Aval is a **Revenue Console** and **Compliance Audit** tool for publishers. It allows newsrooms to:
 
-## Full Demo Flow
+1. **Create AI Checkouts**: Register their inventory on Sello.
+2. **Monitor Revenue**: Track x402-style settlements from agents.
+3. **Audit Compliance**: Generate Proof of Consent reports from the Solana ledger.
 
-1. Open `/blog/protected-article`.
-2. Inspect the generated Sello meta tag.
-3. Open `/llms.txt`, `/tdm-policy.json`, and `/rsl.txt`.
-4. Call `/api/license?url=/blog/protected-article`.
-5. Review the Anchor program accounts and instructions.
-6. Run `cd anchor && anchor test`.
+## Agent Integration
+
+Agents use the **Sello Skill** (available for Claude Code, Codex, Gemini CLI) to automate the Rights Checkout flow. The skill handles:
+
+1. Detecting the Sello tag.
+2. Negotiating terms.
+3. Executing the Solana transaction.
+4. Unlocking the protected resource via the payment endpoint.

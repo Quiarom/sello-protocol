@@ -59,7 +59,7 @@ export function NavigationLinks() {
           href="/blog/protected-article"
           className={`shrink-0 border px-3 py-2 transition-colors hover:border-primary hover:text-primary ${isActive("/blog/protected-article") ? "border-primary text-primary" : "border-border-low"}`}
         >
-          Content Shield
+          Checkout Demo
         </Link>
         {status === "connected" && (
           <Link

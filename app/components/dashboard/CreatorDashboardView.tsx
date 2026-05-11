@@ -113,7 +113,7 @@ export function CreatorDashboardView({
       <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="postal-card p-6 md:p-8 border-green-ink/30 bg-green-ink/[0.03]">
           <p className="font-mono text-[10px] uppercase text-muted tracking-widest">
-            Revenue
+            Rights Revenue
           </p>
           <p className="font-headline text-3xl md:text-4xl font-black text-green-ink mt-2 tabular-nums">
             $0.00 <span className="text-sm font-normal">USDC</span>
@@ -268,7 +268,7 @@ export function CreatorDashboardView({
                 onClick={generateEvidenceReport}
                 className="text-[10px] font-mono text-muted uppercase hover:text-gold transition-colors underline underline-offset-8"
               >
-                Generate Evidence Report
+                Generate Rights Compliance Audit
               </button>
             </div>
           </div>

@@ -50,15 +50,15 @@ function DashboardContent() {
         <section className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border-low pb-8">
           <div className="space-y-2 text-center md:text-left">
             <p className="stamp-badge text-primary uppercase text-[10px] tracking-widest mx-auto md:mx-0 w-fit">
-              Official Ledger
+              Aval Newsrooms
             </p>
             <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-cream">
-              {view === "agent" ? "Agent Registry" : "Creator Notary"}
+              {view === "agent" ? "Agent Registry" : "Revenue Console"}
             </h1>
             <p className="text-muted text-base md:text-lg max-w-xl mx-auto md:mx-0">
               {view === "agent"
-                ? "History of content consumed and licenses paid by your AI."
-                : "Monitor your protected articles and licensing revenue."}
+                ? "History of rights settlement and Proof of Consent receipts issued by your AI."
+                : "Monitor your protected inventory and rights revenue."}
             </p>
           </div>
 

@@ -1,60 +1,64 @@
 # Sello Protocol
 
-Sello Protocol is a Proof of Consent layer for AI agents using web content.
-Creators publish machine-readable terms, Solana keeps a public proof, and
-agents can verify the rules before using articles, voices, or media.
+Sello Protocol is the **Rights Checkout for AI agents** using newsroom content.
+Creators publish machine-readable rules, Solana records the **Proof of Consent**, and
+agents use automated checkouts to pay for usage (x402) and verify permissions.
 
-Aval Newsrooms is the first demo product: a small publisher dashboard for
-registering an article, exposing AI-readable policy files, and showing how a
-responsible agent should check license terms.
+Aval Newsrooms is the first demo product: a revenue console for newsrooms to
+register protected inventory, publish machine-readable rules, and monitor rights revenue.
 
 ## Why Proof of Consent?
 
-AI agents can read, summarize, quote, train on, or narrate content faster than
-humans can review permissions. Sello gives creators a simple way to say what is
-allowed in a format agents can inspect.
+Proof of Consent is the machine-readable evidence that usage terms were published
+for a content hash by a wallet or entity at a specific time. It allows agents to
+verify what is allowed (attribution, payment, or restricted) before they use content,
+voices, or media.
 
-## Why this is a protocol
+## The Narrative
 
-Sello is not only a dashboard. It combines:
+1. **Publish**: Creators define rules (Price, Attribution, No-Train).
+2. **Checkout**: Agents detect Sello tags and trigger an automated rights checkout.
+3. **Settle**: Agents pay (x402-style settlement) for specific actions like voice narration.
+4. **Record**: Solana keeps the Proof of Consent (UsageReceipt).
+5. **Monitor**: Aval Newsrooms shows revenue, agent requests, and compliance audits.
 
-- A web standard: Sello meta tag, llms.txt, tdm-policy.json, rsl.txt.
-- A Solana record: ContentSello as public proof of terms.
-- A usage record: UsageReceipt when an agent uses content under those terms.
+## Key Features
 
-## Demo flow
+- **Agent Rights Checkout**: Instant rights detection and settlement for autonomous agents.
+- **Proof of Consent**: Immutable on-chain record of published rules and usage receipts.
+- **Aval Newsrooms**: Revenue console and compliance audit for high-end newsroom content.
+- **EU CDSM Art. 4 Aware**: Machine-readable rights reservation inspired by international frameworks.
 
-1. Open `/blog/protected-article`.
-2. Inspect `/llms.txt`, `/tdm-policy.json`, and `/rsl.txt`.
-3. Call `/api/license?url=/blog/protected-article`.
-4. Review `/register` and `/dashboard`.
-5. Run the Anchor tests.
+## Demo Flow
 
-## What is implemented
+1. **Rights Checkout Demo**: Open `/blog/protected-article` to see the 5-stage agent checkout.
+2. **Aval Revenue Console**: Review `/dashboard` to monitor rights revenue and receipts.
+3. **Create AI Checkout**: Use `/register` to publish rules for a new content hash.
+4. **Integration**: Check `/onboarding/agent` to see how agents automate compliance.
+5. **Protocol Signals**: Inspect `/llms.txt`, `/tdm-policy.json`, and `/rsl.txt`.
 
-- Next.js frontend demo.
-- Aval Newsrooms registration and dashboard screens.
-- Protected article with a Sello meta tag.
-- AI-readable policy files.
-- `/api/license` permission response.
-- Anchor program named `sello`.
-- ContentSello, UsageReceipt, VoiceConsent, and ProtocolConfig accounts.
+## What is Implemented
 
-## What is simulated or limited
+- **Rights Checkout UI**: Phased demo of an agent identifying terms and settling via x402.
+- **Aval Dashboard**: Revenue metrics, protected inventory list, and compliance audit.
+- **Creator Onboarding**: "Create AI Checkout" flow with wallet-signed registration.
+- **Solana Protocol**: Anchor program for Proof of Consent (ContentSello, UsageReceipt).
+- **Policy Signals**: Automated generator for AI-readable rules.
 
-- The UI does not yet submit Solana wallet transactions.
-- The demo ContentSello PDA is a placeholder until registration is wired.
-- `/api/narrate` is a stub, not production x402 or ElevenLabs.
-- LI.FI, Firecrawl batch registration, analytics, and WordPress are roadmap.
+## What is Simulated or Limited
 
-## Tech stack
+- **x402-style settlement**: Currently a devnet simulation of the payment flow.
+- **Proof of Consent Receipts**: Labeled as "Devnet/Demo" until production launch.
+- **Production Settlement**: Sello records the consent, but production treasury settlement is a roadmap item.
+- **Crawl Detection**: `/api/license` provides a response based on the current demo state.
+
+## Tech Stack
 
 - Next.js 16 and React 19.
-- TypeScript.
-- Solana Anchor.
-- Codama-generated client reference under `app/generated/sello`.
+- TypeScript + Tailwind CSS 4.
+- Solana Anchor + Codama.
 
-## Run locally
+## Run Locally
 
 ```bash
 pnpm install
@@ -63,25 +67,8 @@ pnpm dev
 
 Open `http://localhost:3000`.
 
-Create `Frontend/sello-colosseum-clean/.env.local` from `.env.example`. For the Appwrite narration path, `APPWRITE_API_KEY` is required; the clean app now defaults the non-secret Appwrite values to the source project (`sello-protocol`, `fn-narrate`, `sello-db`, `narrations`) when you do not override them.
-
-## Test Anchor program
-
-```bash
-cd anchor
-anchor test
-```
-
 ## Why Solana
 
-Proof of Consent needs cheap public timestamps and low-cost usage receipts.
-Solana gives the demo fast finality, low fees, and USDC-compatible payment
-paths for future agent workflows.
-
-## Roadmap
-
-- Wire the frontend to wallet-signed ContentSello registration.
-- Regenerate the Codama client from the clean Anchor IDL.
-- Add real UsageReceipt creation after licensed use.
-- Replace `/api/narrate` stub with x402 and ElevenLabs.
-- Add publisher analytics after the core flow is stable.
+Rights Checkout needs cheap public timestamps and low-cost usage receipts.
+Solana provides the fast finality and USDC-compatible payment paths required
+for high-frequency agent workflows.

@@ -266,9 +266,9 @@ export function RegisterArticle() {
           </span>
           <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tight text-cream">
             {step === "setup" && "Your Identity"}
-            {step === "register" && "Seal your Work"}
-            {step === "implementation" && "Activate Sello"}
-            {step === "dashboard" && "Creator Dashboard"}
+            {step === "register" && "Create AI Checkout"}
+            {step === "implementation" && "Activate Checkout"}
+            {step === "dashboard" && "Aval Revenue Console"}
           </h1>
           <p className="text-muted text-base md:text-lg max-w-2xl mx-auto">
             {step === "setup" &&
@@ -1016,14 +1016,14 @@ function buildPolicyFiles(data: any) {
   const attribution = `According to ${author || "Author"} in ${publisher || "Publisher"}`;
 
   return {
-    llms: `# Sello AI Use Policy\n\n[POLICY]\nsello_license: ${license}\nai_summarization: allowed_with_attribution\n\n[ATTRIBUTION]\nformat: ${attribution}\n\n[PAYMENT]\npayment_endpoint: ${serverUrl}/api/narrate\nprice_usdc: ${priceUSDC}\nauthorized_voice_id: ${voiceId}`,
+    llms: `# Sello AI Rights Checkout Policy\n\n[POLICY]\nsello_license: ${license}\nai_summarization: allowed_with_attribution\n\n[ATTRIBUTION]\nformat: ${attribution}\n\n[PAYMENT]\npayment_endpoint: ${serverUrl}/api/narrate\nprice_usdc: ${priceUSDC}\nauthorized_voice_id: ${voiceId}`,
     tdm: JSON.stringify(
       {
         standard: "TDM-1.0",
         attribution: { required: true, format: attribution },
         sello: {
           license,
-          onchain_record: `solana:devnet:${pda}`,
+          proof_of_consent: `solana:devnet:${pda}`,
           price_usdc: priceUSDC,
           voice_id: voiceId,
         },
@@ -1031,6 +1031,6 @@ function buildPolicyFiles(data: any) {
       null,
       2
     ),
-    rsl: `ai-training: no\nai-summarize: allowed-with-attribution\npayment-required: conditional:x402\nsello-compatible: yes\nsello-record: solana:devnet:${pda}\nvoice-cloning: authorized-only`,
+    rsl: `ai-training: no\nai-summarize: allowed-with-attribution\npayment-required: conditional:x402\nsello-compatible: yes\nproof-of-consent: solana:devnet:${pda}\nvoice-cloning: authorized-only`,
   };
 }

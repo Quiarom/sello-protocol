@@ -28,7 +28,9 @@ export function SimulatedLiFiWidget({ toAddress }: SimulatedLiFiWidgetProps) {
         <button
           type="button"
           className={`stamp-badge ${
-            mode === "bridge" ? "bg-primary text-primary-foreground" : "text-muted"
+            mode === "bridge"
+              ? "bg-primary text-primary-foreground"
+              : "text-muted"
           }`}
           onClick={() => setMode("bridge")}
         >
@@ -37,7 +39,9 @@ export function SimulatedLiFiWidget({ toAddress }: SimulatedLiFiWidgetProps) {
         <button
           type="button"
           className={`stamp-badge ${
-            mode === "swap" ? "bg-primary text-primary-foreground" : "text-muted"
+            mode === "swap"
+              ? "bg-primary text-primary-foreground"
+              : "text-muted"
           }`}
           onClick={() => setMode("swap")}
         >

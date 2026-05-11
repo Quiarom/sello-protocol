@@ -44,14 +44,20 @@ type StepPlatformProps = {
   onContinue: () => void;
 };
 
-export function StepPlatform({ value, onChange, onContinue }: StepPlatformProps) {
+export function StepPlatform({
+  value,
+  onChange,
+  onContinue,
+}: StepPlatformProps) {
   return (
     <div className="space-y-3">
       {PLATFORM_OPTIONS.map((platform) => (
         <label
           key={platform.id}
           className={`postal-card block cursor-pointer p-4 transition ${
-            value === platform.id ? "border-primary bg-primary/10" : "hover:border-primary/50"
+            value === platform.id
+              ? "border-primary bg-primary/10"
+              : "hover:border-primary/50"
           }`}
         >
           <div className="flex items-start justify-between gap-3">
@@ -59,7 +65,9 @@ export function StepPlatform({ value, onChange, onContinue }: StepPlatformProps)
               <p className="font-headline text-lg sm:text-xl font-bold text-cream">
                 {platform.name}
               </p>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">{platform.description}</p>
+              <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                {platform.description}
+              </p>
               <code className="mt-3 block border border-border-low bg-background/50 px-2 py-1.5 text-[9px] sm:text-xs text-muted truncate max-w-[200px] sm:max-w-none">
                 {platform.installPath}
               </code>
@@ -82,8 +90,18 @@ export function StepPlatform({ value, onChange, onContinue }: StepPlatformProps)
         className="stamp-button mt-4 w-full sm:w-auto group"
       >
         Continue
-        <svg className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        <svg
+          className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M14 5l7 7m0 0l-7 7m7-7H3"
+          />
         </svg>
       </button>
     </div>

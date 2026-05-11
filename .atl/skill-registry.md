@@ -5,6 +5,7 @@ Generated: 2026-05-11
 ## Project Conventions
 
 ### AGENTS.md
+
 - Goal
 - Current MVP Scope
 - Next.js demo app.
@@ -21,26 +22,31 @@ Generated: 2026-05-11
 ## Installed Skills (26)
 
 ### branch-pr
+
 - Trigger: Create Gentle AI pull requests with issue-first checks. Trigger: creating, opening, or preparing PRs for review.
 - Path: /home/quiarom/.codex/skills/branch-pr/SKILL.md
 - Scope: user
 
 ### caveman
+
 - Trigger: >
 - Path: /home/quiarom/.agents/skills/caveman/SKILL.md
 - Scope: user
 
 ### caveman-compress
+
 - Trigger: >
 - Path: /home/quiarom/.agents/skills/caveman-compress/SKILL.md
 - Scope: user
 
 ### caveman-help
+
 - Trigger: >
 - Path: /home/quiarom/.agents/skills/caveman-help/SKILL.md
 - Scope: user
 
 ### caveman-review
+
 - Trigger: >
 - Path: /home/quiarom/.agents/skills/caveman-review/SKILL.md
 - Scope: user
@@ -55,6 +61,7 @@ Generated: 2026-05-11
   - Restating what the line does — the reviewer can read the diff
 
 ### chained-pr
+
 - Trigger: Trigger: PRs over 400 lines, stacked PRs, review slices. Split oversized changes into chained PRs that protect review focus.
 - Path: /home/quiarom/.codex/skills/chained-pr/SKILL.md
 - Scope: user
@@ -69,6 +76,7 @@ Generated: 2026-05-11
   - Do not mix chain strategies after the user chooses one.
 
 ### cognitive-doc-design
+
 - Trigger: Design docs that reduce cognitive load. Trigger: writing guides, READMEs, RFCs, onboarding, architecture, or review-facing docs.
 - Path: /home/quiarom/.codex/skills/cognitive-doc-design/SKILL.md
 - Scope: user
@@ -83,6 +91,7 @@ Generated: 2026-05-11
   - | Review empathy | Design docs so reviewers can verify intent without reconstructing the whole story. |
 
 ### colosseum-copilot
+
 - Trigger: |
 - Path: /home/quiarom/.agents/skills/colosseum-copilot/SKILL.md
 - Scope: user
@@ -97,26 +106,31 @@ Generated: 2026-05-11
   - Opportunities and Gaps
 
 ### comment-writer
+
 - Trigger: Write warm, direct collaboration comments. Trigger: PR feedback, issue replies, reviews, Slack messages, or GitHub comments.
 - Path: /home/quiarom/.codex/skills/comment-writer/SKILL.md
 - Scope: user
 
 ### design-taste-frontend
+
 - Trigger: Senior UI/UX Engineer. Architect digital interfaces overriding default LLM biases. Enforces metric-based rules, strict component architecture, CSS hardware acceleration, and balanced design engineering.
 - Path: /home/quiarom/.agents/skills/design-taste-frontend/SKILL.md
 - Scope: user
 
 ### find-skills
+
 - Trigger: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.
 - Path: /home/quiarom/.agents/skills/find-skills/SKILL.md
 - Scope: user
 
 ### full-output-enforcement
+
 - Trigger: Overrides default LLM truncation behavior. Enforces complete code generation, bans placeholder patterns, and handles token-limit splits cleanly. Apply to any task requiring exhaustive, unabridged output.
 - Path: /home/quiarom/.agents/skills/full-output-enforcement/SKILL.md
 - Scope: user
 
 ### go-testing
+
 - Trigger: Trigger: Go tests, go test coverage, Bubbletea teatest, golden files. Apply focused Go testing patterns.
 - Path: /home/quiarom/.codex/skills/go-testing/SKILL.md
 - Scope: user
@@ -131,21 +145,25 @@ Generated: 2026-05-11
   - | Target | Test pattern |
 
 ### high-end-visual-design
+
 - Trigger: Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.
 - Path: /home/quiarom/.agents/skills/high-end-visual-design/SKILL.md
 - Scope: user
 
 ### imagegen
+
 - Trigger: Generate or edit raster images when the task benefits from AI-created bitmap visuals such as photos, illustrations, textures, sprites, mockups, or transparent-background cutouts. Use when Codex should create a brand-new image, transform an existing image, or derive visual variants from references, and the output should be a bitmap asset rather than repo-native code or vector. Do not use when the task is better handled by editing existing SVG/vector/code-native assets, extending an established icon or logo system, or building the visual directly in HTML/CSS/canvas.
 - Path: /home/quiarom/.codex/skills/.system/imagegen/SKILL.md
 - Scope: user
 
 ### issue-creation
+
 - Trigger: Create Gentle AI issues with issue-first checks. Trigger: creating GitHub issues, bug reports, or feature requests.
 - Path: /home/quiarom/.codex/skills/issue-creation/SKILL.md
 - Scope: user
 
 ### judgment-day
+
 - Trigger: Trigger: judgment day, dual review, adversarial review, juzgar. Run blind dual review, fix confirmed issues, then re-judge.
 - Path: /home/quiarom/.codex/skills/judgment-day/SKILL.md
 - Scope: user
@@ -160,26 +178,31 @@ Generated: 2026-05-11
   - After 2 fix iterations with remaining issues, ask the user whether to continue.
 
 ### minimalist-ui
+
 - Trigger: Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.
 - Path: /home/quiarom/.agents/skills/minimalist-ui/SKILL.md
 - Scope: user
 
 ### openai-docs
+
 - Trigger: Use when the user asks how to build with OpenAI products or APIs and needs up-to-date official documentation with citations, help choosing the latest model for a use case, or model upgrade and prompt-upgrade guidance; prioritize OpenAI docs MCP tools, use bundled references only as helper context, and restrict any fallback browsing to official OpenAI domains.
 - Path: /home/quiarom/.codex/skills/.system/openai-docs/SKILL.md
 - Scope: user
 
 ### plugin-creator
+
 - Trigger: Create and scaffold plugin directories for Codex with a required `.codex-plugin/plugin.json`, optional plugin folders/files, and baseline placeholders you can edit before publishing or testing. Use when Codex needs to create a new local plugin, add optional plugin structure, or generate or update repo-root `.agents/plugins/marketplace.json` entries for plugin ordering and availability metadata.
 - Path: /home/quiarom/.codex/skills/.system/plugin-creator/SKILL.md
 - Scope: user
 
 ### react-email
+
 - Trigger: Use when building HTML email templates with React components, adding a visual email editor to an application using the React Email visual editor, rendering emails to HTML, or sending emails with Resend. Covers welcome emails, password resets, notifications, order confirmations, newsletters, transactional emails, and the embeddable email editor component.
 - Path: /home/quiarom/.agents/skills/react-email/SKILL.md
 - Scope: user
 
 ### redesign-existing-projects
+
 - Trigger: Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.
 - Path: /home/quiarom/.agents/skills/redesign-existing-projects/SKILL.md
 - Scope: user
@@ -192,22 +215,25 @@ Generated: 2026-05-11
   - Keep changes reviewable and focused. Small, targeted improvements over big rewrites.
 
 ### skill-creator
+
 - Trigger: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Codex's capabilities with specialized knowledge, workflows, or tool integrations.
 - Path: /home/quiarom/.codex/skills/.system/skill-creator/SKILL.md
 - Scope: user
 
 ### skill-installer
+
 - Trigger: Install Codex skills into $CODEX_HOME/skills from a curated list or a GitHub repo path. Use when a user asks to list installable skills, install a curated skill, or install a skill from another repo (including private repos).
 - Path: /home/quiarom/.codex/skills/.system/skill-installer/SKILL.md
 - Scope: user
 
 ### solana-dev
+
 - Trigger: Use when user asks to "build a Solana dapp", "write an Anchor program", "create a token", "debug Solana errors", "set up wallet connection", "test my Solana program", "deploy to devnet", or "explain Solana concepts" (rent, accounts, PDAs, CPIs, etc.). End-to-end Solana development playbook covering wallet connection, Anchor/Pinocchio programs, Codama client generation, LiteSVM/Mollusk/Surfpool testing, and security checklists. Integrates with the Solana MCP server for live documentation search. Prefers framework-kit (@solana/client + @solana/react-hooks) for UI, wallet-standard-first connection (incl. ConnectorKit), @solana/kit for client/RPC code, and @solana/web3-compat for legacy boundaries.
 - Path: /home/quiarom/.agents/skills/solana-dev/SKILL.md
 - Scope: user
 
 ### work-unit-commits
+
 - Trigger: Plan commits as reviewable work units. Trigger: implementation, commit splitting, chained PRs, or keeping tests and docs with code.
 - Path: /home/quiarom/.codex/skills/work-unit-commits/SKILL.md
 - Scope: user
-

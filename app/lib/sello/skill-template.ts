@@ -72,7 +72,10 @@ export function getInstallInstructions(platform: AgentPlatform): string[] {
   ];
 }
 
-export function getPlatformCliSnippet(platform: AgentPlatform, env: SkillEnv): string {
+export function getPlatformCliSnippet(
+  platform: AgentPlatform,
+  env: SkillEnv
+): string {
   const envVars = `SELLO_SERVER_URL=${env.serverUrl} SELLO_PAYER_PUBKEY=${env.payerPubkey} SELLO_MAX_AUTO_PAY=${env.maxAutoPay.toFixed(2)}`;
 
   if (platform === "claude-code") {
@@ -116,4 +119,3 @@ export function getMcpSnippet(platform: AgentPlatform): string {
   }
 }`;
 }
-

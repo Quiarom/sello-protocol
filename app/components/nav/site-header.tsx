@@ -21,7 +21,10 @@ export function SiteHeader() {
       <div className="airmail-stripe h-1 opacity-70" />
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-4 md:px-8 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
-          <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-[1.02] active:scale-100">
+          <Link
+            href="/"
+            className="flex items-center gap-3 transition-transform hover:scale-[1.02] active:scale-100"
+          >
             <Image
               src={logo}
               alt="Sello Protocol"

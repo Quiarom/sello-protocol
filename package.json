@@ -8,9 +8,11 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit --incremental false",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "anchor-build": "cd anchor && anchor build",
+    "anchor:sync-idl": "mkdir -p idl && cp anchor/target/idl/sello.json idl/sello.json",
     "anchor-test": "cd anchor && anchor test --skip-deploy",
     "codama:js": "codama run js"
   },

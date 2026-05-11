@@ -29,7 +29,10 @@ type Action =
   | { type: "set-test-result"; result: TestResult | null }
   | { type: "set-test-error"; error: string | null };
 
-function reducer(state: AgentOnboardingState, action: Action): AgentOnboardingState {
+function reducer(
+  state: AgentOnboardingState,
+  action: Action
+): AgentOnboardingState {
   switch (action.type) {
     case "next-step":
       return { ...state, step: Math.min(6, state.step + 1) };
@@ -66,19 +69,23 @@ function reducer(state: AgentOnboardingState, action: Action): AgentOnboardingSt
 const STEP_META: Record<number, { title: string; description: string }> = {
   1: {
     title: "Agent Purpose",
-    description: "Define how your AI agent will interact with the machine-readable web.",
+    description:
+      "Define how your AI agent will interact with the machine-readable web.",
   },
   2: {
     title: "Identity & Budget",
-    description: "Initialize your agent with a wallet and automated spending boundaries.",
+    description:
+      "Initialize your agent with a wallet and automated spending boundaries.",
   },
   3: {
     title: "Live Simulation",
-    description: "Watch the x402 protocol in action: Detect, Negotiate, and Settle.",
+    description:
+      "Watch the x402 protocol in action: Detect, Negotiate, and Settle.",
   },
   4: {
     title: "Technical Integration",
-    description: "Ready to go live? Get the instructions to install the Sello Skill in your bot.",
+    description:
+      "Ready to go live? Get the instructions to install the Sello Skill in your bot.",
   },
 };
 
@@ -111,7 +118,10 @@ export function AgentOnboarding() {
     } catch (error) {
       dispatch({
         type: "set-test-error",
-        error: error instanceof Error ? error.message : "Unknown license lookup error.",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown license lookup error.",
       });
       return null;
     } finally {
@@ -173,7 +183,8 @@ export function AgentOnboarding() {
                 Agent Skills
               </p>
               <p className="max-w-xl text-xs text-muted sm:text-sm">
-                Skip this setup during the demo and go straight to the ready state.
+                Skip this setup during the demo and go straight to the ready
+                state.
               </p>
             </div>
             <button
@@ -184,9 +195,11 @@ export function AgentOnboarding() {
               Skip to Ready
             </button>
           </section>
-           <StepPlatform
+          <StepPlatform
             value={state.platform}
-            onChange={(platform) => dispatch({ type: "set-platform", platform })}
+            onChange={(platform) =>
+              dispatch({ type: "set-platform", platform })
+            }
             onContinue={() => {}}
           />
           {state.platform && (

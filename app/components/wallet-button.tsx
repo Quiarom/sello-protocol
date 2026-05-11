@@ -76,7 +76,9 @@ export function WalletButton() {
                       className="h-5 w-5 rounded-sm grayscale group-hover:grayscale-0"
                     />
                   )}
-                  <span className="font-display text-sm uppercase tracking-wider">{connector.name}</span>
+                  <span className="font-display text-sm uppercase tracking-wider">
+                    {connector.name}
+                  </span>
                 </button>
               ))}
             </div>
@@ -98,24 +100,34 @@ export function WalletButton() {
         className="flex h-9 max-w-[11rem] cursor-pointer items-center gap-2 border border-primary/40 bg-primary/5 px-3 py-2 transition-all hover:border-primary active:scale-95 sm:max-w-none sm:gap-3 sm:px-4"
       >
         <span className="h-2 w-2 rounded-full bg-green-ink animate-pulse shadow-[0_0_8px_#00e38b]" />
-        <span className="truncate font-mono text-[10px] font-bold tracking-wider text-cream sm:text-xs">{ellipsify(address!, 4)}</span>
+        <span className="truncate font-mono text-[10px] font-bold tracking-wider text-cream sm:text-xs">
+          {ellipsify(address!, 4)}
+        </span>
       </button>
 
       {isOpen && (
         <div className="absolute right-0 top-full z-50 mt-3 w-[min(18rem,calc(100vw-2rem))] border border-border-low bg-card p-5 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 sm:w-72 sm:p-6">
           <div className="mb-4">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Available Liquidity</p>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+              Available Liquidity
+            </p>
             <p className="font-headline text-2xl font-bold text-cream mt-1">
               {balance.lamports != null
                 ? lamportsToSolString(balance.lamports)
                 : "\u2014"}{" "}
-              <span className="font-display text-sm font-normal text-muted tracking-widest">SOL</span>
+              <span className="font-display text-sm font-normal text-muted tracking-widest">
+                SOL
+              </span>
             </p>
           </div>
 
           <div className="mb-4 bg-background/80 border border-border-low p-3">
-            <p className="font-mono text-[9px] uppercase tracking-widest text-muted mb-1">Public Address</p>
-            <p className="break-all font-mono text-[10px] text-cream/80 leading-relaxed">{address}</p>
+            <p className="font-mono text-[9px] uppercase tracking-widest text-muted mb-1">
+              Public Address
+            </p>
+            <p className="break-all font-mono text-[10px] text-cream/80 leading-relaxed">
+              {address}
+            </p>
           </div>
 
           <div className="flex gap-2">

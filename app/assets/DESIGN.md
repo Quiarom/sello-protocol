@@ -1,90 +1,90 @@
 ---
 name: Sello Protocol
 colors:
-  surface: '#171308'
-  surface-dim: '#171308'
-  surface-bright: '#3e392c'
-  surface-container-lowest: '#120e04'
-  surface-container-low: '#1f1b10'
-  surface-container: '#241f13'
-  surface-container-high: '#2e2a1d'
-  surface-container-highest: '#393427'
-  on-surface: '#ebe1cf'
-  on-surface-variant: '#e6bdb7'
-  inverse-surface: '#ebe1cf'
-  inverse-on-surface: '#353023'
-  outline: '#ad8883'
-  outline-variant: '#5d3f3b'
-  surface-tint: '#ffb4a9'
-  primary: '#ffb4a9'
-  on-primary: '#690002'
-  primary-container: '#cc1512'
-  on-primary-container: '#ffdeda'
-  inverse-primary: '#bf0409'
-  secondary: '#d8b9ff'
-  on-secondary: '#450086'
-  secondary-container: '#7505db'
-  on-secondary-container: '#dbbdff'
-  tertiary: '#00e38b'
-  on-tertiary: '#00391f'
-  tertiary-container: '#007646'
-  on-tertiary-container: '#77ffb2'
-  error: '#ffb4ab'
-  on-error: '#690005'
-  error-container: '#93000a'
-  on-error-container: '#ffdad6'
-  primary-fixed: '#ffdad5'
-  primary-fixed-dim: '#ffb4a9'
-  on-primary-fixed: '#410001'
-  on-primary-fixed-variant: '#930004'
-  secondary-fixed: '#eddcff'
-  secondary-fixed-dim: '#d8b9ff'
-  on-secondary-fixed: '#290055'
-  on-secondary-fixed-variant: '#6300bb'
-  tertiary-fixed: '#56ffa8'
-  tertiary-fixed-dim: '#00e38b'
-  on-tertiary-fixed: '#002110'
-  on-tertiary-fixed-variant: '#00522f'
-  background: '#171308'
-  on-background: '#ebe1cf'
-  surface-variant: '#393427'
+  surface: "#171308"
+  surface-dim: "#171308"
+  surface-bright: "#3e392c"
+  surface-container-lowest: "#120e04"
+  surface-container-low: "#1f1b10"
+  surface-container: "#241f13"
+  surface-container-high: "#2e2a1d"
+  surface-container-highest: "#393427"
+  on-surface: "#ebe1cf"
+  on-surface-variant: "#e6bdb7"
+  inverse-surface: "#ebe1cf"
+  inverse-on-surface: "#353023"
+  outline: "#ad8883"
+  outline-variant: "#5d3f3b"
+  surface-tint: "#ffb4a9"
+  primary: "#ffb4a9"
+  on-primary: "#690002"
+  primary-container: "#cc1512"
+  on-primary-container: "#ffdeda"
+  inverse-primary: "#bf0409"
+  secondary: "#d8b9ff"
+  on-secondary: "#450086"
+  secondary-container: "#7505db"
+  on-secondary-container: "#dbbdff"
+  tertiary: "#00e38b"
+  on-tertiary: "#00391f"
+  tertiary-container: "#007646"
+  on-tertiary-container: "#77ffb2"
+  error: "#ffb4ab"
+  on-error: "#690005"
+  error-container: "#93000a"
+  on-error-container: "#ffdad6"
+  primary-fixed: "#ffdad5"
+  primary-fixed-dim: "#ffb4a9"
+  on-primary-fixed: "#410001"
+  on-primary-fixed-variant: "#930004"
+  secondary-fixed: "#eddcff"
+  secondary-fixed-dim: "#d8b9ff"
+  on-secondary-fixed: "#290055"
+  on-secondary-fixed-variant: "#6300bb"
+  tertiary-fixed: "#56ffa8"
+  tertiary-fixed-dim: "#00e38b"
+  on-tertiary-fixed: "#002110"
+  on-tertiary-fixed-variant: "#00522f"
+  background: "#171308"
+  on-background: "#ebe1cf"
+  surface-variant: "#393427"
 typography:
   display-lg:
     fontFamily: Bebas Neue
     fontSize: 64px
-    fontWeight: '400'
-    lineHeight: '1.1'
+    fontWeight: "400"
+    lineHeight: "1.1"
     letterSpacing: 0.05em
   headline-lg:
     fontFamily: Playfair Display
     fontSize: 40px
-    fontWeight: '700'
-    lineHeight: '1.2'
+    fontWeight: "700"
+    lineHeight: "1.2"
   headline-md:
     fontFamily: Playfair Display
     fontSize: 32px
-    fontWeight: '600'
-    lineHeight: '1.3'
+    fontWeight: "600"
+    lineHeight: "1.3"
   body-lg:
     fontFamily: Newsreader
     fontSize: 18px
-    fontWeight: '400'
-    lineHeight: '1.6'
+    fontWeight: "400"
+    lineHeight: "1.6"
   body-md:
     fontFamily: Newsreader
     fontSize: 16px
-    fontWeight: '400'
-    lineHeight: '1.5'
+    fontWeight: "400"
+    lineHeight: "1.5"
   data-label:
     fontFamily: Work Sans
     fontSize: 14px
-    fontWeight: '500'
-    lineHeight: '1.4'
+    fontWeight: "500"
+    lineHeight: "1.4"
   code-sm:
     fontFamily: JetBrains Mono
     fontSize: 13px
-    fontWeight: '400'
-    lineHeight: '1.4'
+    fontWeight: "400"
+    lineHeight: "1.4"
 spacing:
   unit: 4px
   gutter: 24px
@@ -101,7 +101,7 @@ The visual identity centers on the "Postal Stamp" metaphor. Interfaces are treat
 
 ## Colors
 
-The palette is anchored in **Warm Ink Black** and **Leather Brown**, creating a low-light, premium environment reminiscent of a private library. 
+The palette is anchored in **Warm Ink Black** and **Leather Brown**, creating a low-light, premium environment reminiscent of a private library.
 
 - **Vintage Stamp Red (#CC1512):** Used for primary actions, critical alerts, and brand motifs (like airmail stripes). It should feel like dried pigment rather than a digital glow.
 - **Solana Neons (#9945FF, #14F195):** Used sparingly as "technological ink" for data visualization and success states, bridging the vintage aesthetic with crypto-native roots.
@@ -139,10 +139,10 @@ Hierarchy is achieved through **Tonal Layers** and **Physical Texture** rather t
 
 ## Shapes
 
-The design system utilizes **Sharp (0px)** corners for the primary containers and buttons to maintain the Art Deco and WPA aesthetic. 
+The design system utilizes **Sharp (0px)** corners for the primary containers and buttons to maintain the Art Deco and WPA aesthetic.
 
 - **Serrated Edges:** Badges and tags must use a custom CSS mask or SVG border-image to create a "stamp" zigzag edge.
-- **Decorative Frames:** Use 1px or 2px solid strokes for internal dividers. 
+- **Decorative Frames:** Use 1px or 2px solid strokes for internal dividers.
 - **The Wax Seal:** Circles are reserved exclusively for "Wax Seal" components (floating action buttons or brand marks), which should feature a slight irregular, organic edge.
 
 ## Components

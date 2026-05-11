@@ -70,7 +70,9 @@ export async function POST(request: Request) {
     parsedBody = { raw: execution.responseBody };
   }
 
-  const headers: Record<string, string> = { "Access-Control-Allow-Origin": "*" };
+  const headers: Record<string, string> = {
+    "Access-Control-Allow-Origin": "*",
+  };
   for (const h of execution.responseHeaders ?? []) {
     headers[h.name.toLowerCase()] = h.value;
   }

@@ -25,6 +25,12 @@ export function NavigationLinks() {
         >
           Agent
         </Link>
+        <Link
+          href="/blog/protected-article"
+          className={`transition-colors hover:text-primary ${isActive("/blog/protected-article") ? "text-primary underline decoration-primary/30 underline-offset-8" : ""}`}
+        >
+          Content Shield
+        </Link>
 
         {status === "connected" && (
           <Link
@@ -53,7 +59,7 @@ export function NavigationLinks() {
           href="/blog/protected-article"
           className={`shrink-0 border px-3 py-2 transition-colors hover:border-primary hover:text-primary ${isActive("/blog/protected-article") ? "border-primary text-primary" : "border-border-low"}`}
         >
-          Demo Article
+          Content Shield
         </Link>
         {status === "connected" && (
           <Link

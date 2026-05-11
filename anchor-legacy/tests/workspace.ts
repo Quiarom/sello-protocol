@@ -23,20 +23,20 @@ import * as crypto from "crypto";
 
 // allowed_uses bitmap constants (must match lib.rs)
 const USE_SUMMARIZE = 1 << 0; // 1
-const USE_QUOTE     = 1 << 1; // 2
-const USE_VOICE     = 1 << 2; // 4
-const USE_TRAIN     = 1 << 3; // 8
+const USE_QUOTE = 1 << 1; // 2
+const USE_VOICE = 1 << 2; // 4
+const USE_TRAIN = 1 << 3; // 8
 
 describe("sello", () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
   const program = anchor.workspace.Sello as Program<Sello>;
 
-  const authority   = Keypair.generate();
-  const author      = Keypair.generate();
+  const authority = Keypair.generate();
+  const author = Keypair.generate();
   const voiceAuthor = Keypair.generate();
-  const payer       = Keypair.generate();
-  const treasury    = Keypair.generate();
+  const payer = Keypair.generate();
+  const treasury = Keypair.generate();
   const usdcMintKeypair = Keypair.generate();
 
   let configPDA: PublicKey;
@@ -47,20 +47,22 @@ describe("sello", () => {
   let authorUsdcAta: PublicKey;
   let treasuryUsdcAta: PublicKey;
 
-  const contentHash    = crypto.randomBytes(32);
-  const termsCid       = crypto.randomBytes(46); // IPFS CIDv1 — 46 bytes
-  const termsHash      = crypto.randomBytes(32);
-  const voiceIdHash    = crypto.randomBytes(32);
+  const contentHash = crypto.randomBytes(32);
+  const termsCid = crypto.randomBytes(46); // IPFS CIDv1 — 46 bytes
+  const termsHash = crypto.randomBytes(32);
+  const voiceIdHash = crypto.randomBytes(32);
 
   const USDC_DECIMALS = 6;
-  const feeBps        = 500; // 5%
+  const feeBps = 500; // 5%
   // bitmap: SUMMARIZE | QUOTE | VOICE — training not permitted
-  const allowedUses   = USE_SUMMARIZE | USE_QUOTE | USE_VOICE;
-  const basePrice     = new BN(500_000); // 0.5 USDC
+  const allowedUses = USE_SUMMARIZE | USE_QUOTE | USE_VOICE;
+  const basePrice = new BN(500_000); // 0.5 USDC
   const pricePerMinute = new BN(100_000); // 0.1 USDC
 
   async function createTestUsdcMint(): Promise<void> {
-    const lamports = await getMinimumBalanceForRentExemptMint(provider.connection);
+    const lamports = await getMinimumBalanceForRentExemptMint(
+      provider.connection
+    );
 
     const tx = new Transaction().add(
       SystemProgram.createAccount({
@@ -82,7 +84,10 @@ describe("sello", () => {
     await provider.sendAndConfirm(tx, [authority, usdcMintKeypair]);
   }
 
-  async function createAtaAndMint(owner: Keypair, amount: number): Promise<PublicKey> {
+  async function createAtaAndMint(
+    owner: Keypair,
+    amount: number
+  ): Promise<PublicKey> {
     const ata = await getAssociatedTokenAddress(
       usdcMintKeypair.publicKey,
       owner.publicKey
@@ -112,14 +117,17 @@ describe("sello", () => {
   before(async () => {
     for (const kp of [authority, author, voiceAuthor, payer, treasury]) {
       await provider.connection.confirmTransaction(
-        await provider.connection.requestAirdrop(kp.publicKey, 100 * LAMPORTS_PER_SOL)
+        await provider.connection.requestAirdrop(
+          kp.publicKey,
+          100 * LAMPORTS_PER_SOL
+        )
       );
     }
 
     await createTestUsdcMint();
 
-    payerUsdcAta    = await createAtaAndMint(payer, 100_000_000); // 100 USDC
-    authorUsdcAta   = await createAtaAndMint(author, 0);
+    payerUsdcAta = await createAtaAndMint(payer, 100_000_000); // 100 USDC
+    authorUsdcAta = await createAtaAndMint(author, 0);
     treasuryUsdcAta = await createAtaAndMint(treasury, 0);
 
     [configPDA] = PublicKey.findProgramAddressSync(
@@ -154,7 +162,9 @@ describe("sello", () => {
     expect(config.isPaused).to.be.false;
     expect(config.feeBps).to.equal(feeBps);
     expect(config.treasury.toBase58()).to.equal(treasury.publicKey.toBase58());
-    expect(config.usdcMint.toBase58()).to.equal(usdcMintKeypair.publicKey.toBase58());
+    expect(config.usdcMint.toBase58()).to.equal(
+      usdcMintKeypair.publicKey.toBase58()
+    );
     expect(config.version).to.equal(1);
   });
 
@@ -181,7 +191,9 @@ describe("sello", () => {
     expect(Buffer.from(sello.termsCid)).to.deep.equal(termsCid);
     expect(Buffer.from(sello.termsHash)).to.deep.equal(termsHash);
     expect(sello.allowedUses).to.equal(allowedUses);
-    expect(Number(sello.basePrice.toString())).to.equal(Number(basePrice.toString()));
+    expect(Number(sello.basePrice.toString())).to.equal(
+      Number(basePrice.toString())
+    );
     expect(Number(sello.usageCount.toString())).to.equal(0);
     expect(sello.revoked).to.be.false;
     expect(Number(sello.createdAt.toString())).to.be.greaterThan(0);
@@ -226,10 +238,14 @@ describe("sello", () => {
       .rpc();
 
     const consent = await program.account.voiceConsent.fetch(voiceConsentPDA);
-    expect(consent.author.toBase58()).to.equal(voiceAuthor.publicKey.toBase58());
+    expect(consent.author.toBase58()).to.equal(
+      voiceAuthor.publicKey.toBase58()
+    );
     expect(Buffer.from(consent.voiceIdHash)).to.deep.equal(voiceIdHash);
     expect(consent.allowedUses).to.equal(USE_VOICE);
-    expect(Number(consent.pricePerMinute.toString())).to.equal(Number(pricePerMinute.toString()));
+    expect(Number(consent.pricePerMinute.toString())).to.equal(
+      Number(pricePerMinute.toString())
+    );
     expect(consent.revoked).to.be.false;
   });
 
@@ -263,7 +279,9 @@ describe("sello", () => {
     expect(receipt.sello.toBase58()).to.equal(selloPDA.toBase58());
     expect(receipt.payer.toBase58()).to.equal(payer.publicKey.toBase58());
     expect(receipt.usageType).to.equal(2);
-    expect(Number(receipt.amountPaid.toString())).to.equal(Number(basePrice.toString()));
+    expect(Number(receipt.amountPaid.toString())).to.equal(
+      Number(basePrice.toString())
+    );
 
     const selloAfter = await program.account.contentSello.fetch(selloPDA);
     expect(Number(selloAfter.usageCount.toString())).to.equal(1);
@@ -307,7 +325,11 @@ describe("sello", () => {
     );
 
     await program.methods
-      .registerVoiceConsent(Array.from(revokeVoiceHash), USE_VOICE, pricePerMinute)
+      .registerVoiceConsent(
+        Array.from(revokeVoiceHash),
+        USE_VOICE,
+        pricePerMinute
+      )
       .accounts({
         voiceConsent: revokeVoicePDA,
         author: author.publicKey,

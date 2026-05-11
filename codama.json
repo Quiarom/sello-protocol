@@ -1,5 +1,5 @@
 {
-  "idl": "anchor/target/idl/sello.json",
+  "idl": "idl/sello.json",
   "scripts": {
     "js": [
       {

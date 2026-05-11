@@ -8,9 +8,11 @@ export const APPWRITE_DEFAULTS = {
 
 export function getAppwriteRuntimeConfig() {
   const endpoint = process.env.APPWRITE_ENDPOINT ?? APPWRITE_DEFAULTS.endpoint;
-  const projectId = process.env.APPWRITE_PROJECT_ID ?? APPWRITE_DEFAULTS.projectId;
+  const projectId =
+    process.env.APPWRITE_PROJECT_ID ?? APPWRITE_DEFAULTS.projectId;
   const apiKey = process.env.APPWRITE_API_KEY ?? "";
-  const functionId = process.env.APPWRITE_FUNCTION_ID ?? APPWRITE_DEFAULTS.functionId;
+  const functionId =
+    process.env.APPWRITE_FUNCTION_ID ?? APPWRITE_DEFAULTS.functionId;
   const databaseId = process.env.APPWRITE_DB_ID ?? APPWRITE_DEFAULTS.databaseId;
   const audioBucketId =
     process.env.APPWRITE_AUDIO_BUCKET_ID ?? APPWRITE_DEFAULTS.audioBucketId;
@@ -25,7 +27,9 @@ export function getAppwriteRuntimeConfig() {
   };
 }
 
-export function getMissingAppwriteServerEnv(config = getAppwriteRuntimeConfig()) {
+export function getMissingAppwriteServerEnv(
+  config = getAppwriteRuntimeConfig()
+) {
   const missing: string[] = [];
 
   if (!config.apiKey) {

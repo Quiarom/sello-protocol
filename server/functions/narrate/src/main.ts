@@ -1,6 +1,7 @@
 import { Client, Databases, Storage, ID } from "node-appwrite";
 
-const DEVNET_RPC = process.env.SOLANA_RPC_URL ?? "https://api.devnet.solana.com";
+const DEVNET_RPC =
+  process.env.SOLANA_RPC_URL ?? "https://api.devnet.solana.com";
 const PROGRAM_ID = process.env.ANCHOR_PROGRAM_ID!;
 const AUTHORITY_PUBKEY = process.env.AUTHORITY_PUBKEY!;
 const TREASURY_WALLET = process.env.TREASURY_WALLET!;
@@ -64,7 +65,13 @@ export default async ({ req, res, log, error }: any) => {
   // ── Verify Solana Transaction Signature ──
   log(`Verifying transaction: ${paymentPayload}`);
   try {
-    const isVerified = await verifyTransaction(paymentPayload, TREASURY_WALLET, PRICE_USDC_UNITS, DEVNET_RPC, log);
+    const isVerified = await verifyTransaction(
+      paymentPayload,
+      TREASURY_WALLET,
+      PRICE_USDC_UNITS,
+      DEVNET_RPC,
+      log
+    );
     if (!isVerified) {
       log("Transaction verification failed");
       return res.json({ error: "Invalid or unconfirmed payment" }, 402);
@@ -72,7 +79,10 @@ export default async ({ req, res, log, error }: any) => {
     log("Payment verified successfully!");
   } catch (err) {
     error(`Verification error: ${err}`);
-    return res.json({ error: "Blockchain verification service unavailable" }, 503);
+    return res.json(
+      { error: "Blockchain verification service unavailable" },
+      503
+    );
   }
 
   // ── Parse body ──
@@ -96,7 +106,9 @@ export default async ({ req, res, log, error }: any) => {
 
   const storage = new Storage(appwrite);
   const db = new Databases(appwrite);
-  const cacheKey = await sha256(`${article_url}:${voice_id ?? DEFAULT_VOICE_ID}`);
+  const cacheKey = await sha256(
+    `${article_url}:${voice_id ?? DEFAULT_VOICE_ID}`
+  );
   const BUCKET_ID = process.env.APPWRITE_AUDIO_BUCKET_ID ?? "narrations";
 
   // Check cache
@@ -105,7 +117,14 @@ export default async ({ req, res, log, error }: any) => {
     if (cached) {
       log(`Cache hit: ${cacheKey}`);
       const fileUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${cacheKey}/view?project=${process.env.APPWRITE_PROJECT_ID}`;
-      return respondWithAudio(res, null, fileUrl, sello_pda, voice_id ?? DEFAULT_VOICE_ID, log);
+      return respondWithAudio(
+        res,
+        null,
+        fileUrl,
+        sello_pda,
+        voice_id ?? DEFAULT_VOICE_ID,
+        log
+      );
     }
   } catch {
     // cache miss, continue
@@ -193,10 +212,23 @@ export default async ({ req, res, log, error }: any) => {
     error,
   });
 
-  return respondWithAudio(res, audioBuffer, audioUrl, sello_pda, useVoiceId, log);
+  return respondWithAudio(
+    res,
+    audioBuffer,
+    audioUrl,
+    sello_pda,
+    useVoiceId,
+    log
+  );
 };
 
-async function verifyTransaction(signature: string, treasury: string, amount: string, rpc: string, log: any): Promise<boolean> {
+async function verifyTransaction(
+  signature: string,
+  treasury: string,
+  amount: string,
+  rpc: string,
+  log: any
+): Promise<boolean> {
   // Demo mode: if signature starts with 'mock-', allow it
   if (signature.startsWith("mock-")) return true;
 
@@ -208,8 +240,15 @@ async function verifyTransaction(signature: string, treasury: string, amount: st
       jsonrpc: "2.0",
       id: 1,
       method: "getTransaction",
-      params: [signature, { encoding: "json", commitment: "confirmed", maxSupportedTransactionVersion: 0 }]
-    })
+      params: [
+        signature,
+        {
+          encoding: "json",
+          commitment: "confirmed",
+          maxSupportedTransactionVersion: 0,
+        },
+      ],
+    }),
   });
 
   const json = (await response.json()) as any;

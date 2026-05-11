@@ -17,7 +17,6 @@
    Sello license.
 
 5. Open policy files:
-
    - `http://localhost:3000/llms.txt`
    - `http://localhost:3000/tdm-policy.json`
    - `http://localhost:3000/rsl.txt`

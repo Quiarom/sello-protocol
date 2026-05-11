@@ -84,13 +84,13 @@ async function verifyContentSelloPDA(onchain: string): Promise<OnchainResult> {
     const { getBase58Codec } = await import("@solana/kit");
     const authorAddress = getBase58Codec().decode(new Uint8Array(authorPubkey));
 
-    return { 
-      pdaAddress: address, 
-      verified: true, 
-      revoked, 
-      allowedUses, 
+    return {
+      pdaAddress: address,
+      verified: true,
+      revoked,
+      allowedUses,
       basePrice,
-      authorAddress 
+      authorAddress,
     };
   } catch {
     return null;
@@ -105,13 +105,18 @@ type FirecrawlResponse = {
 };
 
 async function scrapeHtml(url: string, requestUrl: string): Promise<string> {
-  const isLocal = url.includes("localhost") || url.includes("127.0.0.1") || url.includes(".vercel.app");
-  
+  const isLocal =
+    url.includes("localhost") ||
+    url.includes("127.0.0.1") ||
+    url.includes(".vercel.app");
+
   if (isLocal) {
     console.log("--- INTERNAL FETCH DETECTED: Bypassing Firecrawl ---");
     try {
       // If we are on Vercel, we need to use the full URL of the request to fetch the local page
-      const targetUrl = url.includes("localhost") ? url : new URL(url, requestUrl).toString();
+      const targetUrl = url.includes("localhost")
+        ? url
+        : new URL(url, requestUrl).toString();
       const res = await fetch(targetUrl, { cache: "no-store" });
       if (!res.ok) throw new Error(`Internal fetch failed: ${res.status}`);
       return await res.text();
@@ -142,8 +147,9 @@ async function scrapeHtml(url: string, requestUrl: string): Promise<string> {
       waitFor: 2000,
       actions: [{ type: "wait", milliseconds: 1500 }],
       headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-      }
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
     }),
     cache: "no-store",
   });
@@ -191,7 +197,10 @@ export async function GET(request: Request) {
   const url = searchParams.get("url");
 
   if (!url) {
-    return NextResponse.json({ error: "Missing url query param." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing url query param." },
+      { status: 400 }
+    );
   }
 
   try {
@@ -205,7 +214,9 @@ export async function GET(request: Request) {
     const [html, hasLlmsTxt, hasTdmPolicy, creatorProfile] = await Promise.all([
       scrapeHtml(url, request.url),
       probePolicy(`${getDomain(url)}/llms.txt`, "Sello").catch(() => false),
-      probePolicy(`${getDomain(url)}/tdm-policy.json`, "sello").catch(() => false),
+      probePolicy(`${getDomain(url)}/tdm-policy.json`, "sello").catch(
+        () => false
+      ),
       getCreatorByDomain(domain).catch(() => null),
     ]);
 
@@ -246,7 +257,9 @@ export async function GET(request: Request) {
     const hasOnchainReference = Boolean(
       parsed.onchain && parsed.onchain.startsWith("solana:")
     );
-    const hasOnchainVerified = Boolean(onchainResult?.verified && !onchainResult.revoked);
+    const hasOnchainVerified = Boolean(
+      onchainResult?.verified && !onchainResult.revoked
+    );
     const complianceScore =
       1 +
       Number(hasLlmsTxt) +

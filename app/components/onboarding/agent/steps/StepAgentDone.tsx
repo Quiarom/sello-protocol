@@ -4,20 +4,25 @@ type StepAgentDoneProps = {
 
 export function StepAgentDone({ walletAddress }: StepAgentDoneProps) {
   return (
-    <div className="mx-auto flex min-h-[70vh] w-full max-w-3xl flex-col items-center justify-center px-5 text-center md:px-8">
-      <div className="postal-card w-full p-8 md:p-12">
+    <div className="mx-auto flex min-h-[calc(100dvh-72px)] w-full max-w-7xl flex-col items-center justify-center border-x border-border-low bg-background/20 px-5 text-center md:px-8">
+      <div className="postal-card max-w-2xl w-full p-8 md:p-12 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.9)]">
         <div className="postmark mx-auto flex h-28 w-28 rotate-[-12deg] items-center justify-center text-[10px]">
-          Approved<br />Agent
+          Approved
+          <br />
+          Agent
         </div>
         <h1 className="font-headline mt-6 text-4xl font-black uppercase tracking-tight text-cream md:text-6xl">
           Your AI is ready
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-sm text-muted">
-          It can now check article rules before it summarizes, quotes, or narrates.
+          It can now check article rules before it summarizes, quotes, or
+          narrates.
         </p>
         <div className="mt-5 break-all border border-border-low bg-background px-4 py-3 text-xs text-muted">
           Payment wallet:{" "}
-          <span className="font-mono text-foreground">{walletAddress ?? "not set"}</span>
+          <span className="font-mono text-foreground">
+            {walletAddress ?? "not set"}
+          </span>
         </div>
         <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
           <a href="/dashboard?view=agent" className="stamp-button">

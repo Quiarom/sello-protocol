@@ -1,0 +1,438 @@
+{
+  "address": "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC",
+  "metadata": {
+    "name": "sello",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Sello Protocol Proof of Consent Anchor program"
+  },
+  "instructions": [
+    {
+      "name": "grant_voice_consent",
+      "discriminator": [48, 34, 164, 248, 93, 142, 10, 122],
+      "accounts": [
+        {
+          "name": "voice_consent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [118, 111, 105, 99, 101]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "voice_id_hash",
+          "type": {
+            "array": ["u8", 32]
+          }
+        },
+        {
+          "name": "allowed_use",
+          "type": "u8"
+        },
+        {
+          "name": "price_usdc_micros",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize_config",
+      "discriminator": [208, 127, 21, 1, 194, 190, 196, 70],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [99, 111, 110, 102, 105, 103]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "fee_bps",
+          "type": "u16"
+        },
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "record_usage_receipt",
+      "discriminator": [208, 70, 129, 14, 143, 196, 31, 254],
+      "accounts": [
+        {
+          "name": "content_sello",
+          "writable": true
+        },
+        {
+          "name": "usage_receipt",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [114, 101, 99, 101, 105, 112, 116]
+              },
+              {
+                "kind": "account",
+                "path": "content_sello"
+              },
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "arg",
+                "path": "timestamp"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "usage_type",
+          "type": "u8"
+        },
+        {
+          "name": "amount_paid_micros",
+          "type": "u64"
+        },
+        {
+          "name": "timestamp",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "register_content_sello",
+      "discriminator": [196, 228, 103, 149, 196, 223, 180, 63],
+      "accounts": [
+        {
+          "name": "content_sello",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [115, 101, 108, 108, 111]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "content_hash"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "content_hash",
+          "type": {
+            "array": ["u8", 32]
+          }
+        },
+        {
+          "name": "license_type",
+          "type": "u8"
+        },
+        {
+          "name": "allowed_uses",
+          "type": "u8"
+        },
+        {
+          "name": "attribution_required",
+          "type": "bool"
+        },
+        {
+          "name": "price_usdc_micros",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "revoke_content_sello",
+      "discriminator": [114, 166, 168, 172, 101, 5, 46, 217],
+      "accounts": [
+        {
+          "name": "content_sello",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [115, 101, 108, 108, 111]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "account",
+                "path": "content_sello.content_hash",
+                "account": "ContentSello"
+              }
+            ]
+          }
+        },
+        {
+          "name": "creator",
+          "signer": true,
+          "relations": ["content_sello"]
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "ContentSello",
+      "discriminator": [183, 84, 131, 213, 186, 26, 160, 185]
+    },
+    {
+      "name": "ProtocolConfig",
+      "discriminator": [207, 91, 250, 28, 152, 179, 215, 209]
+    },
+    {
+      "name": "UsageReceipt",
+      "discriminator": [2, 253, 40, 106, 149, 89, 197, 108]
+    },
+    {
+      "name": "VoiceConsent",
+      "discriminator": [198, 169, 227, 208, 115, 239, 19, 39]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidFee",
+      "msg": "Protocol fee is too high for the MVP config."
+    },
+    {
+      "code": 6001,
+      "name": "NoAllowedUses",
+      "msg": "Content must allow at least one use."
+    },
+    {
+      "code": 6002,
+      "name": "ConsentRevoked",
+      "msg": "This consent record has been revoked."
+    },
+    {
+      "code": 6003,
+      "name": "UsageCountOverflow",
+      "msg": "Usage counter overflowed."
+    }
+  ],
+  "types": [
+    {
+      "name": "ContentSello",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "content_hash",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "license_type",
+            "type": "u8"
+          },
+          {
+            "name": "allowed_uses",
+            "type": "u8"
+          },
+          {
+            "name": "attribution_required",
+            "type": "bool"
+          },
+          {
+            "name": "price_usdc_micros",
+            "type": "u64"
+          },
+          {
+            "name": "usage_count",
+            "type": "u64"
+          },
+          {
+            "name": "revoked",
+            "type": "bool"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProtocolConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_bps",
+            "type": "u16"
+          },
+          {
+            "name": "is_active",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UsageReceipt",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "content_sello",
+            "type": "pubkey"
+          },
+          {
+            "name": "payer",
+            "type": "pubkey"
+          },
+          {
+            "name": "usage_type",
+            "type": "u8"
+          },
+          {
+            "name": "amount_paid_micros",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoiceConsent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "voice_id_hash",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "allowed_use",
+            "type": "u8"
+          },
+          {
+            "name": "price_usdc_micros",
+            "type": "u64"
+          },
+          {
+            "name": "revoked",
+            "type": "bool"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

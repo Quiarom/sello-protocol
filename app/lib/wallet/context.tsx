@@ -38,7 +38,6 @@ type WalletContextValue = {
 
 const WalletContext = createContext<WalletContextValue | null>(null);
 
-
 export function WalletProvider({ children }: PropsWithChildren) {
   const { cluster } = useCluster();
   const chain = `solana:${cluster}`;

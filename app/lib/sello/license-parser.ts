@@ -1,27 +1,33 @@
+import {
+  LICENSE_CONFIG,
+  selloCheckoutConfig,
+  selloDemoArticle,
+  type SelloLicenseKey,
+} from "./constants";
+import { getAllowedUseMask, hasAllowedUse } from "./checkout-model";
+
 export type ParsedSelloTag = {
   id: string | null;
-  license: string | null;
+  license: SelloLicenseKey | null;
   author: string;
   publisher: string;
   payEndpoint: string;
   onchain: string | null;
   priceUSDC: number;
+  voiceId: string | null;
 };
 
 export function parseSelloMeta(html: string): ParsedSelloTag | null {
-  // Ultra-lenient search for the sello meta tag
   const metaTags = html.match(/<meta\s+[^>]+>/gi);
   if (!metaTags) return null;
 
-  const selloTag = metaTags.find(tag => {
-    const nameMatch = tag.match(/name=["']sello["']/i);
-    return !!nameMatch;
-  });
+  const selloTag = metaTags.find((tag) => tag.match(/name=["']sello["']/i));
 
   if (!selloTag) {
-    // Last ditch: check if 'sello' is in any attribute value
-    const lastDitch = metaTags.find(tag => tag.toLowerCase().includes('sello'));
-    if (lastDitch) return extractFromTag(lastDitch);
+    const fallbackTag = metaTags.find((tag) =>
+      tag.toLowerCase().includes("sello")
+    );
+    if (fallbackTag) return extractFromTag(fallbackTag);
     return null;
   }
 
@@ -30,73 +36,57 @@ export function parseSelloMeta(html: string): ParsedSelloTag | null {
 
 function extractFromTag(tag: string): ParsedSelloTag | null {
   const contentMatch = tag.match(/content=["']([^"']+)["']/i);
-  if (!contentMatch) {
-    return null;
-  }
+  if (!contentMatch) return null;
 
   const fields = parseSelloContent(contentMatch[1]);
-  const parsedPrice = Number(fields.price_usdc ?? "0");
+  const license = normalizeLicense(fields.license);
+  const parsedPrice = Number(
+    fields.price_usdc ?? selloCheckoutConfig.narrationPrice.amountUSDC
+  );
+
   return {
     id: fields.id ?? null,
-    license: fields.license ?? null,
-    author: fields.author ?? "Unknown author",
-    publisher: fields.publisher ?? "Unknown publisher",
-    payEndpoint: fields.pay ?? "",
+    license,
+    author: fields.author ?? selloDemoArticle.author,
+    publisher: fields.publisher ?? selloDemoArticle.publisher.name,
+    payEndpoint: fields.pay ?? selloCheckoutConfig.meta.pay,
     onchain: fields.onchain ?? null,
-    priceUSDC: Number.isFinite(parsedPrice) ? parsedPrice : 0,
+    priceUSDC: Number.isFinite(parsedPrice)
+      ? parsedPrice
+      : Number(selloCheckoutConfig.narrationPrice.amountUSDC),
+    voiceId: fields.voice_id ?? selloCheckoutConfig.meta.voiceId,
   };
 }
 
-export function derivePermissions(license: string | null): {
+export function derivePermissions(license: SelloLicenseKey | null): {
   canSummarize: boolean;
   canQuote: boolean;
   canVoice: boolean | "paid";
   canTrain: boolean;
 } {
-  switch (license) {
-    case "sello-free":
-      return {
-        canSummarize: true,
-        canQuote: true,
-        canVoice: true,
-        canTrain: true,
-      };
-    case "sello-nc":
-      return {
-        canSummarize: true,
-        canQuote: true,
-        canVoice: true,
-        canTrain: true,
-      };
-    case "sello-voice":
-      return {
-        canSummarize: true,
-        canQuote: true,
-        canVoice: "paid",
-        canTrain: false,
-      };
-    case "sello-pay":
-      return {
-        canSummarize: true,
-        canQuote: true,
-        canVoice: "paid",
-        canTrain: false,
-      };
-    case "sello-no-train":
-      return {
-        canSummarize: true,
-        canQuote: true,
-        canVoice: true,
-        canTrain: false,
-      };
-    default:
-      return {
-        canSummarize: false,
-        canQuote: false,
-        canVoice: false,
-        canTrain: false,
-      };
+  if (!license) {
+    return {
+      canSummarize: false,
+      canQuote: false,
+      canVoice: false,
+      canTrain: false,
+    };
   }
+
+  const config = LICENSE_CONFIG[license];
+  const allowedUses = config.allowedUses;
+  const paidUses = selloCheckoutConfig.paidUses as readonly string[];
+  const paidVoice =
+    paidUses.includes("voice") && license === selloCheckoutConfig.license.key;
+
+  return {
+    canSummarize: hasAllowedUse(allowedUses, "summarize"),
+    canQuote: hasAllowedUse(allowedUses, "quote"),
+    canVoice: paidVoice ? "paid" : hasAllowedUse(allowedUses, "voice"),
+    canTrain:
+      config.trainingStatus === "Training allowed" ||
+      (hasAllowedUse(allowedUses, "train") && !paidUses.includes("train")),
+  };
 }
 
 export function parseSelloContent(content: string): Record<string, string> {
@@ -109,4 +99,36 @@ export function parseSelloContent(content: string): Record<string, string> {
     result[key] = value;
   }
   return result;
+}
+
+export function buildDemoSelloContent() {
+  return [
+    `id:${selloDemoArticle.id}`,
+    `license:${selloCheckoutConfig.license.key}`,
+    `author:${selloDemoArticle.author}`,
+    `publisher:${selloDemoArticle.publisher.name}`,
+    `pay:${selloCheckoutConfig.meta.pay}`,
+    `onchain:${selloCheckoutConfig.meta.onchain}`,
+    `price_usdc:${selloCheckoutConfig.narrationPrice.amountUSDC}`,
+    `voice_id:${selloCheckoutConfig.meta.voiceId}`,
+  ].join("|");
+}
+
+export function deriveAllowedUseMask(license: SelloLicenseKey | null): number {
+  if (!license) return 0;
+  if (license === selloCheckoutConfig.license.key) {
+    return getAllowedUseMask([
+      ...selloCheckoutConfig.freeUses,
+      ...selloCheckoutConfig.paidUses,
+    ]);
+  }
+  return LICENSE_CONFIG[license].allowedUses;
+}
+
+function normalizeLicense(value: string | undefined): SelloLicenseKey | null {
+  if (!value) return null;
+  if (value in LICENSE_CONFIG) {
+    return value as SelloLicenseKey;
+  }
+  return null;
 }

@@ -28,7 +28,7 @@ export function StepInstallSkill({
   onContinue,
 }: StepInstallSkillProps) {
   const [serverUrl, setServerUrl] = useState("");
-  
+
   useEffect(() => {
     setServerUrl(window.location.origin);
   }, []);
@@ -92,7 +92,8 @@ export function StepInstallSkill({
           2. Web Browsing (MCP)
         </p>
         <p className="mt-1 text-xs sm:text-sm text-muted">
-          Your AI needs to read web pages. If you don't have Firecrawl, add this server:
+          Your AI needs to read web pages. If you don't have Firecrawl, add this
+          server:
         </p>
         <div className="relative mt-3">
           <pre className="overflow-x-auto border border-border-low bg-background/60 p-4 text-[9px] sm:text-xs font-mono leading-relaxed">
@@ -170,8 +171,18 @@ export function StepInstallSkill({
           className="stamp-button w-full sm:w-auto py-3 px-12 group"
         >
           Confirm and Test
-          <svg className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          <svg
+            className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            />
           </svg>
         </button>
       </div>

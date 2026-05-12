@@ -9,17 +9,17 @@ const SELLO_PROGRAM_ID = "3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY";
 
 // ContentSello buffer layout (Anchor 8-byte discriminator prefix):
 // [0..7]   discriminator
-// [8..39]  author (Pubkey, 32)
-// [40..71] content_hash ([u8;32])
-// [72..117] terms_cid ([u8;46])
-// [118..149] terms_hash ([u8;32])
-// [150]    allowed_uses (u8)
-// [151..158] base_price (u64 LE)
-// [159..166] usage_count (u64 LE)
-// [167..174] created_at (i64 LE)
-// [175]    revoked (bool)
-// [176]    bump
-const CONTENT_SELLO_SIZE = 177;
+// [8..39]  creator (Pubkey, 32)
+// [40..71] content_hash ([u8; 32])
+// [72]     license_type (u8)
+// [73]     allowed_uses (u8)
+// [74]     attribution_required (bool)
+// [75..82] price_usdc_micros (u64 LE)
+// [83..90] usage_count (u64 LE)
+// [91]     revoked (bool)
+// [92..99] created_at (i64 LE)
+// [100]    bump
+const CONTENT_SELLO_SIZE = 101;
 
 type OnchainResult = {
   pdaAddress: string;
@@ -76,9 +76,9 @@ async function verifyContentSelloPDA(onchain: string): Promise<OnchainResult> {
 
     // Author is at [8..39] (32 bytes Pubkey)
     const authorPubkey = data.slice(8, 40);
-    const allowedUses = data[150];
-    const basePrice = data.readBigUInt64LE(151);
-    const revoked = data[175] !== 0;
+    const allowedUses = data[73];
+    const basePrice = data.readBigUInt64LE(75);
+    const revoked = data[91] !== 0;
 
     // Use a simple base58 encoder for the address string
     const { getBase58Codec } = await import("@solana/kit");
@@ -123,7 +123,7 @@ async function scrapeHtml(url: string, requestUrl: string): Promise<string> {
     } catch (err) {
       console.error("Internal scrape failed:", err);
       if (url.includes("/blog/protected-article")) {
-        return `<html><head><meta name="sello" content="id:CDPPzR|license:sello-voice|author:Daniel Quiaro|publisher:Sello Demo|pay:/api/narrate|onchain:solana:devnet:GW8vQ3sSZkCAVzRfp9xdG7N2UHjHBtNZKRcYwhQAJGbF|price_usdc:0.10|voice_id:Rachel (Default)"></head><body>Demo Fallback</body></html>`;
+        return `<html><head><meta name="sello" content="id:CDPPzR|license:sello-voice|author:Daniel Quiaro|publisher:Sello Demo|pay:/api/narrate|onchain:solana:devnet:AbBDUHP6sa4bS7cUVhxFaCTSr5Pw3tv42yno7FRaSf4S|price_usdc:0.10|voice_id:Rachel (Default)"></head><body>Demo Fallback</body></html>`;
       }
       throw err;
     }

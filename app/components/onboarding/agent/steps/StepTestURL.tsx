@@ -7,11 +7,7 @@ import { toast } from "sonner";
 import { useWallet } from "@/app/lib/wallet/context";
 import { useSendTransaction } from "@/app/lib/hooks/use-send-transaction";
 import { type Address } from "@solana/kit";
-import { ellipsify } from "@/app/lib/explorer";
-import {
-  findConfigPda,
-  getRecordUsageReceiptInstructionAsync,
-} from "@/app/generated/sello";
+import { getRecordUsageReceiptInstructionAsync } from "@/app/generated/sello";
 import {
   findAssociatedTokenPda,
   getTransferCheckedInstruction,
@@ -149,13 +145,16 @@ export function StepTestURL({
     try {
       addLog("Signing x402-style payment", "system");
 
-      const selloAddress = (result.contentSelloPDA ??
-        result.selloId) as Address;
+      const selloAddress = result.contentSelloPDA as Address;
+      if (!selloAddress || selloAddress.length < 32) {
+        throw new Error(
+          "No on-chain proof found for this content. Please register it first at /register."
+        );
+      }
+
       const amountPaid = BigInt(
         Math.round((result.priceUSDC || 0.1) * 1_000_000)
       );
-      const nonce = BigInt(Math.floor(Math.random() * 1000000));
-
       const usdcMint =
         "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU" as Address;
       // REAL DESTINATION: The creator wallet from on-chain data
@@ -199,10 +198,6 @@ export function StepTestURL({
       });
 
       // 3. Sello Record Usage Instruction
-      const [configPda] = await findConfigPda({
-        authority: treasuryAddress,
-      });
-
       const timestamp = BigInt(Math.floor(Date.now() / 1000));
 
       const recordIx = await getRecordUsageReceiptInstructionAsync({

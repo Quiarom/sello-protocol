@@ -31,7 +31,7 @@
     "summary_permission": "allowed_with_attribution",
     "training_restriction": "restricted",
     "voice_narration_condition": "execute an x402-style settlement and record a UsageReceipt on Solana devnet before producing audio",
-    "proof_of_consent": "solana:devnet:GW8vQ3sSZkCAVzRfp9xdG7N2UHjHBtNZKRcYwhQAJGbF",
+    "proof_of_consent": "solana:devnet:AbBDUHP6sa4bS7cUVhxFaCTSr5Pw3tv42yno7FRaSf4S",
     "legal_note": "This is a machine-readable rights signaling aware of EU CDSM Art. 4."
   }
 }

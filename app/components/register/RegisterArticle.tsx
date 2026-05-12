@@ -193,7 +193,7 @@ export function RegisterArticle() {
 
       let signature = "";
       if (exists) {
-        toast.info("Article already sealed! Loading existing record...");
+        toast.info("Article already published! Loading existing record...");
       } else {
         const licenseConfig = LICENSE_MODES[license];
         const basePriceUnits = BigInt(
@@ -243,9 +243,9 @@ export function RegisterArticle() {
         return [resultData, ...prev];
       });
       setStep("implementation");
-      if (!exists) toast.success("Article successfully sealed!");
+      if (!exists) toast.success("Article successfully published!");
     } catch (err) {
-      console.error("Sealing failed:", err);
+      console.error("Publishing failed:", err);
       toast.error("Error registering article. Check console for details.");
     }
   };
@@ -265,20 +265,20 @@ export function RegisterArticle() {
             Sello Protocol
           </span>
           <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tight text-cream">
-            {step === "setup" && "Your Identity"}
-            {step === "register" && "Create AI Checkout"}
-            {step === "implementation" && "Activate Checkout"}
-            {step === "dashboard" && "Aval Revenue Console"}
+            {step === "setup" && "Publisher Identity"}
+            {step === "register" && "Define Rules & Price"}
+            {step === "implementation" && "Publish AI-readable Rules"}
+            {step === "dashboard" && "View Evidence in Aval"}
           </h1>
           <p className="text-muted text-base md:text-lg max-w-2xl mx-auto">
             {step === "setup" &&
-              "Connect your digital signature to start charging for your content usage."}
+              "Aval connects its publisher wallet to establish authority over the content hash."}
             {step === "register" &&
-              "Configure machine-readable rights for this article."}
+              "Aval creates rules for an article: price, attribution, and authorized actions."}
             {step === "implementation" &&
-              "Paste this code on your website so AIs can detect your rules."}
+              "The app generates machine-readable signals so agents can detect and pay for usage."}
             {step === "dashboard" &&
-              "Monitor who is reading your content and your total earnings accumulated."}
+              "Monitor agent requests, recorded Proof of Consent, and your total rights revenue."}
           </p>
         </div>
 
@@ -287,11 +287,11 @@ export function RegisterArticle() {
             <div className="grid gap-12 md:grid-cols-2">
               <div className="space-y-6">
                 <p className="font-display text-3xl uppercase tracking-widest text-primary">
-                  Step 1: Connection
+                  Step 1: Publisher Identity
                 </p>
                 <p className="text-muted leading-relaxed">
-                  You need to connect a Solana wallet (like Phantom) so that AI
-                  payments go directly to you.
+                  Aval connects its publisher wallet so that automated AI
+                  payments go directly to your newsroom treasury.
                 </p>
 
                 {!mounted ? (
@@ -317,7 +317,7 @@ export function RegisterArticle() {
                       <p className="font-headline text-lg font-bold text-cream">
                         Wallet Not Connected
                       </p>
-                      <p className="text-[10px] text-muted uppercase tracking-widest">
+                      <p className="text-xs text-muted uppercase tracking-widest">
                         Identify yourself as a content authority
                       </p>
                     </div>
@@ -330,7 +330,7 @@ export function RegisterArticle() {
                     <div className="flex items-center gap-4 bg-background/80 p-5 border border-primary/30">
                       <span className="h-2 w-2 rounded-full bg-green-ink animate-pulse shadow-[0_0_8px_#00e38b]" />
                       <div className="flex flex-col">
-                        <span className="font-mono text-[10px] uppercase text-muted tracking-widest">
+                        <span className="font-mono text-xs uppercase text-muted tracking-widest">
                           Confirmed Authority
                         </span>
                         <span className="font-mono text-xs text-cream break-all">
@@ -366,14 +366,19 @@ export function RegisterArticle() {
 
               <div className="bg-primary/5 p-8 border border-dashed border-primary/20 space-y-4">
                 <p className="font-headline text-xl font-bold italic text-gold">
-                  Why register?
+                  Why Sello?
                 </p>
                 <ul className="text-xs text-muted space-y-3 list-disc pl-4">
-                  <li>Legal protection under European CDSM (Art. 4).</li>
                   <li>
-                    Automatic micropayments every time an AI uses your content.
+                    Machine-readable rights signaling aware of EU CDSM Art. 4.
                   </li>
-                  <li>Immutable proof of authorship on the blockchain.</li>
+                  <li>
+                    Automatic x402-style settlements every time an AI agent uses
+                    your content.
+                  </li>
+                  <li>
+                    Record immutable Proof of Consent on the Solana blockchain.
+                  </li>
                 </ul>
               </div>
             </div>
@@ -414,7 +419,7 @@ export function RegisterArticle() {
               <div className="grid gap-8 md:grid-cols-2">
                 <label className="block space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+                    <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
                       Article URL
                     </span>
                     <button
@@ -424,7 +429,7 @@ export function RegisterArticle() {
                           `${window.location.origin}/blog/protected-article`
                         )
                       }
-                      className="text-[9px] font-mono text-primary uppercase hover:underline"
+                      className="text-xs font-mono text-primary uppercase hover:underline"
                     >
                       Try Demo URL
                     </button>
@@ -438,7 +443,7 @@ export function RegisterArticle() {
                   />
                 </label>
                 <label className="block space-y-3">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
                     Author or Publisher
                   </span>
                   <input
@@ -451,8 +456,8 @@ export function RegisterArticle() {
                 </label>
               </div>
               <div className="space-y-4">
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted block">
-                  Choose Protection Level
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted block">
+                  Choose Rights Signal
                 </span>
                 <div className="grid gap-4 md:grid-cols-2">
                   {Object.entries(LICENSE_MODES).map(([id, cfg]) => (
@@ -491,7 +496,7 @@ export function RegisterArticle() {
                       <p className="font-bold text-xs uppercase tracking-widest text-primary">
                         Standard Narrator
                       </p>
-                      <p className="text-[10px] text-muted mt-1">
+                      <p className="text-xs text-muted mt-1">
                         High-quality professional voice (Rachel).
                       </p>
                     </button>
@@ -502,7 +507,7 @@ export function RegisterArticle() {
                       <p className="font-bold text-xs uppercase tracking-widest text-gold">
                         My Cloned Voice
                       </p>
-                      <p className="text-[10px] text-muted mt-1">
+                      <p className="text-xs text-muted mt-1">
                         Requires an ElevenLabs Voice ID.
                       </p>
                     </button>
@@ -510,7 +515,7 @@ export function RegisterArticle() {
                   {voiceType === "cloned" && (
                     <div className="animate-in slide-in-from-top-2">
                       <label className="block space-y-2">
-                        <span className="font-mono text-[9px] uppercase text-gold">
+                        <span className="font-mono text-xs uppercase text-gold">
                           ElevenLabs Voice ID
                         </span>
                         <input
@@ -563,7 +568,7 @@ export function RegisterArticle() {
                 disabled={isSending || !articleUrl}
                 className="stamp-button flex-1 py-4 sm:py-5 text-xl sm:text-2xl order-1 sm:order-2 group"
               >
-                {isSending ? "Sealing..." : "Seal Article"}
+                {isSending ? "Publishing..." : "Publish Checkout"}
                 {!isSending && (
                   <svg
                     className="ml-2 h-6 w-6 transition-transform group-hover:translate-x-1"
@@ -582,7 +587,7 @@ export function RegisterArticle() {
               </button>
             </div>
             <div className="bg-background/40 border border-border-low p-4 text-center">
-              <p className="text-[10px] uppercase font-mono tracking-widest text-muted">
+              <p className="text-xs uppercase font-mono tracking-widest text-muted">
                 Next Step:{" "}
                 <span className="text-gold">
                   Get your Sello Tag & Implementation Files
@@ -796,16 +801,16 @@ export const metadata = {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-2">
               <h3 className="font-headline text-2xl sm:text-4xl font-bold text-cream underline decoration-primary decoration-4 underline-offset-8">
-                Your Protection Shield is Ready
+                Your AI-readable Rules are Ready
               </h3>
               <p className="text-muted text-base max-w-lg leading-relaxed">
                 Choose your technology below to get tailored instructions on how
-                to embed your Sello rules.
+                to embed your Agent Rights Checkout signals.
               </p>
             </div>
 
             <div className="flex flex-col gap-3 w-full lg:w-auto">
-              <span className="font-mono text-[9px] uppercase text-muted tracking-widest font-bold">
+              <span className="font-mono text-xs uppercase text-muted tracking-widest font-bold">
                 Select Deployment Stack
               </span>
               <div className="flex flex-wrap gap-2">
@@ -816,11 +821,11 @@ export const metadata = {
                     className={`flex items-center gap-2 px-3 py-2 border transition-all ${stack === s ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border-low hover:border-muted opacity-60"}`}
                   >
                     <span
-                      className={`flex h-5 w-5 items-center justify-center rounded-sm font-black text-[10px] ${STACK_INFO[s].bg} ${STACK_INFO[s].color}`}
+                      className={`flex h-5 w-5 items-center justify-center rounded-sm font-black text-xs ${STACK_INFO[s].bg} ${STACK_INFO[s].color}`}
                     >
                       {STACK_INFO[s].icon}
                     </span>
-                    <span className="font-display text-[10px] uppercase tracking-widest text-cream">
+                    <span className="font-display text-xs uppercase tracking-widest text-cream">
                       {STACK_INFO[s].name}
                     </span>
                   </button>
@@ -831,7 +836,7 @@ export const metadata = {
 
           <div className="relative group max-w-full">
             <div className="absolute -inset-1 bg-primary/20 blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-            <pre className="relative bg-background border border-border-low p-6 sm:p-10 font-mono text-[10px] sm:text-[11px] leading-relaxed text-muted-foreground overflow-auto max-h-[400px] no-scrollbar">
+            <pre className="relative bg-background border border-border-low p-6 sm:p-10 font-mono text-xs sm:text-sm leading-relaxed text-muted-foreground overflow-auto max-h-[400px] no-scrollbar">
               <code>{displayContent}</code>
             </pre>
             <button
@@ -839,7 +844,7 @@ export const metadata = {
                 navigator.clipboard.writeText(displayContent);
                 toast.success("Copied to clipboard!");
               }}
-              className="absolute right-3 top-3 stamp-badge cursor-pointer bg-card/80 px-3 py-1 text-[9px] text-primary transition-colors hover:bg-primary hover:text-primary-foreground sm:right-4 sm:top-4 sm:px-4 sm:text-[10px]"
+              className="absolute right-3 top-3 stamp-badge cursor-pointer bg-card/80 px-3 py-1 text-xs text-primary transition-colors hover:bg-primary hover:text-primary-foreground sm:right-4 sm:top-4 sm:px-4"
             >
               Copy All
             </button>
@@ -847,7 +852,7 @@ export const metadata = {
 
           <div className="grid gap-8 md:grid-cols-2 pt-8 border-t border-border-low">
             <div className="space-y-3">
-              <p className="font-mono text-[10px] uppercase text-gold tracking-widest">
+              <p className="font-mono text-xs uppercase text-gold tracking-widest">
                 Implementation Guide
               </p>
               <div className="bg-gold/5 border-l-2 border-gold p-4">
@@ -860,10 +865,10 @@ export const metadata = {
               </div>
             </div>
             <div className="space-y-2">
-              <p className="font-mono text-[10px] uppercase text-primary tracking-widest">
+              <p className="font-mono text-xs uppercase text-primary tracking-widest">
                 Legal Signal
               </p>
-              <p className="text-[10px] text-muted italic leading-relaxed">
+              <p className="text-xs text-muted italic leading-relaxed">
                 "By publishing these files, you are exercising your right to
                 data mining reservation (TDM) under international legal
                 frameworks like Art. 4 of the EU DSM Directive."
@@ -878,7 +883,7 @@ export const metadata = {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <h3 className="font-display text-2xl uppercase tracking-widest text-cream">
-              Shield Validator
+              Checkout Validator
             </h3>
             <p className="text-xs text-muted">
               Test if your implementation is visible to AI agents.
@@ -909,7 +914,7 @@ export const metadata = {
         </div>
 
         {verifyLogs.length > 0 && (
-          <div className="max-h-48 overflow-x-auto overflow-y-auto border border-border-low bg-background/80 p-6 font-mono text-[10px] space-y-2 no-scrollbar shadow-inner animate-in fade-in zoom-in-95">
+          <div className="max-h-48 overflow-x-auto overflow-y-auto border border-border-low bg-background/80 p-6 font-mono text-xs space-y-2 no-scrollbar shadow-inner animate-in fade-in zoom-in-95">
             {verifyLogs.map((log, i) => (
               <div
                 key={i}
@@ -931,10 +936,10 @@ export const metadata = {
       <div className="postal-card flex flex-col items-center justify-between gap-8 border border-green-ink/20 bg-green-ink/5 p-6 sm:p-10 md:flex-row">
         <div className="space-y-1 text-center md:text-left">
           <p className="text-green-ink font-headline text-2xl font-bold italic">
-            Protection Verified?
+            Checkout Verified?
           </p>
           <p className="text-sm text-muted">
-            Continue to your dashboard to manage your protected library.
+            Continue to your revenue console to monitor agent receipts.
           </p>
         </div>
         <button onClick={onFinish} className="stamp-button px-12 py-4 group">

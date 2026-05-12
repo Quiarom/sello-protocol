@@ -68,7 +68,7 @@ export function StepPlatform({
               <p className="text-xs sm:text-sm text-muted leading-relaxed">
                 {platform.description}
               </p>
-              <code className="mt-3 block border border-border-low bg-background/50 px-2 py-1.5 text-[9px] sm:text-xs text-muted truncate max-w-[200px] sm:max-w-none">
+              <code className="mt-3 block border border-border-low bg-background/50 px-2 py-1.5 text-xs text-muted truncate max-w-[200px] sm:max-w-none">
                 {platform.installPath}
               </code>
             </div>

@@ -84,10 +84,10 @@ export function StepTestURL({
     setReceiptUrl(undefined);
     setNarrationAudio(null);
 
-    addLog("Initializing Agent Simulation...", "system");
+    addLog("Initializing agent checkout", "system");
     await new Promise((r) => setTimeout(r, 600));
 
-    addLog(`Navigating to URL: ${testURL}`);
+    addLog(`Fetching article: ${testURL}`);
     const result = await onAnalyze();
     if (result) {
       await continueDemoAfterAnalysis(result);
@@ -99,20 +99,18 @@ export function StepTestURL({
 
   const continueDemoAfterAnalysis = async (result: TestResult) => {
     if (result.hasSello) {
-      addLog(
-        "Sello Tag detected! Decoding machine-readable rules...",
-        "success"
-      );
+      addLog("Sello tag detected", "success");
       await new Promise((r) => setTimeout(r, 800));
 
-      addLog(`Author: ${result.author} | License: ${result.license}`, "system");
+      addLog("Reading llms.txt and tdm-policy.json", "system");
+      await new Promise((r) => setTimeout(r, 600));
+
+      addLog(`License found: ${result.license}`, "bot");
+      addLog("Summary allowed with attribution", "success");
 
       if (result.payEndpoint) {
-        addLog(
-          `Access Challenge: 402 Payment Required (${result.priceUSDC} USDC)`,
-          "warning"
-        );
-        addLog("Negotiating x402 real-time settlement protocol...", "bot");
+        addLog("Voice narration requires payment", "warning");
+        addLog("402 Payment Required", "warning");
         await handleRealPayment(result);
       } else {
         addLog("Free license detected. Accessing content...", "success");
@@ -149,7 +147,7 @@ export function StepTestURL({
     setPayError(null);
 
     try {
-      addLog("Preparing atomic settlement (USDC + SOL + Rights)...", "system");
+      addLog("Signing x402-style payment", "system");
 
       const selloAddress = (result.contentSelloPDA ??
         result.selloId) as Address;
@@ -166,10 +164,7 @@ export function StepTestURL({
         "Y5GHe2xYz9ThBZsGN7VVJuSyjXNrkoGg1E2AJrNQYwN";
       const treasuryAddress = creatorWallet as Address;
 
-      addLog(
-        `Sending funds to Creator: ${ellipsify(treasuryAddress, 4)}`,
-        "bot"
-      );
+      addLog("USDC payment sent", "bot");
 
       const [sourceAta] = await findAssociatedTokenPda({
         owner: signer.address,
@@ -183,8 +178,8 @@ export function StepTestURL({
         tokenProgram: TOKEN_PROGRAM_ADDRESS,
       });
 
-      addLog(`Source ATA: ${ellipsify(sourceAta, 4)}`, "system");
-      addLog(`Dest ATA: ${ellipsify(destinationAta, 4)}`, "system");
+      // addLog(`Source ATA: ${ellipsify(sourceAta, 4)}`, "system");
+      // addLog(`Dest ATA: ${ellipsify(destinationAta, 4)}`, "system");
 
       // 1. REAL USDC TRANSFER
       const transferUsdcIx = getTransferCheckedInstruction({
@@ -217,18 +212,13 @@ export function StepTestURL({
         nonce: nonce,
       });
 
-      addLog(`Settling ${result.priceUSDC} USDC + 0.001 SOL...`, "bot");
-
       // REAL TRANSACTION SIGNING - Sending all three instructions
       const signature = await send({
         instructions: [transferUsdcIx, transferSolIx, recordIx],
       });
 
-      addLog(
-        `On-chain Settlement Finalized! TX: ${ellipsify(signature, 6)}`,
-        "success"
-      );
-      addLog("Updating balance and unlocking content...", "system");
+      addLog("UsageReceipt recorded on Solana", "success");
+      addLog("Narration unlocked", "success");
 
       const response = await fetch(result.payEndpoint, {
         method: "POST",
@@ -294,7 +284,7 @@ export function StepTestURL({
     <div className="space-y-6">
       <section className="postal-card p-6 sm:p-8 space-y-4 shadow-xl border-primary/20">
         <label className="font-display text-xl sm:text-2xl uppercase tracking-[0.14em] text-primary">
-          Live Agent Demo
+          Live Rights Checkout
         </label>
         <p className="text-xs sm:text-sm text-muted leading-relaxed">
           Paste the URL of an article with a Sello Tag to watch the agent
@@ -324,7 +314,7 @@ export function StepTestURL({
           disabled={!testURL || testLoading || isDemoRunning}
           className="stamp-button w-full md:w-auto py-4 px-12 text-lg sm:text-xl group"
         >
-          {isDemoRunning ? "Agent Working..." : "Run AI Simulation"}
+          {isDemoRunning ? "Agent Working..." : "Run Agent Checkout"}
           {!isDemoRunning && (
             <svg
               className="ml-2 h-6 w-6 transition-transform group-hover:translate-x-1"
@@ -349,7 +339,7 @@ export function StepTestURL({
           <div className="bg-primary/5 px-4 py-3 border-b border-border-low flex justify-between items-center">
             <div className="flex items-center gap-2">
               <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              <span className="font-mono text-[10px] uppercase text-primary font-bold tracking-[0.2em]">
+              <span className="font-mono text-xs uppercase text-primary font-bold tracking-[0.2em]">
                 Agent Terminal
               </span>
             </div>
@@ -359,7 +349,7 @@ export function StepTestURL({
               <div className="h-1 w-1 rounded-full bg-cream" />
             </div>
           </div>
-          <div className="h-64 overflow-x-auto overflow-y-auto bg-transparent p-4 font-mono text-[10px] space-y-3 no-scrollbar selection:bg-primary/30 sm:h-80 sm:p-8 sm:text-[12px]">
+          <div className="h-64 overflow-x-auto overflow-y-auto bg-transparent p-4 font-mono text-xs space-y-3 no-scrollbar selection:bg-primary/30 sm:h-80 sm:p-8">
             {demoLogs.map((log, i) => (
               <div
                 key={i}
@@ -384,7 +374,7 @@ export function StepTestURL({
             {isDemoRunning && !paySuccess && (
               <div className="flex gap-2 items-center text-primary animate-pulse pt-2">
                 <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-primary" />
-                <span className="text-[10px] uppercase tracking-widest font-black">
+                <span className="text-xs uppercase tracking-widest font-black">
                   Negotiating...
                 </span>
               </div>
@@ -409,7 +399,7 @@ export function StepTestURL({
               />
             ) : (
               <div className="postal-card border-yellow-500/30 bg-yellow-500/10 p-10 text-center space-y-4">
-                <div className="postmark h-14 w-14 mx-auto opacity-30 flex items-center justify-center text-[7px] border-yellow-600 text-yellow-600 font-bold uppercase tracking-widest">
+                <div className="postmark h-14 w-14 mx-auto opacity-30 flex items-center justify-center text-xs border-yellow-600 text-yellow-600 font-bold uppercase tracking-widest">
                   Blocked
                 </div>
                 <div className="space-y-1">

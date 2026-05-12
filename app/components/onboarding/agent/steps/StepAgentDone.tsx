@@ -6,20 +6,20 @@ export function StepAgentDone({ walletAddress }: StepAgentDoneProps) {
   return (
     <div className="mx-auto flex min-h-[calc(100dvh-72px)] w-full max-w-7xl flex-col items-center justify-center border-x border-border-low bg-background/20 px-5 text-center md:px-8">
       <div className="postal-card max-w-2xl w-full p-8 md:p-12 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.9)]">
-        <div className="postmark mx-auto flex h-28 w-28 rotate-[-12deg] items-center justify-center text-[10px]">
+        <div className="postmark mx-auto flex h-28 w-28 rotate-[-12deg] items-center justify-center text-xs">
           Approved
           <br />
           Agent
         </div>
         <h1 className="font-headline mt-6 text-4xl font-black uppercase tracking-tight text-cream md:text-6xl">
-          Your AI is ready
+          Agent Ready
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-sm text-muted">
-          It can now check article rules before it summarizes, quotes, or
-          narrates.
+          Your agent is now equipped to navigate the Sello Protocol. It can
+          detect rules, negotiate terms, and execute x402-style settlements.
         </p>
         <div className="mt-5 break-all border border-border-low bg-background px-4 py-3 text-xs text-muted">
-          Payment wallet:{" "}
+          Solana devnet UsageReceipt authority:{" "}
           <span className="font-mono text-foreground">
             {walletAddress ?? "not set"}
           </span>

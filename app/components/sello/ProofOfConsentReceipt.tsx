@@ -25,10 +25,10 @@ export type ProofOfConsentReceiptProps = {
 function ReceiptField({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0 border-b border-border-low py-3 last:border-0">
-      <dt className="font-mono text-[8px] uppercase tracking-widest text-muted">
+      <dt className="font-mono text-xs uppercase tracking-widest text-muted">
         {label}
       </dt>
-      <dd className="mt-1 break-all font-mono text-[10px] leading-relaxed text-cream/70">
+      <dd className="mt-1 break-all font-mono text-xs leading-relaxed text-cream/70">
         {value}
       </dd>
     </div>
@@ -57,18 +57,18 @@ export function ProofOfConsentReceipt({
     >
       <div className="flex flex-col gap-6 border-b border-border-low pb-8 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0 space-y-2">
-          <span className="stamp-badge text-[10px] text-gold font-bold italic">
+          <span className="stamp-badge text-xs text-gold font-bold italic">
             Proof of Consent
           </span>
           <h3 className="break-words font-headline text-2xl font-black uppercase leading-tight text-cream sm:text-3xl">
             {articleTitle}
           </h3>
-          <p className="text-[11px] leading-relaxed text-muted italic">
+          <p className="text-xs leading-relaxed text-muted italic">
             Solana devnet/demo receipt. Records the machine-readable terms for
             the content hash.
           </p>
         </div>
-        <div className="postmark flex h-20 w-20 shrink-0 -rotate-12 items-center justify-center text-center text-[8px] font-black border-primary/20 text-primary/40">
+        <div className="postmark flex h-20 w-20 shrink-0 -rotate-12 items-center justify-center text-center text-xs font-black border-primary/20 text-primary/40">
           VERIFIED
           <br />
           DEVNET
@@ -80,7 +80,7 @@ export function ProofOfConsentReceipt({
         <ReceiptField label="License" value={license} />
         <ReceiptField
           label="Settled amount"
-          value={`${paymentAmountUSDC} USDC (Sandbox)`}
+          value={`${paymentAmountUSDC} USDC (Devnet)`}
         />
         <ReceiptField label="Publisher wallet" value={publisherWallet} />
         <ReceiptField label="Content hash" value={contentHash} />

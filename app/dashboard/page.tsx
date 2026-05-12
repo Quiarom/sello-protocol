@@ -58,7 +58,7 @@ function DashboardContent() {
             <p className="text-muted text-base md:text-lg max-w-xl mx-auto md:mx-0">
               {view === "agent"
                 ? "History of rights settlement and Proof of Consent receipts issued by your AI."
-                : "Monitor your protected inventory and rights revenue."}
+                : "Aval Newsrooms Revenue Console: Monitor your protected inventory and rights revenue."}
             </p>
           </div>
 

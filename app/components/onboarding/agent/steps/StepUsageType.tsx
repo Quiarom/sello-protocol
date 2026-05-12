@@ -67,7 +67,7 @@ export function StepUsageType({
                   {option.description}
                 </p>
                 {option.caution ? (
-                  <p className="mt-2 font-mono text-[9px] sm:text-xs uppercase tracking-[0.12em] text-gold">
+                  <p className="mt-2 font-mono text-xs uppercase tracking-[0.12em] text-gold">
                     {option.caution}
                   </p>
                 ) : null}
@@ -83,7 +83,7 @@ export function StepUsageType({
         );
       })}
 
-      <div className="border-l-2 border-primary bg-secondary p-4 font-mono text-[10px] sm:text-xs leading-5 text-muted italic">
+      <div className="border-l-2 border-primary bg-secondary p-4 font-mono text-xs leading-5 text-muted italic">
         "Sello helps your AI check the creator&apos;s rules before it uses an
         article."
       </div>

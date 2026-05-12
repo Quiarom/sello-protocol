@@ -37,7 +37,7 @@ export function SiteHeader() {
               <span className="font-headline text-xl font-bold uppercase tracking-[0.22em] text-cream md:text-2xl">
                 Sello
               </span>
-              <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-primary">
+              <span className="font-mono text-xs font-bold uppercase tracking-[0.3em] text-primary">
                 Protocol
               </span>
             </div>

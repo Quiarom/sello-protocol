@@ -133,7 +133,7 @@ export function AgentRequestTimeline({
               className={`flex flex-col items-center border-b border-border-low py-4 transition-colors ${isClickable ? "group-hover:bg-primary/5" : ""}`}
             >
               <span
-                className={`flex h-6 w-6 shrink-0 items-center justify-center border rounded-full font-mono text-[10px] font-bold tabular-nums transition-all ${classes.marker}`}
+                className={`flex h-6 w-6 shrink-0 items-center justify-center border rounded-full font-mono text-xs font-bold tabular-nums transition-all ${classes.marker}`}
               >
                 {STEP_ORDER.indexOf(step.key) + 1}
               </span>
@@ -150,13 +150,13 @@ export function AgentRequestTimeline({
                   {step.label}
                 </p>
                 {stateLabel && !compact && status === "active" ? (
-                  <p className="shrink-0 break-words font-mono text-[8px] uppercase tracking-widest text-primary font-bold sm:text-right">
+                  <p className="shrink-0 break-words font-mono text-xs uppercase tracking-widest text-primary font-bold sm:text-right">
                     {stateLabel}
                   </p>
                 ) : null}
               </div>
               {!compact ? (
-                <p className="mt-1 max-w-full text-[11px] leading-relaxed text-muted italic">
+                <p className="mt-1 max-w-full text-xs leading-relaxed text-muted italic">
                   {step.detail}
                 </p>
               ) : null}

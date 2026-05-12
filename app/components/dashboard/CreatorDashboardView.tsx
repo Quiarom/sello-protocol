@@ -105,7 +105,6 @@ export function CreatorDashboardView({
   };
 
   const totalArticles = articles.length;
-  const completedChecks = checks.length;
 
   return (
     <div className="space-y-8 md:space-y-12 animate-in fade-in duration-1000">
@@ -124,7 +123,7 @@ export function CreatorDashboardView({
         </div>
         <div className="postal-card p-6 md:p-8 border-primary/30">
           <p className="font-mono text-[10px] uppercase text-muted tracking-widest">
-            Protected Articles
+            Protected Inventory
           </p>
           <p className="font-headline text-3xl md:text-4xl font-black text-cream mt-2">
             {totalArticles}
@@ -132,21 +131,24 @@ export function CreatorDashboardView({
         </div>
         <div className="postal-card p-6 md:p-8 border-gold/30 bg-gold/[0.03]">
           <p className="font-mono text-[10px] uppercase text-muted tracking-widest">
-            Checks Run
+            Agent Requests
           </p>
           <p className="font-headline text-3xl md:text-4xl font-black text-gold mt-2">
-            {completedChecks}
-            <span className="text-xs font-normal">/4</span>
+            0
+          </p>
+          <p className="mt-2 text-[10px] text-muted">
+            No live agent requests in this session.
           </p>
         </div>
-        <div className="postal-card p-6 md:p-8 border-muted/30">
+        <div className="postal-card p-6 md:p-8 border-red-400/30 bg-red-400/[0.03]">
           <p className="font-mono text-[10px] uppercase text-muted tracking-widest">
-            Compliance
+            Blocked Attempts
           </p>
-          <p className="font-headline text-3xl md:text-4xl font-black text-cream mt-2">
-            {completedChecks === 0
-              ? "Pending"
-              : `${Math.round((completedChecks / PROTOCOL_CHECKS.length) * 100)}%`}
+          <p className="font-headline text-3xl md:text-4xl font-black text-red-400 mt-2">
+            0
+          </p>
+          <p className="mt-2 text-[10px] text-muted">
+            No unauthorized access detected.
           </p>
         </div>
       </div>
@@ -156,7 +158,7 @@ export function CreatorDashboardView({
         <section className="lg:col-span-2 space-y-6">
           <div className="flex flex-col sm:flex-row items-center justify-between border-b border-border-low pb-4 gap-4">
             <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-widest text-cream">
-              Protected Content
+              Proof of Consent Receipts
             </h3>
             <div className="flex flex-wrap justify-center gap-3">
               <button
@@ -251,12 +253,10 @@ export function CreatorDashboardView({
                     <p className="text-xs sm:text-sm font-bold text-cream">
                       {item.label}
                     </p>
-                    <p className="text-[9px] sm:text-[10px] italic text-muted">
-                      {item.detail}
-                    </p>
+                    <p className="text-xs italic text-muted">{item.detail}</p>
                   </div>
                   <span
-                    className={`stamp-badge shrink-0 text-[8px] ${checks.includes(item.id) ? "text-green-ink border-green-ink/30" : "text-muted"}`}
+                    className={`stamp-badge shrink-0 text-xs ${checks.includes(item.id) ? "text-green-ink border-green-ink/30" : "text-muted"}`}
                   >
                     {checks.includes(item.id) ? "OK" : "Check"}
                   </span>
@@ -266,19 +266,19 @@ export function CreatorDashboardView({
             <div className="p-4 sm:p-5 bg-background/5 text-center">
               <button
                 onClick={generateEvidenceReport}
-                className="text-[10px] font-mono text-muted uppercase hover:text-gold transition-colors underline underline-offset-8"
+                className="text-xs font-mono text-muted uppercase hover:text-gold transition-colors underline underline-offset-8"
               >
                 Generate Rights Compliance Audit
               </button>
             </div>
           </div>
           <div className="postal-card p-6 sm:p-8 border-primary/20 space-y-4">
-            <div className="postmark h-12 w-12 sm:h-16 sm:w-16 mx-auto opacity-30 rotate-[-15deg] flex items-center justify-center text-[6px] sm:text-[8px]">
+            <div className="postmark h-12 w-12 sm:h-16 sm:w-16 mx-auto opacity-30 rotate-[-15deg] flex items-center justify-center text-xs">
               BLOCKCHAIN
               <br />
               NOTARY
             </div>
-            <p className="text-[10px] sm:text-xs text-muted text-center leading-relaxed italic">
+            <p className="text-xs sm:text-sm text-muted text-center leading-relaxed italic">
               This panel shows current project artifacts only. No crawler events
               or revenue are fabricated.
             </p>

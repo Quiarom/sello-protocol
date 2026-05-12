@@ -68,22 +68,22 @@ function reducer(
 
 const STEP_META: Record<number, { title: string; description: string }> = {
   1: {
-    title: "Agent Purpose",
+    title: "Intended Use",
     description:
       "Define how your AI agent will interact with the machine-readable rights checkout.",
   },
   2: {
-    title: "Identity & Budget",
+    title: "Agent Wallet & Budget",
     description:
       "Initialize your agent with a wallet and automated rights settlement boundaries.",
   },
   3: {
-    title: "Live Simulation",
+    title: "Live Rights Checkout",
     description:
       "Watch the Agent Rights Checkout in action: Detect, Negotiate, and Settle.",
   },
   4: {
-    title: "Technical Integration",
+    title: "Automated Compliance",
     description:
       "Ready to go live? Get the instructions to install the Sello Skill for automated compliance.",
   },
@@ -92,7 +92,7 @@ const STEP_META: Record<number, { title: string; description: string }> = {
 export function AgentOnboarding() {
   const [state, dispatch] = useReducer(reducer, INITIAL_AGENT_ONBOARDING_STATE);
 
-  const jumpToSimulation = () => {
+  const jumpToCheckout = () => {
     // Jump straight to step 3
     dispatch({ type: "next-step" }); // to step 2
     dispatch({ type: "next-step" }); // to step 3
@@ -147,7 +147,7 @@ export function AgentOnboarding() {
           value={state.usageTypes}
           onToggle={(usage) => dispatch({ type: "toggle-usage", usage })}
           onContinue={() => dispatch({ type: "next-step" })}
-          onJump={jumpToSimulation}
+          onJump={jumpToCheckout}
         />
       ) : null}
 

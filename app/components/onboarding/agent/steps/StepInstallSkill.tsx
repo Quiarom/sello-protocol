@@ -63,7 +63,7 @@ export function StepInstallSkill({
     <div className="space-y-6">
       <section className="postal-card p-5 sm:p-6">
         <p className="font-display text-xl sm:text-2xl uppercase tracking-[0.14em] text-primary">
-          1. Automatic Installation
+          1. Automated Compliance Integration
         </p>
         <p className="mt-2 text-xs sm:text-sm text-muted">
           Run this command in your terminal to configure Sello rules.
@@ -91,17 +91,17 @@ export function StepInstallSkill({
         <p className="font-display text-xl sm:text-2xl uppercase tracking-[0.14em] text-primary">
           2. Web Browsing (MCP)
         </p>
-        <p className="mt-1 text-xs sm:text-sm text-muted">
+        <p className="mt-1 text-sm text-muted">
           Your AI needs to read web pages. If you don't have Firecrawl, add this
           server:
         </p>
         <div className="relative mt-3">
-          <pre className="overflow-x-auto border border-border-low bg-background/60 p-4 text-[9px] sm:text-xs font-mono leading-relaxed">
+          <pre className="overflow-x-auto border border-border-low bg-background/60 p-4 text-xs font-mono leading-relaxed">
             <code>{mcpSnippet}</code>
           </pre>
           <button
             type="button"
-            className="absolute top-2 right-2 stamp-badge bg-card text-[9px] sm:text-xs text-muted hover:text-primary cursor-pointer"
+            className="absolute top-2 right-2 stamp-badge bg-card text-xs text-muted hover:text-primary cursor-pointer"
             onClick={() => navigator.clipboard.writeText(mcpSnippet)}
           >
             Copy
@@ -117,13 +117,13 @@ export function StepInstallSkill({
             </p>
             <button
               type="button"
-              className="stamp-badge text-[9px] sm:text-xs text-muted hover:text-primary cursor-pointer"
+              className="stamp-badge text-xs text-muted hover:text-primary cursor-pointer"
               onClick={() => navigator.clipboard.writeText(skillMarkdown)}
             >
               Copy File
             </button>
           </div>
-          <pre className="max-h-40 sm:max-h-48 overflow-auto border border-border-low bg-background/60 p-3 text-[9px] sm:text-[10px] font-mono opacity-70 leading-tight">
+          <pre className="max-h-40 sm:max-h-48 overflow-auto border border-border-low bg-background/60 p-3 text-xs font-mono opacity-70 leading-tight">
             <code>{skillMarkdown}</code>
           </pre>
         </section>
@@ -133,7 +133,7 @@ export function StepInstallSkill({
             Custom Settings
           </p>
           <div className="mt-4 space-y-4">
-            <label className="block font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.12em] text-muted">
+            <label className="block font-mono text-xs uppercase tracking-[0.12em] text-muted">
               Auto-Payment Limit ($)
               <input
                 type="number"
@@ -144,7 +144,7 @@ export function StepInstallSkill({
                 className="postal-input mt-1 h-8 sm:h-9 text-sm"
               />
             </label>
-            <p className="text-[10px] text-muted italic leading-relaxed">
+            <p className="text-sm text-muted italic leading-relaxed">
               The commands update in real-time with your budget.
             </p>
           </div>

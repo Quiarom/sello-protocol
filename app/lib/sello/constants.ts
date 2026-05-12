@@ -1,11 +1,4 @@
-export const SELLO_NARRATIVE = {
-  product:
-    "Sello Protocol is the rights checkout for AI agents using newsroom content.",
-  tagline:
-    "Creators publish the rules. Agents pay when needed. Solana keeps the receipt.",
-} as const;
-
-export const SELLO_PROGRAM_ID = "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC";
+import { type Address } from "@solana/kit";
 
 export const SELLO_POLICY_LINKS = {
   llms: "/llms.txt",
@@ -19,13 +12,15 @@ export const SELLO_PAYMENT_STATE_LABELS = {
   free: "Allowed now",
   blocked: "Blocked by policy",
   payable: "Payment required",
-  paying: "Processing sandbox payment",
+  paying: "Processing devnet payment",
   unlocking: "Unlocking narration",
   unlocked: "Narration unlocked",
   receiptPending: "Recording Solana receipt",
   receiptReady: "Receipt recorded",
   error: "Checkout failed",
 } as const;
+
+export type SelloPaymentStateKey = keyof typeof SELLO_PAYMENT_STATE_LABELS;
 
 export const USES = {
   summarize: 1 << 0,
@@ -41,137 +36,49 @@ export type SelloLicenseKey =
   | "sello-voice"
   | "sello-pay"
   | "sello-no-train";
-export type SelloPaymentStateKey = keyof typeof SELLO_PAYMENT_STATE_LABELS;
 
-export const LICENSE_LABELS: Record<SelloLicenseKey, string> = {
-  "sello-free": "Sello Free — agent use allowed with attribution",
-  "sello-nc": "Sello NC — free reading rights, paid commercial actions",
-  "sello-voice": "Sello Voice — narration requires checkout",
-  "sello-pay": "Sello Pay — paid rights before AI use",
-  "sello-no-train": "Sello No Train — usage allowed, training blocked",
-};
-
-export type SelloPublisher = {
-  name: string;
-  legalEntity: string;
-  newsroomProduct: string;
-  domain: string;
-  walletLabel: string;
-  walletAddress: string;
-};
-
-export type SelloMetaFields = {
+export interface CreatorArticle {
   id: string;
-  license: SelloLicenseKey;
+  title: string;
   author: string;
-  publisher: string;
-  pay: string;
-  onchain: string;
-  priceUSDC: string;
-  voiceId: string;
-};
+  publisher: {
+    name: string;
+    walletAddress: string;
+  };
+  hash: string;
+  contentPda: string;
+  usageReceiptPda: string;
+  license: SelloLicenseKey;
+}
 
-export type SelloReceiptField = {
-  key: string;
-  label: string;
-  value: string;
-};
-
-export type SelloRevenueEvent = {
+export interface SelloRevenueEvent {
   id: string;
   articleId: string;
   articleTitle: string;
-  eventType:
-    | "rights_detected"
-    | "payment_settled"
-    | "narration_unlocked"
-    | "receipt_recorded";
+  eventType: "rights_detected" | "payment_settled" | "receipt_recorded";
   amountUSDC: string;
   timestamp: string;
   receiptRef: string;
   actor: string;
   note: string;
-};
+}
 
-export type SelloCheckoutConfig = {
-  license: {
-    key: SelloLicenseKey;
-    label: string;
-    description: string;
-    badge: string;
-    licenseType: number;
-  };
-  freeUses: ReadonlyArray<SelloUseKey>;
-  paidUses: ReadonlyArray<SelloUseKey>;
-  narrationPrice: {
-    amountUSDC: string;
-    amountMicrousdc: bigint;
-    display: string;
-  };
-  trainingPolicy: {
-    status: "restricted" | "prohibited" | "allowed";
-    label: string;
-  };
-  attribution: {
-    format: string;
-    example: string;
-  };
-  policyLinks: typeof SELLO_POLICY_LINKS;
-  paymentStates: typeof SELLO_PAYMENT_STATE_LABELS;
-  meta: SelloMetaFields;
-  receiptFields: ReadonlyArray<SelloReceiptField>;
-};
-
-export const selloDemoArticle = {
-  id: "asilo-demo-001",
-  slug: "protected-article",
-  canonicalPath: "/blog/protected-article",
-  title: "How AI agents should check rights before using newsroom content",
-  subtitle:
-    "Rights checkout for AI agents: detect terms, pay for narration when needed, and record the usage receipt on Solana.",
-  publishedAt: "2026-05-09",
-  author: "Daniel Quiaro",
+export const selloDemoArticle: CreatorArticle = {
+  id: "art-001",
+  title: "The Agent Economy and the New Rights Signal",
+  author: "Daniel Patete",
   publisher: {
     name: "Aval Newsrooms",
-    legalEntity: "Aval Newsrooms C.A.",
-    newsroomProduct: "Asilo Digital",
-    domain: "demo.selloprotocol.com",
-    walletLabel: "Aval treasury",
-    walletAddress: "AVaLTrsy111111111111111111111111111111111111",
-  } satisfies SelloPublisher,
-  summary:
-    "One article shows full agent commerce path: rights detection, paid narration checkout, Solana receipt, and publisher revenue visibility.",
-  hash: "demo-content-hash-8xK2bq4Y7mNv2R1pQ9zL6cH3uT5sA8eD1fG7jK4mN2p",
+    walletAddress: "Y5GHe2xYz9ThBZsGN7VVJuSyjXNrkoGg1E2AJrNQYwN",
+  },
+  hash: "41f2b87bb2f4f4fe4a8a7b9f9d3d2a0c1b5e7d9a3f2c4e6d8b0a1c3e5f7a9b1",
   contentPda: "CDPPzRN3eeNiSABBiBZVXpUK4uxUAY8wBRemhfGHu2Ug",
-  usageReceiptPda: "RcPTdemo1111111111111111111111111111111111111",
-  programId: SELLO_PROGRAM_ID,
-  sellerEntity: "wallet:AVaLTrsy111111111111111111111111111111111111",
-} as const;
-
-export const selloAgentPolicy = {
-  productNarrative: SELLO_NARRATIVE,
-  licenseType: "sello-voice" as const,
-  allowedFreeUses: [
-    "summarize",
-    "quote",
-  ] as const satisfies ReadonlyArray<SelloUseKey>,
-  paidUses: ["voice"] as const satisfies ReadonlyArray<SelloUseKey>,
-  trainingPolicy: {
-    status: "prohibited" as const,
-    summary: "Training prohibited without a separate publisher agreement.",
-  },
-  attribution: {
-    format: "According to {author} in {publisher}",
-    example: "According to Daniel Quiaro in Aval Newsrooms",
-  },
-  policyLinks: SELLO_POLICY_LINKS,
-  receiptStatement:
-    "Sello records that terms were published for a content hash by a wallet or entity and that a usage receipt was later recorded on Solana.",
-} as const;
+  usageReceiptPda: "GjX2pM9wR4tL1zN5bS6vH7kQ3mY8cN4qR9tA2uW1xZ5",
+  license: "sello-voice",
+};
 
 export const selloReceiptDemo = {
-  receiptId: "usage-receipt-demo-001",
-  contentId: selloDemoArticle.id,
+  receiptId: "GjX2pM9wR4tL1zN5bS6vH7kQ3mY8cN4qR9tA2uW1xZ5",
   articleTitle: selloDemoArticle.title,
   action: "voice_narration",
   settledAmountUSDC: "0.10",
@@ -187,7 +94,7 @@ export const selloReceiptDemo = {
   termsHash:
     "demo-terms-hash-41f2b87bb2f4f4fe4a8a7b9f9d3d2a0c1b5e7d9a3f2c4e6d8b0a1c3e5f7a9b1",
   proofNote:
-    "Demo-safe receipt showing sandbox payment state and Solana usage record, not legal ownership proof.",
+    "Demo-safe receipt showing devnet payment state and Solana usage record, not legal ownership proof.",
 } as const;
 
 export const selloRevenueEvents = [
@@ -211,7 +118,7 @@ export const selloRevenueEvents = [
     timestamp: "2026-05-09T17:41:44Z",
     receiptRef: "tx:4r6L7vY2...",
     actor: "Agent checkout demo",
-    note: "Sandbox/devnet payment accepted for narration unlock.",
+    note: "Devnet payment accepted for narration unlock.",
   },
   {
     id: "rev-event-003",
@@ -226,93 +133,13 @@ export const selloRevenueEvents = [
   },
 ] as const satisfies ReadonlyArray<SelloRevenueEvent>;
 
-export const selloCheckoutConfig = {
-  license: {
-    key: selloAgentPolicy.licenseType,
-    label: LICENSE_LABELS[selloAgentPolicy.licenseType],
-    description:
-      "Summaries and short quotes stay free with attribution. Narration requires checkout before use.",
-    badge: "text-primary border-primary/30 bg-primary/10",
-    licenseType: 2,
-  },
-  freeUses: selloAgentPolicy.allowedFreeUses,
-  paidUses: selloAgentPolicy.paidUses,
-  narrationPrice: {
-    amountUSDC: "0.10",
-    amountMicrousdc: 100_000n,
-    display: "$0.10 USDC",
-  },
-  trainingPolicy: {
-    status: selloAgentPolicy.trainingPolicy.status,
-    label: selloAgentPolicy.trainingPolicy.summary,
-  },
-  attribution: selloAgentPolicy.attribution,
-  policyLinks: SELLO_POLICY_LINKS,
-  paymentStates: SELLO_PAYMENT_STATE_LABELS,
-  meta: {
-    id: selloDemoArticle.id,
-    license: selloAgentPolicy.licenseType,
-    author: selloDemoArticle.author,
-    publisher: selloDemoArticle.publisher.name,
-    pay: "/api/narrate",
-    onchain: `solana:devnet:${selloDemoArticle.contentPda}`,
-    priceUSDC: "0.10",
-    voiceId: "demo-rachel",
-  },
-  receiptFields: [
-    {
-      key: "receiptId",
-      label: "Receipt ID",
-      value: selloReceiptDemo.receiptId,
-    },
-    {
-      key: "contentPda",
-      label: "Content PDA",
-      value: selloReceiptDemo.contentPda,
-    },
-    {
-      key: "usageReceiptPda",
-      label: "UsageReceipt PDA",
-      value: selloReceiptDemo.usageReceiptPda,
-    },
-    {
-      key: "transactionSignature",
-      label: "Transaction Signature",
-      value: selloReceiptDemo.transactionSignature,
-    },
-    {
-      key: "settledAmountUSDC",
-      label: "Settled Amount",
-      value: `${selloReceiptDemo.settledAmountUSDC} USDC`,
-    },
-    {
-      key: "termsHash",
-      label: "Terms Hash",
-      value: selloReceiptDemo.termsHash,
-    },
-  ],
-} as const satisfies SelloCheckoutConfig;
-
-export const DEMO_ARTICLE = {
-  ...selloDemoArticle,
-  publisher: `${selloDemoArticle.publisher.name} / ${selloDemoArticle.publisher.newsroomProduct}`,
-  license: selloCheckoutConfig.license.key,
-  priceUSDC: selloCheckoutConfig.narrationPrice.amountUSDC,
-  usageReceipt: selloReceiptDemo.usageReceiptPda,
-  attribution: selloCheckoutConfig.attribution.example,
-  summaryPermission: "Allowed with attribution",
-  trainingRestriction: selloCheckoutConfig.trainingPolicy.label,
-  voiceCondition:
-    "Voice narration requires checkout and a recorded usage receipt.",
-  devnetRecord:
-    "Demo placeholder until connected wallet submits register_content_sello on Solana devnet.",
-  hashSource: [
-    selloDemoArticle.title,
-    selloDemoArticle.subtitle,
-    SELLO_NARRATIVE.product,
-    SELLO_NARRATIVE.tagline,
-  ].join("\n"),
-} as const;
+export const LICENSE_LABELS: Record<SelloLicenseKey, string> = {
+  "sello-free": "Sello Free",
+  "sello-nc": "Sello Non-Commercial",
+  "sello-voice": "Sello Voice Plus",
+  "sello-pay": "Sello Pay-Per-Use",
+  "sello-no-train": "Sello No-Train",
+};
 
 export const LICENSE_CONFIG: Record<
   SelloLicenseKey,
@@ -329,44 +156,43 @@ export const LICENSE_CONFIG: Record<
 > = {
   "sello-free": {
     label: LICENSE_LABELS["sello-free"],
-    description: "Attribution required. No payment gate in demo checkout.",
-    badge: "text-green-ink border-green-ink/30 bg-green-ink/10",
+    description: "All AI uses allowed with machine-readable attribution.",
+    badge: "text-green-300 border-green-300/30 bg-green-300/10",
     licenseType: 0,
     allowedUses: USES.summarize | USES.quote | USES.voice | USES.train,
-    voiceStatus: "Narration allowed",
-    trainingStatus: "Training allowed",
-    paymentStatus: "Free",
+    voiceStatus: "All agents allowed",
+    trainingStatus: "Model training allowed",
+    paymentStatus: "No payment required",
   },
   "sello-nc": {
     label: LICENSE_LABELS["sello-nc"],
-    description: "Commercial AI actions should trigger payment before use.",
-    badge: "text-gold border-gold/30 bg-gold/10",
+    description: "AI use allowed for non-commercial agents only.",
+    badge: "text-blue-300 border-blue-300/30 bg-blue-300/10",
     licenseType: 1,
     allowedUses: USES.summarize | USES.quote | USES.voice,
-    voiceStatus: "Narration allowed when terms are respected",
-    trainingStatus: "Training restricted",
-    paymentStatus: "Conditional payment",
+    voiceStatus: "Non-commercial only",
+    trainingStatus: "Commercial training blocked",
+    paymentStatus: "Attribution only",
   },
   "sello-voice": {
     label: LICENSE_LABELS["sello-voice"],
-    description:
-      "Preferred demo path: reading rights stay free, narration requires checkout.",
-    badge: selloCheckoutConfig.license.badge,
-    licenseType: selloCheckoutConfig.license.licenseType,
+    description: "Paid narration enabled via ElevenLabs integration.",
+    badge: "text-primary border-primary/30 bg-primary/10",
+    licenseType: 2,
     allowedUses: USES.summarize | USES.quote | USES.voice,
     voiceStatus: "Narration requires checkout",
     trainingStatus: "Training prohibited",
-    paymentStatus: selloCheckoutConfig.narrationPrice.display,
+    paymentStatus: "0.10 USDC",
   },
   "sello-pay": {
     label: LICENSE_LABELS["sello-pay"],
-    description: "AI use should be paid before action in sandbox/devnet flow.",
+    description: "AI use should be paid before action in devnet flow.",
     badge: "text-orange-300 border-orange-300/30 bg-orange-300/10",
     licenseType: 3,
     allowedUses: USES.summarize | USES.quote | USES.voice,
     voiceStatus: "Narration requires checkout",
     trainingStatus: "Training restricted",
-    paymentStatus: "Paid before use",
+    paymentStatus: "Custom price per action",
   },
   "sello-no-train": {
     label: LICENSE_LABELS["sello-no-train"],
@@ -380,3 +206,124 @@ export const LICENSE_CONFIG: Record<
     paymentStatus: "Depends on publisher terms",
   },
 };
+
+export const LICENSE_MODES = LICENSE_CONFIG;
+
+export const SELLO_NARRATIVE = {
+  pitch: "Rights Checkout for AI Agents",
+  loop: "Publish -> Detect -> Settle -> Audit",
+  notaryMetaphor: "On-chain notary for machine-readable rules.",
+} as const;
+
+export interface SelloMetaFields {
+  id: string;
+  license: SelloLicenseKey;
+  author: string;
+  publisher: string;
+  pay: string;
+  onchain: string;
+  priceUSDC: string;
+  voiceId: string;
+}
+
+export interface SelloCheckoutConfig {
+  license: {
+    key: SelloLicenseKey;
+    label: string;
+    description: string;
+    badge: string;
+    licenseType: number;
+  };
+  freeUses: ReadonlyArray<SelloUseKey>;
+  paidUses: ReadonlyArray<SelloUseKey>;
+  narrationPrice: {
+    units: bigint;
+    amountUSDC: string;
+    display: string;
+  };
+  trainingPolicy: {
+    status: "allowed" | "prohibited" | "restricted";
+    label: string;
+  };
+  attribution: {
+    format: string;
+    requirement: string;
+  };
+  policyLinks: typeof SELLO_POLICY_LINKS;
+  paymentStates: typeof SELLO_PAYMENT_STATE_LABELS;
+  meta: {
+    pay: string;
+    onchain: string;
+    voiceId: string;
+    priceUSDC: string;
+    license: SelloLicenseKey;
+  };
+  receiptFields: ReadonlyArray<string>;
+}
+
+export const selloAgentPolicy = {
+  attribution: {
+    format: "According to {author} in {publisher}",
+    requirement: "Include author and source platform in AI output.",
+  },
+};
+
+export const selloCheckoutConfig: SelloCheckoutConfig = {
+  license: {
+    key: "sello-voice",
+    label: LICENSE_LABELS["sello-voice"],
+    description: LICENSE_CONFIG["sello-voice"].description,
+    badge: LICENSE_CONFIG["sello-voice"].badge,
+    licenseType: 2,
+  },
+  freeUses: ["summarize", "quote"],
+  paidUses: ["voice"],
+  narrationPrice: {
+    units: 100000n,
+    amountUSDC: "0.10",
+    display: "0.10 USDC",
+  },
+  trainingPolicy: {
+    status: "prohibited",
+    label: "Training prohibited",
+  },
+  attribution: selloAgentPolicy.attribution,
+  policyLinks: SELLO_POLICY_LINKS,
+  paymentStates: SELLO_PAYMENT_STATE_LABELS,
+  meta: {
+    pay: "https://sello-protocol.vercel.app/api/narrate",
+    onchain: selloDemoArticle.contentPda,
+    voiceId: "cgSgqWJ1EBpqOT9IQncl",
+    priceUSDC: "0.10",
+    license: "sello-voice",
+  },
+  receiptFields: [
+    "Usage type",
+    "License",
+    "Settled amount",
+    "Publisher wallet",
+    "Content hash",
+    "ContentSello PDA",
+    "UsageReceipt PDA",
+    "Timestamp",
+  ],
+};
+
+export const PROTOCOL_CHECKS = [
+  { id: "tag", label: "Sello Meta Tag", detail: "Metadata found in <head>." },
+  {
+    id: "llms",
+    label: "llms.txt signal",
+    detail: "Human/AI hybrid policy active.",
+  },
+  {
+    id: "tdm",
+    label: "TDM Reservation",
+    detail: "JSON-LD rights reservation found.",
+  },
+  {
+    id: "onchain",
+    label: "Solana Proof",
+    detail: "ContentSello record found on-chain.",
+  },
+];

@@ -87,7 +87,7 @@ export function LicenseResultCard({
             {result.license?.toUpperCase() ?? "UNKNOWN"}
           </span>
           {result.onchainVerified && (
-            <div className="flex items-center gap-2 bg-green-ink/10 text-green-ink border border-green-ink/30 px-3 py-1 text-[10px] uppercase font-mono font-bold tracking-widest">
+            <div className="flex items-center gap-2 bg-green-ink/10 text-green-ink border border-green-ink/30 px-3 py-1 text-xs uppercase font-mono font-bold tracking-widest">
               <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
@@ -105,7 +105,7 @@ export function LicenseResultCard({
       <div className="grid gap-10 md:grid-cols-2">
         <div className="space-y-6">
           <div className="space-y-1">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-gold font-bold">
+            <p className="font-mono text-xs uppercase tracking-widest text-gold font-bold">
               Content Authority
             </p>
             <p className="font-headline text-2xl font-bold text-cream underline decoration-primary decoration-1 underline-offset-4">
@@ -115,7 +115,7 @@ export function LicenseResultCard({
           </div>
 
           <div className="space-y-3">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+            <p className="font-mono text-xs uppercase tracking-widest text-muted">
               Legal Attribution
             </p>
             <div className="bg-background/80 border border-border-low p-4 relative group">
@@ -127,7 +127,7 @@ export function LicenseResultCard({
                   navigator.clipboard.writeText(result.attribution);
                   toast.success("Copied to clipboard");
                 }}
-                className="absolute top-2 right-2 text-[8px] uppercase font-mono text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-2 right-2 text-xs uppercase font-mono text-primary opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 Copy
               </button>
@@ -136,7 +136,7 @@ export function LicenseResultCard({
 
           {explorerPdaUrl && (
             <div className="space-y-2">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+              <p className="font-mono text-xs uppercase tracking-widest text-muted">
                 Public Record (PDA)
               </p>
               <a
@@ -161,7 +161,7 @@ export function LicenseResultCard({
         </div>
 
         <div className="space-y-6">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-muted font-bold sm:text-right">
+          <p className="font-mono text-xs uppercase tracking-widest text-muted font-bold sm:text-right">
             Machine Permissions
           </p>
           <div className="divide-y divide-border-low border-t border-border-low">
@@ -185,7 +185,7 @@ export function LicenseResultCard({
           </div>
 
           <div className="pt-2">
-            <div className="flex justify-between items-end font-mono text-[10px] uppercase tracking-widest mb-2">
+            <div className="flex justify-between items-end font-mono text-xs uppercase tracking-widest mb-2">
               <span className="text-muted">Readiness Score</span>
               <span className="text-primary font-bold">
                 {result.complianceScore}/4
@@ -206,7 +206,7 @@ export function LicenseResultCard({
         <section className="pt-8 border-t border-primary/20 space-y-6 animate-in slide-in-from-bottom-4 duration-700">
           <div className="bg-[#0c1511] border border-green-ink/30 p-6 sm:p-10 rounded-none relative overflow-hidden">
             <div className="absolute top-0 right-0 p-2 opacity-5">
-              <div className="postmark h-24 w-24 flex items-center justify-center text-[10px]">
+              <div className="postmark h-24 w-24 flex items-center justify-center text-xs">
                 UNLOCKED
               </div>
             </div>
@@ -233,7 +233,7 @@ export function LicenseResultCard({
                       className="w-full h-10 accent-primary"
                       src={narrationAudio.src}
                     />
-                    <div className="flex justify-between items-center text-[9px] font-mono uppercase tracking-widest text-muted px-1">
+                    <div className="flex justify-between items-center text-xs font-mono uppercase tracking-widest text-muted px-1">
                       <span>Codec: MPEG-3</span>
                       <span>{narrationAudio.voiceId ?? "default voice"}</span>
                     </div>
@@ -242,7 +242,7 @@ export function LicenseResultCard({
                   <div className="border border-border-low bg-background/40 p-4">
                     <div className="flex items-center gap-3 text-primary">
                       <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                      <span className="font-mono text-[10px] uppercase tracking-widest">
+                      <span className="font-mono text-xs uppercase tracking-widest">
                         ElevenLabs synthesis in progress
                       </span>
                     </div>
@@ -259,7 +259,7 @@ export function LicenseResultCard({
                     href={receiptUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[10px] font-mono uppercase text-muted hover:text-primary transition-colors underline underline-offset-4"
+                    className="text-xs font-mono uppercase text-muted hover:text-primary transition-colors underline underline-offset-4"
                   >
                     View On-Chain Receipt
                   </a>
@@ -280,7 +280,7 @@ export function LicenseResultCard({
           >
             {isPayTesting
               ? "Processing..."
-              : `Unlock Voice Narration ($${result.priceUSDC.toFixed(2)})`}
+              : `Execute x402-style Payment ($${result.priceUSDC.toFixed(2)})`}
             {!isPayTesting && (
               <svg
                 className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
@@ -293,8 +293,9 @@ export function LicenseResultCard({
               </svg>
             )}
           </button>
-          <p className="mt-4 text-[10px] uppercase font-mono tracking-widest text-muted italic">
-            This action will sign a real x402 transaction on Solana Devnet.
+          <p className="mt-4 text-xs uppercase font-mono tracking-widest text-muted italic">
+            This action will execute an x402-style devnet payment on Solana
+            Devnet.
           </p>
         </div>
       )}

@@ -40,15 +40,16 @@ export function StepAgentWallet({
 
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-700">
-      {/* Agent Identity Section */}
+      {/* Settlement Identity Section */}
       <section className="postal-card p-6 sm:p-10 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-low pb-6">
           <div className="space-y-1">
             <h3 className="font-display text-2xl uppercase tracking-widest text-primary">
-              Agent Identity
+              Settlement Identity
             </h3>
             <p className="text-xs text-muted">
-              Initialize your agent's unique signing authority.
+              Initialize your agent's unique signing authority for x402-style
+              payments.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -116,8 +117,8 @@ export function StepAgentWallet({
                   </svg>
                 </div>
                 <p className="text-xs text-muted italic max-w-xs mx-auto">
-                  Connect your wallet to act as the legal representative for
-                  your AI agent.
+                  Connect your wallet to handle the automated x402-style
+                  settlement for this agent.
                 </p>
                 <div className="flex flex-col justify-center gap-3 sm:flex-row">
                   {connectors.map((c) => (
@@ -136,7 +137,7 @@ export function StepAgentWallet({
         ) : (
           <div className="space-y-6 animate-in fade-in duration-500">
             <label className="block space-y-3">
-              <span className="font-mono text-[10px] uppercase text-muted tracking-widest block">
+              <span className="font-mono text-xs uppercase text-muted tracking-widest block">
                 Public Key Authority
               </span>
               <input
@@ -144,14 +145,14 @@ export function StepAgentWallet({
                 value={agentWalletAddress ?? ""}
                 placeholder="Ex: So11111111111111111111111111111111111111112"
                 onChange={(event) => onWalletChange(event.target.value)}
-                className="postal-input text-xs sm:text-sm font-mono border-muted/30 focus:border-primary"
+                className="postal-input text-sm font-mono border-muted/30 focus:border-primary"
               />
             </label>
             <details className="group border border-border-low bg-card/20 p-3">
-              <summary className="text-[9px] uppercase font-mono text-muted cursor-pointer hover:text-cream transition-colors">
+              <summary className="text-xs uppercase font-mono text-muted cursor-pointer hover:text-cream transition-colors">
                 How to generate a headless identity?
               </summary>
-              <pre className="mt-3 p-4 bg-background/80 text-[9px] text-primary overflow-x-auto leading-relaxed border-l-2 border-primary">
+              <pre className="mt-3 p-4 bg-background/80 text-xs text-primary overflow-x-auto leading-relaxed border-l-2 border-primary">
                 <code>{`solana-keygen new --outfile agent.json
 solana-keygen pubkey agent.json`}</code>
               </pre>
@@ -166,7 +167,7 @@ solana-keygen pubkey agent.json`}</code>
           <h3 className="font-display text-2xl uppercase tracking-widest text-primary">
             Autonomous Budget
           </h3>
-          <p className="text-xs text-muted">
+          <p className="text-sm text-muted">
             Set boundaries for automated license negotiations.
           </p>
         </div>
@@ -189,17 +190,17 @@ solana-keygen pubkey agent.json`}</code>
                 <span className="font-headline text-xl font-bold text-cream group-hover:text-primary transition-colors">
                   Enabled Auto-Pay
                 </span>
-                <p className="text-[10px] text-muted leading-relaxed">
+                <p className="text-xs text-muted leading-relaxed">
                   Agent will sign licenses instantly if under the limit.
                 </p>
               </div>
             </label>
 
             <div className="bg-primary/5 border-l-2 border-primary p-4 space-y-2">
-              <p className="font-mono text-[9px] uppercase text-primary font-bold">
+              <p className="font-mono text-xs uppercase text-primary font-bold">
                 Standard x402 Protocol
               </p>
-              <p className="text-[10px] text-muted italic">
+              <p className="text-xs text-muted italic">
                 "Payments are executed directly via on-chain instructions,
                 ensuring zero counterparty risk."
               </p>
@@ -208,7 +209,7 @@ solana-keygen pubkey agent.json`}</code>
 
           <div className="space-y-6 pt-2">
             <div className="space-y-4">
-              <div className="flex justify-between items-end font-mono text-[10px] uppercase tracking-widest">
+              <div className="flex justify-between items-end font-mono text-xs uppercase tracking-widest">
                 <span className="text-muted">Max per Transaction</span>
                 <span className="text-gold font-bold text-lg">
                   ${paymentConfig.maxAutoPayPerTx.toFixed(2)}
@@ -231,7 +232,7 @@ solana-keygen pubkey agent.json`}</code>
             </div>
 
             <div className="space-y-4 pt-4 border-t border-border-low">
-              <div className="flex justify-between items-end font-mono text-[10px] uppercase tracking-widest">
+              <div className="flex justify-between items-end font-mono text-xs uppercase tracking-widest">
                 <span className="text-muted">Daily Allowance</span>
                 <span className="text-gold font-bold text-lg">
                   ${paymentConfig.maxAutoPayPerDay.toFixed(2)}
@@ -263,11 +264,11 @@ solana-keygen pubkey agent.json`}</code>
             <h3 className="font-display text-2xl uppercase tracking-widest text-cream">
               Liquidity Hub
             </h3>
-            <p className="text-[10px] text-muted uppercase tracking-widest font-bold">
+            <p className="text-xs text-muted uppercase tracking-widest font-bold">
               Bridge Assets for Automated Settlement
             </p>
           </div>
-          <span className="stamp-badge text-[9px] bg-green-ink/10 text-green-ink border-green-ink/30 uppercase">
+          <span className="stamp-badge text-xs bg-green-ink/10 text-green-ink border-green-ink/30 uppercase">
             USDC Active
           </span>
         </div>
@@ -276,15 +277,15 @@ solana-keygen pubkey agent.json`}</code>
           <div className="postal-card bg-background/60 p-5 space-y-4">
             <div className="flex items-center gap-3">
               <div className="h-2 w-2 rounded-full bg-gold animate-pulse" />
-              <p className="font-mono text-[10px] uppercase tracking-widest text-gold font-bold">
+              <p className="font-mono text-xs uppercase tracking-widest text-gold font-bold">
                 Manual Funding
               </p>
             </div>
-            <p className="text-[11px] text-muted leading-relaxed italic">
+            <p className="text-xs text-muted leading-relaxed italic">
               The agent requires a small balance to start the simulation.
             </p>
             <div className="flex items-center gap-2 border border-border-low bg-background p-2">
-              <span className="min-w-0 flex-1 break-all font-mono text-[9px] text-cream">
+              <span className="min-w-0 flex-1 break-all font-mono text-xs text-cream">
                 {activeWallet || "Awaiting Connection..."}
               </span>
               <button
@@ -292,7 +293,7 @@ solana-keygen pubkey agent.json`}</code>
                   navigator.clipboard.writeText(activeWallet);
                   toast.success("Copied to clipboard");
                 }}
-                className="text-[9px] text-primary uppercase font-bold hover:underline"
+                className="text-xs text-primary uppercase font-bold hover:underline"
               >
                 Copy
               </button>
@@ -301,14 +302,14 @@ solana-keygen pubkey agent.json`}</code>
               href="https://faucet.circle.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="stamp-badge w-full justify-center bg-gold/10 text-gold border-gold/30 hover:bg-gold/20 text-[9px] py-2"
+              className="stamp-badge w-full justify-center bg-gold/10 text-gold border-gold/30 hover:bg-gold/20 text-xs py-2"
             >
               Get Test USDC (Circle Faucet) ↗
             </a>
           </div>
 
           <div className="p-4 space-y-4">
-            <p className="text-xs text-muted leading-relaxed">
+            <p className="text-sm text-muted leading-relaxed">
               "By allocating liquidity, you enable your AI to settle
               transactions autonomously, removing the manual friction from the
               knowledge economy."
@@ -327,7 +328,7 @@ solana-keygen pubkey agent.json`}</code>
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] font-black">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] font-black">
                 Fast-Track Settlement
               </span>
             </div>

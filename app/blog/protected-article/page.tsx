@@ -12,37 +12,31 @@ export const metadata: Metadata = {
 
 export default function DemoArticle() {
   return (
-    <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 space-y-16">
+    <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 border-x border-border-low bg-background/20 min-h-screen">
       {/* Narrative Header */}
-      <header className="text-center space-y-4">
-        <span className="stamp-badge text-primary italic font-bold uppercase tracking-widest">
-          Protocol Experience
+      <header className="border-b border-border-low pb-8 mb-12 space-y-2">
+        <span className="stamp-badge text-primary uppercase text-xs tracking-widest">
+          Rights Checkout Demo
         </span>
-        <h1 className="font-headline text-4xl sm:text-6xl font-black uppercase leading-tight text-cream">
-          Shielded{" "}
-          <span className="text-primary italic underline decoration-primary/20 underline-offset-8">
-            Content
-          </span>
+        <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-cream">
+          Agent Rights <span className="text-primary italic">Checkout</span>
         </h1>
-        <p className="mx-auto max-w-2xl text-muted text-lg sm:text-xl italic">
-          Watch how an AI agent detects rights and settles payments in
-          real-time.
+        <p className="text-muted text-base md:text-lg max-w-2xl">
+          Watch an AI agent detect rules, negotiate terms, and execute an
+          x402-style settlement in real-time.
         </p>
       </header>
 
-      {/* Main Single Column Experience */}
+      {/* Main Grid Experience */}
       <ProtectedArticleCommerceDemo />
 
       {/* Footer Nav */}
-      <div className="text-center pt-12 border-t border-border-low">
+      <div className="text-center pt-12 border-t border-border-low mt-16">
         <a
           href="/onboarding/agent"
-          className="stamp-button stamp-button-secondary text-sm group"
+          className="text-xs font-mono text-muted uppercase hover:text-primary transition-colors underline underline-offset-8"
         >
-          <span className="mr-2 transition-transform group-hover:-translate-x-1">
-            ←
-          </span>
-          Back to Onboarding
+          ← Back to Agent Onboarding
         </a>
       </div>
     </main>

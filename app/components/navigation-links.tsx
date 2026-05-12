@@ -42,7 +42,7 @@ export function NavigationLinks() {
         )}
       </div>
 
-      <div className="flex basis-full items-center gap-2 overflow-x-auto pb-1 font-display text-xs uppercase tracking-[0.14em] text-muted lg:hidden">
+      <div className="flex basis-full items-center gap-2 overflow-x-auto pb-1 font-display text-sm uppercase tracking-[0.14em] text-muted lg:hidden">
         <Link
           href="/register"
           className={`shrink-0 border px-3 py-2 transition-colors hover:border-primary hover:text-primary ${isActive("/register") ? "border-primary text-primary" : "border-border-low"}`}

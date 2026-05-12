@@ -151,7 +151,7 @@ export function SelloCheckout({
               Sello Checkout
             </span>
             <span className="text-[10px] font-mono text-muted uppercase">
-              x402 Sandbox flow
+              x402 devnet flow
             </span>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -159,7 +159,7 @@ export function SelloCheckout({
             <DetailCard
               label="Micropayment"
               value={`${priceUSDC} USDC`}
-              note="Sandbox amount"
+              note="Devnet amount"
             />
           </div>
         </div>

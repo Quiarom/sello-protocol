@@ -91,13 +91,12 @@ export default function Home() {
 
           <p className="max-w-lg text-base leading-relaxed text-muted md:text-lg animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-100">
             Sello is the{" "}
-            <strong className="text-cream">Agent Rights Checkout</strong> —
-            one{" "}
+            <strong className="text-cream">Agent Rights Checkout</strong> — one{" "}
             <code className="font-mono text-primary text-sm bg-primary/10 px-1 py-0.5">
               &lt;meta name="sello"&gt;
             </code>{" "}
-            tag that enables machine-readable rights signaling, allowing AI agents to comply with your work and
-            issue{" "}
+            tag that enables machine-readable rights signaling, allowing AI
+            agents to comply with your work and issue{" "}
             <strong className="text-cream">x402-style settlements</strong>{" "}
             automatically.
           </p>
@@ -141,7 +140,7 @@ export default function Home() {
                 <span className="font-display text-2xl text-primary">
                   {val}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
+                <span className="font-mono text-xs uppercase tracking-widest text-muted">
                   {label}
                 </span>
               </div>
@@ -166,7 +165,7 @@ export default function Home() {
                     className="stamp-image h-9 w-9 object-cover"
                   />
                   <div>
-                    <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-gold">
+                    <p className="font-mono text-xs uppercase tracking-[0.25em] text-gold">
                       Asilo Digital
                     </p>
                     <p className="font-headline text-sm font-bold text-cream">
@@ -174,14 +173,15 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <span className="stamp-badge text-[9px] text-green-ink border-green-ink/30 bg-green-ink/10">
+                <span className="stamp-badge text-xs text-green-ink border-green-ink/30 bg-green-ink/10">
                   ACTIVE
                 </span>
               </div>
 
               {/* Meta tag display */}
-              <div className="overflow-x-auto bg-background border border-border-low p-3 font-mono text-[9px] leading-relaxed text-muted/80">
-                <span className="text-muted/50">&lt;meta </span>
+              <div className="overflow-x-auto bg-background border border-border-low p-3 font-mono text-xs leading-relaxed text-muted/80">
+                <span className="text-muted/50">&lt;</span>
+                <span className="text-primary/80">meta </span>
                 <span className="text-primary/80">name</span>
                 <span className="text-muted/50">="sello" </span>
                 <span className="text-primary/80">content</span>
@@ -204,27 +204,27 @@ export default function Home() {
               </div>
 
               {/* Ledger */}
-              <div className="grid grid-cols-2 gap-2 font-mono text-[10px] border-t border-border-low pt-4">
+              <div className="grid grid-cols-2 gap-2 font-mono text-xs border-t border-border-low pt-4">
                 <div className="space-y-2">
-                  <p className="text-muted uppercase tracking-wider text-[8px]">
+                  <p className="text-muted uppercase tracking-wider text-xs">
                     License
                   </p>
                   <p className="text-primary font-bold">Sello Voice</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-muted uppercase tracking-wider text-[8px]">
+                  <p className="text-muted uppercase tracking-wider text-xs">
                     Price / Use
                   </p>
                   <p className="text-gold font-bold">$0.10 USDC</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-muted uppercase tracking-wider text-[8px]">
+                  <p className="text-muted uppercase tracking-wider text-xs">
                     Payment
                   </p>
                   <p className="text-cream">x402 Auto</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-muted uppercase tracking-wider text-[8px]">
+                  <p className="text-muted uppercase tracking-wider text-xs">
                     Recorded
                   </p>
                   <p className="text-green-ink font-bold">On Solana</p>
@@ -240,7 +240,7 @@ export default function Home() {
       <section className="border-y border-border-low bg-card/20 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="mb-14 text-center space-y-3">
-            <span className="stamp-badge text-gold mx-auto w-fit uppercase text-[10px] tracking-widest">
+            <span className="stamp-badge text-gold mx-auto w-fit uppercase text-xs tracking-widest">
               Protocol Flow
             </span>
             <h2 className="font-headline text-4xl md:text-5xl font-black uppercase text-cream tracking-tight">
@@ -269,7 +269,7 @@ export default function Home() {
                 <p className="text-sm text-muted leading-relaxed">
                   {item.desc}
                 </p>
-                <div className="bg-background border border-border-low p-4 font-mono text-[10px] leading-relaxed text-muted/70 whitespace-pre overflow-x-auto">
+                <div className="bg-background border border-border-low p-4 font-mono text-xs leading-relaxed text-muted/70 whitespace-pre overflow-x-auto">
                   {item.code}
                 </div>
                 {i < 2 && (
@@ -290,14 +290,14 @@ export default function Home() {
             {/* Creators */}
             <div className="bg-card/60 p-10 md:p-14 space-y-8">
               <div className="space-y-3">
-                <span className="stamp-badge text-primary uppercase text-[10px] tracking-widest">
+                <span className="stamp-badge text-primary uppercase text-xs tracking-widest">
                   For Creators
                 </span>
                 <h3 className="font-headline text-4xl font-black uppercase text-cream leading-tight">
                   Define Your
                   <br />
                   <span className="text-primary italic underline decoration-2 underline-offset-4">
-                    AI Terms
+                    AI Rules
                   </span>
                 </h3>
               </div>
@@ -305,19 +305,19 @@ export default function Home() {
                 {[
                   {
                     icon: "⬡",
-                    text: "One meta tag. Machine-readable license that every AI agent respects.",
+                    text: "One meta tag. Machine-readable rights signaling that AI agents detect.",
                   },
                   {
                     icon: "$",
-                    text: "Automatic USDC micropayments via x402 — no invoices, no chasing.",
+                    text: "Automatic x402-style settlements — no invoices, no chasing.",
                   },
                   {
                     icon: "◈",
-                    text: "Immutable proof of authorship on Solana devnet. Legal paper trail.",
+                    text: "Immutable Proof of Consent on Solana devnet. Verifiable machine-readable terms.",
                   },
                   {
                     icon: "§",
-                    text: "Covered under EU CDSM Art. 4 TDM reservation.",
+                    text: "Inspired by EU CDSM Art. 4 machine-readable rights reservation.",
                   },
                 ].map(({ icon, text }) => (
                   <li key={text} className="flex gap-4 items-start">
@@ -352,14 +352,14 @@ export default function Home() {
             {/* AI Developers */}
             <div className="bg-card/30 p-10 md:p-14 space-y-8">
               <div className="space-y-3">
-                <span className="stamp-badge text-gold uppercase text-[10px] tracking-widest">
+                <span className="stamp-badge text-gold uppercase text-xs tracking-widest">
                   For AI Developers
                 </span>
                 <h3 className="font-headline text-4xl font-black uppercase text-cream leading-tight">
-                  Access Licensed
+                  Automate
                   <br />
                   <span className="text-gold italic underline decoration-2 underline-offset-4">
-                    AI-Ready Content
+                    Rights Checkout
                   </span>
                 </h3>
               </div>
@@ -367,11 +367,11 @@ export default function Home() {
                 {[
                   {
                     icon: "⬡",
-                    text: "Detect Sello tags in any HTML. Instant knowledge of what you can do.",
+                    text: "Detect Sello tags in any HTML. Instant knowledge of machine-readable rules.",
                   },
                   {
                     icon: "$",
-                    text: "Pay-per-use via x402. No contracts, no negotiations, no legal risk.",
+                    text: "Pay-per-use via x402-style settlement. No contracts, no negotiations.",
                   },
                   {
                     icon: "◈",
@@ -419,7 +419,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3">
-              <span className="stamp-badge text-primary uppercase text-[10px] tracking-widest">
+              <span className="stamp-badge text-primary uppercase text-xs tracking-widest">
                 Pre-Defined Licenses
               </span>
               <h2 className="font-headline text-4xl md:text-5xl font-black uppercase text-cream tracking-tight">
@@ -447,7 +447,7 @@ export default function Home() {
                 </p>
                 <p className="text-xs text-muted leading-relaxed">{l.desc}</p>
                 <p
-                  className={`font-mono text-[9px] uppercase tracking-wider ${l.color} opacity-60`}
+                  className={`font-mono text-xs uppercase tracking-wider ${l.color} opacity-60`}
                 >
                   {l.id}
                 </p>
@@ -463,7 +463,7 @@ export default function Home() {
           <div className="postal-card p-8 md:p-14 space-y-8 border-primary/20">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="space-y-2">
-                <span className="stamp-badge text-primary uppercase text-[10px] tracking-widest">
+                <span className="stamp-badge text-primary uppercase text-xs tracking-widest">
                   Live Example
                 </span>
                 <h3 className="font-headline text-3xl font-black uppercase text-cream">
@@ -474,7 +474,7 @@ export default function Home() {
                   HTML.
                 </p>
               </div>
-              <div className="postmark flex h-20 w-20 shrink-0 -rotate-6 items-center justify-center text-center text-[7px] font-black leading-tight border-primary/30 text-primary/60">
+              <div className="postmark flex h-20 w-20 shrink-0 -rotate-6 items-center justify-center text-center text-xs font-black leading-tight border-primary/30 text-primary/60">
                 VERIFIED
                 <br />
                 SOLANA
@@ -483,7 +483,7 @@ export default function Home() {
 
             <div className="bg-background border border-primary/20 relative group">
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-              <div className="p-6 font-mono text-[11px] md:text-sm leading-relaxed text-muted overflow-x-auto">
+              <div className="p-6 font-mono text-xs md:text-sm leading-relaxed text-muted overflow-x-auto">
                 <span className="text-muted/50">&lt;</span>
                 <span className="text-primary">meta</span>
                 <span className="text-cream"> name</span>
@@ -538,7 +538,7 @@ export default function Home() {
                   <p className="font-display text-sm uppercase tracking-widest text-cream">
                     {label}
                   </p>
-                  <p className="font-mono text-[10px] text-muted">{sub}</p>
+                  <p className="font-mono text-xs text-muted">{sub}</p>
                 </div>
               ))}
             </div>
@@ -588,18 +588,18 @@ export default function Home() {
             </Link>
           </div>
           <div className="space-y-2 pt-4">
-            <div className="flex flex-wrap justify-center gap-6 text-[10px] font-mono uppercase tracking-widest text-muted">
+            <div className="flex flex-wrap justify-center gap-6 text-xs font-mono uppercase tracking-widest text-muted">
               <span>Solana Devnet ✓</span>
               <span>x402-style settlement ✓</span>
               <span>ElevenLabs Voice ✓</span>
-              <span>EU CDSM Art. 4-aware ✓</span>
+              <span>EU CDSM Art. 4-aware rights signaling ✓</span>
             </div>
             <div className="flex flex-col items-center gap-2 pt-4">
               <a
                 href="https://x.com/selloprotocol"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted/50 hover:text-primary transition-colors"
+                className="text-xs font-mono uppercase tracking-[0.3em] text-muted/50 hover:text-primary transition-colors"
               >
                 @selloprotocol on X/Twitter
               </a>
@@ -607,7 +607,7 @@ export default function Home() {
                 href="https://github.com/Quiarom/sello-protocol"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.3em] text-muted/50 hover:text-primary transition-colors"
+                className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.3em] text-muted/50 hover:text-primary transition-colors"
               >
                 <svg
                   width="12"

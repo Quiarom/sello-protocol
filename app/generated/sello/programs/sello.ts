@@ -17,24 +17,24 @@ import {
   type ReadonlyUint8Array,
 } from "@solana/kit";
 import {
+  parseGrantVoiceConsentInstruction,
   parseInitializeConfigInstruction,
-  parseRecordUsageInstruction,
-  parseRegisterSelloInstruction,
-  parseRegisterVoiceConsentInstruction,
-  parseRevokeConsentInstruction,
+  parseRecordUsageReceiptInstruction,
+  parseRegisterContentSelloInstruction,
+  parseRevokeContentSelloInstruction,
+  type ParsedGrantVoiceConsentInstruction,
   type ParsedInitializeConfigInstruction,
-  type ParsedRecordUsageInstruction,
-  type ParsedRegisterSelloInstruction,
-  type ParsedRegisterVoiceConsentInstruction,
-  type ParsedRevokeConsentInstruction,
+  type ParsedRecordUsageReceiptInstruction,
+  type ParsedRegisterContentSelloInstruction,
+  type ParsedRevokeContentSelloInstruction,
 } from "../instructions";
 
 export const SELLO_PROGRAM_ADDRESS =
   "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC" as Address<"HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC">;
 
 export enum SelloAccount {
-  Config,
   ContentSello,
+  ProtocolConfig,
   UsageReceipt,
   VoiceConsent,
 }
@@ -47,23 +47,23 @@ export function identifySelloAccount(
     containsBytes(
       data,
       fixEncoderSize(getBytesEncoder(), 8).encode(
-        new Uint8Array([155, 12, 170, 224, 30, 250, 204, 130]),
-      ),
-      0,
-    )
-  ) {
-    return SelloAccount.Config;
-  }
-  if (
-    containsBytes(
-      data,
-      fixEncoderSize(getBytesEncoder(), 8).encode(
         new Uint8Array([183, 84, 131, 213, 186, 26, 160, 185]),
       ),
       0,
     )
   ) {
     return SelloAccount.ContentSello;
+  }
+  if (
+    containsBytes(
+      data,
+      fixEncoderSize(getBytesEncoder(), 8).encode(
+        new Uint8Array([207, 91, 250, 28, 152, 179, 215, 209]),
+      ),
+      0,
+    )
+  ) {
+    return SelloAccount.ProtocolConfig;
   }
   if (
     containsBytes(
@@ -93,17 +93,28 @@ export function identifySelloAccount(
 }
 
 export enum SelloInstruction {
+  GrantVoiceConsent,
   InitializeConfig,
-  RecordUsage,
-  RegisterSello,
-  RegisterVoiceConsent,
-  RevokeConsent,
+  RecordUsageReceipt,
+  RegisterContentSello,
+  RevokeContentSello,
 }
 
 export function identifySelloInstruction(
   instruction: { data: ReadonlyUint8Array } | ReadonlyUint8Array,
 ): SelloInstruction {
   const data = "data" in instruction ? instruction.data : instruction;
+  if (
+    containsBytes(
+      data,
+      fixEncoderSize(getBytesEncoder(), 8).encode(
+        new Uint8Array([48, 34, 164, 248, 93, 142, 10, 122]),
+      ),
+      0,
+    )
+  ) {
+    return SelloInstruction.GrantVoiceConsent;
+  }
   if (
     containsBytes(
       data,
@@ -119,45 +130,34 @@ export function identifySelloInstruction(
     containsBytes(
       data,
       fixEncoderSize(getBytesEncoder(), 8).encode(
-        new Uint8Array([185, 5, 42, 72, 185, 187, 202, 147]),
+        new Uint8Array([208, 70, 129, 14, 143, 196, 31, 254]),
       ),
       0,
     )
   ) {
-    return SelloInstruction.RecordUsage;
+    return SelloInstruction.RecordUsageReceipt;
   }
   if (
     containsBytes(
       data,
       fixEncoderSize(getBytesEncoder(), 8).encode(
-        new Uint8Array([220, 112, 137, 24, 97, 204, 76, 142]),
+        new Uint8Array([196, 228, 103, 149, 196, 223, 180, 63]),
       ),
       0,
     )
   ) {
-    return SelloInstruction.RegisterSello;
+    return SelloInstruction.RegisterContentSello;
   }
   if (
     containsBytes(
       data,
       fixEncoderSize(getBytesEncoder(), 8).encode(
-        new Uint8Array([251, 218, 56, 132, 243, 192, 179, 214]),
+        new Uint8Array([114, 166, 168, 172, 101, 5, 46, 217]),
       ),
       0,
     )
   ) {
-    return SelloInstruction.RegisterVoiceConsent;
-  }
-  if (
-    containsBytes(
-      data,
-      fixEncoderSize(getBytesEncoder(), 8).encode(
-        new Uint8Array([36, 0, 100, 148, 132, 131, 112, 76]),
-      ),
-      0,
-    )
-  ) {
-    return SelloInstruction.RevokeConsent;
+    return SelloInstruction.RevokeContentSello;
   }
   throw new Error(
     "The provided instruction could not be identified as a sello instruction.",
@@ -168,26 +168,33 @@ export type ParsedSelloInstruction<
   TProgram extends string = "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC",
 > =
   | ({
+      instructionType: SelloInstruction.GrantVoiceConsent;
+    } & ParsedGrantVoiceConsentInstruction<TProgram>)
+  | ({
       instructionType: SelloInstruction.InitializeConfig;
     } & ParsedInitializeConfigInstruction<TProgram>)
   | ({
-      instructionType: SelloInstruction.RecordUsage;
-    } & ParsedRecordUsageInstruction<TProgram>)
+      instructionType: SelloInstruction.RecordUsageReceipt;
+    } & ParsedRecordUsageReceiptInstruction<TProgram>)
   | ({
-      instructionType: SelloInstruction.RegisterSello;
-    } & ParsedRegisterSelloInstruction<TProgram>)
+      instructionType: SelloInstruction.RegisterContentSello;
+    } & ParsedRegisterContentSelloInstruction<TProgram>)
   | ({
-      instructionType: SelloInstruction.RegisterVoiceConsent;
-    } & ParsedRegisterVoiceConsentInstruction<TProgram>)
-  | ({
-      instructionType: SelloInstruction.RevokeConsent;
-    } & ParsedRevokeConsentInstruction<TProgram>);
+      instructionType: SelloInstruction.RevokeContentSello;
+    } & ParsedRevokeContentSelloInstruction<TProgram>);
 
 export function parseSelloInstruction<TProgram extends string>(
   instruction: Instruction<TProgram> & InstructionWithData<ReadonlyUint8Array>,
 ): ParsedSelloInstruction<TProgram> {
   const instructionType = identifySelloInstruction(instruction);
   switch (instructionType) {
+    case SelloInstruction.GrantVoiceConsent: {
+      assertIsInstructionWithAccounts(instruction);
+      return {
+        instructionType: SelloInstruction.GrantVoiceConsent,
+        ...parseGrantVoiceConsentInstruction(instruction),
+      };
+    }
     case SelloInstruction.InitializeConfig: {
       assertIsInstructionWithAccounts(instruction);
       return {
@@ -195,32 +202,25 @@ export function parseSelloInstruction<TProgram extends string>(
         ...parseInitializeConfigInstruction(instruction),
       };
     }
-    case SelloInstruction.RecordUsage: {
+    case SelloInstruction.RecordUsageReceipt: {
       assertIsInstructionWithAccounts(instruction);
       return {
-        instructionType: SelloInstruction.RecordUsage,
-        ...parseRecordUsageInstruction(instruction),
+        instructionType: SelloInstruction.RecordUsageReceipt,
+        ...parseRecordUsageReceiptInstruction(instruction),
       };
     }
-    case SelloInstruction.RegisterSello: {
+    case SelloInstruction.RegisterContentSello: {
       assertIsInstructionWithAccounts(instruction);
       return {
-        instructionType: SelloInstruction.RegisterSello,
-        ...parseRegisterSelloInstruction(instruction),
+        instructionType: SelloInstruction.RegisterContentSello,
+        ...parseRegisterContentSelloInstruction(instruction),
       };
     }
-    case SelloInstruction.RegisterVoiceConsent: {
+    case SelloInstruction.RevokeContentSello: {
       assertIsInstructionWithAccounts(instruction);
       return {
-        instructionType: SelloInstruction.RegisterVoiceConsent,
-        ...parseRegisterVoiceConsentInstruction(instruction),
-      };
-    }
-    case SelloInstruction.RevokeConsent: {
-      assertIsInstructionWithAccounts(instruction);
-      return {
-        instructionType: SelloInstruction.RevokeConsent,
-        ...parseRevokeConsentInstruction(instruction),
+        instructionType: SelloInstruction.RevokeContentSello,
+        ...parseRevokeContentSelloInstruction(instruction),
       };
     }
     default:

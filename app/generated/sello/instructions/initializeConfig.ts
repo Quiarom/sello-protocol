@@ -81,13 +81,11 @@ export type InitializeConfigInstructionData = {
   discriminator: ReadonlyUint8Array;
   feeBps: number;
   treasury: Address;
-  usdcMint: Address;
 };
 
 export type InitializeConfigInstructionDataArgs = {
   feeBps: number;
   treasury: Address;
-  usdcMint: Address;
 };
 
 export function getInitializeConfigInstructionDataEncoder(): FixedSizeEncoder<InitializeConfigInstructionDataArgs> {
@@ -96,7 +94,6 @@ export function getInitializeConfigInstructionDataEncoder(): FixedSizeEncoder<In
       ["discriminator", fixEncoderSize(getBytesEncoder(), 8)],
       ["feeBps", getU16Encoder()],
       ["treasury", getAddressEncoder()],
-      ["usdcMint", getAddressEncoder()],
     ]),
     (value) => ({ ...value, discriminator: INITIALIZE_CONFIG_DISCRIMINATOR }),
   );
@@ -107,7 +104,6 @@ export function getInitializeConfigInstructionDataDecoder(): FixedSizeDecoder<In
     ["discriminator", fixDecoderSize(getBytesDecoder(), 8)],
     ["feeBps", getU16Decoder()],
     ["treasury", getAddressDecoder()],
-    ["usdcMint", getAddressDecoder()],
   ]);
 }
 
@@ -131,7 +127,6 @@ export type InitializeConfigAsyncInput<
   systemProgram?: Address<TAccountSystemProgram>;
   feeBps: InitializeConfigInstructionDataArgs["feeBps"];
   treasury: InitializeConfigInstructionDataArgs["treasury"];
-  usdcMint: InitializeConfigInstructionDataArgs["usdcMint"];
 };
 
 export async function getInitializeConfigInstructionAsync<
@@ -211,7 +206,6 @@ export type InitializeConfigInput<
   systemProgram?: Address<TAccountSystemProgram>;
   feeBps: InitializeConfigInstructionDataArgs["feeBps"];
   treasury: InitializeConfigInstructionDataArgs["treasury"];
-  usdcMint: InitializeConfigInstructionDataArgs["usdcMint"];
 };
 
 export function getInitializeConfigInstruction<

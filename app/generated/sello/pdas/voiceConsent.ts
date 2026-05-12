@@ -7,18 +7,15 @@
  */
 
 import {
-  fixEncoderSize,
   getAddressEncoder,
   getBytesEncoder,
   getProgramDerivedAddress,
   type Address,
   type ProgramDerivedAddress,
-  type ReadonlyUint8Array,
 } from "@solana/kit";
 
 export type VoiceConsentSeeds = {
-  author: Address;
-  voiceIdHash: ReadonlyUint8Array;
+  creator: Address;
 };
 
 export async function findVoiceConsentPda(
@@ -32,8 +29,7 @@ export async function findVoiceConsentPda(
     programAddress,
     seeds: [
       getBytesEncoder().encode(new Uint8Array([118, 111, 105, 99, 101])),
-      getAddressEncoder().encode(seeds.author),
-      fixEncoderSize(getBytesEncoder(), 32).encode(seeds.voiceIdHash),
+      getAddressEncoder().encode(seeds.creator),
     ],
   });
 }

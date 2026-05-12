@@ -10,7 +10,7 @@ import { type Address } from "@solana/kit";
 import { ellipsify } from "@/app/lib/explorer";
 import {
   findConfigPda,
-  getRecordUsageInstructionAsync,
+  getRecordUsageReceiptInstructionAsync,
 } from "@/app/generated/sello";
 import {
   findAssociatedTokenPda,
@@ -203,13 +203,14 @@ export function StepTestURL({
         authority: treasuryAddress,
       });
 
-      const recordIx = await getRecordUsageInstructionAsync({
-        config: configPda,
-        sello: selloAddress,
+      const timestamp = BigInt(Math.floor(Date.now() / 1000));
+
+      const recordIx = await getRecordUsageReceiptInstructionAsync({
+        contentSello: selloAddress,
         payer: signer,
         usageType: 2, // VOICE
-        amountPaid: amountPaid,
-        nonce: nonce,
+        amountPaidMicros: amountPaid,
+        timestamp: timestamp,
       });
 
       // REAL TRANSACTION SIGNING - Sending all three instructions

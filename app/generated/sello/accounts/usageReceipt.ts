@@ -53,19 +53,19 @@ export function getUsageReceiptDiscriminatorBytes() {
 
 export type UsageReceipt = {
   discriminator: ReadonlyUint8Array;
-  sello: Address;
+  contentSello: Address;
   payer: Address;
   usageType: number;
-  amountPaid: bigint;
+  amountPaidMicros: bigint;
   timestamp: bigint;
   bump: number;
 };
 
 export type UsageReceiptArgs = {
-  sello: Address;
+  contentSello: Address;
   payer: Address;
   usageType: number;
-  amountPaid: number | bigint;
+  amountPaidMicros: number | bigint;
   timestamp: number | bigint;
   bump: number;
 };
@@ -75,10 +75,10 @@ export function getUsageReceiptEncoder(): FixedSizeEncoder<UsageReceiptArgs> {
   return transformEncoder(
     getStructEncoder([
       ["discriminator", fixEncoderSize(getBytesEncoder(), 8)],
-      ["sello", getAddressEncoder()],
+      ["contentSello", getAddressEncoder()],
       ["payer", getAddressEncoder()],
       ["usageType", getU8Encoder()],
-      ["amountPaid", getU64Encoder()],
+      ["amountPaidMicros", getU64Encoder()],
       ["timestamp", getI64Encoder()],
       ["bump", getU8Encoder()],
     ]),
@@ -90,10 +90,10 @@ export function getUsageReceiptEncoder(): FixedSizeEncoder<UsageReceiptArgs> {
 export function getUsageReceiptDecoder(): FixedSizeDecoder<UsageReceipt> {
   return getStructDecoder([
     ["discriminator", fixDecoderSize(getBytesDecoder(), 8)],
-    ["sello", getAddressDecoder()],
+    ["contentSello", getAddressDecoder()],
     ["payer", getAddressDecoder()],
     ["usageType", getU8Decoder()],
-    ["amountPaid", getU64Decoder()],
+    ["amountPaidMicros", getU64Decoder()],
     ["timestamp", getI64Decoder()],
     ["bump", getU8Decoder()],
   ]);

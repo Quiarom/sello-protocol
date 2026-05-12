@@ -55,28 +55,28 @@ export function getContentSelloDiscriminatorBytes() {
 
 export type ContentSello = {
   discriminator: ReadonlyUint8Array;
-  author: Address;
+  creator: Address;
   contentHash: ReadonlyUint8Array;
-  termsCid: ReadonlyUint8Array;
-  termsHash: ReadonlyUint8Array;
+  licenseType: number;
   allowedUses: number;
-  basePrice: bigint;
+  attributionRequired: boolean;
+  priceUsdcMicros: bigint;
   usageCount: bigint;
-  createdAt: bigint;
   revoked: boolean;
+  createdAt: bigint;
   bump: number;
 };
 
 export type ContentSelloArgs = {
-  author: Address;
+  creator: Address;
   contentHash: ReadonlyUint8Array;
-  termsCid: ReadonlyUint8Array;
-  termsHash: ReadonlyUint8Array;
+  licenseType: number;
   allowedUses: number;
-  basePrice: number | bigint;
+  attributionRequired: boolean;
+  priceUsdcMicros: number | bigint;
   usageCount: number | bigint;
-  createdAt: number | bigint;
   revoked: boolean;
+  createdAt: number | bigint;
   bump: number;
 };
 
@@ -85,15 +85,15 @@ export function getContentSelloEncoder(): FixedSizeEncoder<ContentSelloArgs> {
   return transformEncoder(
     getStructEncoder([
       ["discriminator", fixEncoderSize(getBytesEncoder(), 8)],
-      ["author", getAddressEncoder()],
+      ["creator", getAddressEncoder()],
       ["contentHash", fixEncoderSize(getBytesEncoder(), 32)],
-      ["termsCid", fixEncoderSize(getBytesEncoder(), 46)],
-      ["termsHash", fixEncoderSize(getBytesEncoder(), 32)],
+      ["licenseType", getU8Encoder()],
       ["allowedUses", getU8Encoder()],
-      ["basePrice", getU64Encoder()],
+      ["attributionRequired", getBooleanEncoder()],
+      ["priceUsdcMicros", getU64Encoder()],
       ["usageCount", getU64Encoder()],
-      ["createdAt", getI64Encoder()],
       ["revoked", getBooleanEncoder()],
+      ["createdAt", getI64Encoder()],
       ["bump", getU8Encoder()],
     ]),
     (value) => ({ ...value, discriminator: CONTENT_SELLO_DISCRIMINATOR }),
@@ -104,15 +104,15 @@ export function getContentSelloEncoder(): FixedSizeEncoder<ContentSelloArgs> {
 export function getContentSelloDecoder(): FixedSizeDecoder<ContentSello> {
   return getStructDecoder([
     ["discriminator", fixDecoderSize(getBytesDecoder(), 8)],
-    ["author", getAddressDecoder()],
+    ["creator", getAddressDecoder()],
     ["contentHash", fixDecoderSize(getBytesDecoder(), 32)],
-    ["termsCid", fixDecoderSize(getBytesDecoder(), 46)],
-    ["termsHash", fixDecoderSize(getBytesDecoder(), 32)],
+    ["licenseType", getU8Decoder()],
     ["allowedUses", getU8Decoder()],
-    ["basePrice", getU64Decoder()],
+    ["attributionRequired", getBooleanDecoder()],
+    ["priceUsdcMicros", getU64Decoder()],
     ["usageCount", getU64Decoder()],
-    ["createdAt", getI64Decoder()],
     ["revoked", getBooleanDecoder()],
+    ["createdAt", getI64Decoder()],
     ["bump", getU8Decoder()],
   ]);
 }
@@ -179,5 +179,5 @@ export async function fetchAllMaybeContentSello(
 }
 
 export function getContentSelloSize(): number {
-  return 177;
+  return 101;
 }

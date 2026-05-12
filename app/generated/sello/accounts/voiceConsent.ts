@@ -21,6 +21,8 @@ import {
   getBooleanEncoder,
   getBytesDecoder,
   getBytesEncoder,
+  getI64Decoder,
+  getI64Encoder,
   getStructDecoder,
   getStructEncoder,
   getU64Decoder,
@@ -53,20 +55,22 @@ export function getVoiceConsentDiscriminatorBytes() {
 
 export type VoiceConsent = {
   discriminator: ReadonlyUint8Array;
-  author: Address;
+  creator: Address;
   voiceIdHash: ReadonlyUint8Array;
-  allowedUses: number;
-  pricePerMinute: bigint;
+  allowedUse: number;
+  priceUsdcMicros: bigint;
   revoked: boolean;
+  createdAt: bigint;
   bump: number;
 };
 
 export type VoiceConsentArgs = {
-  author: Address;
+  creator: Address;
   voiceIdHash: ReadonlyUint8Array;
-  allowedUses: number;
-  pricePerMinute: number | bigint;
+  allowedUse: number;
+  priceUsdcMicros: number | bigint;
   revoked: boolean;
+  createdAt: number | bigint;
   bump: number;
 };
 
@@ -75,11 +79,12 @@ export function getVoiceConsentEncoder(): FixedSizeEncoder<VoiceConsentArgs> {
   return transformEncoder(
     getStructEncoder([
       ["discriminator", fixEncoderSize(getBytesEncoder(), 8)],
-      ["author", getAddressEncoder()],
+      ["creator", getAddressEncoder()],
       ["voiceIdHash", fixEncoderSize(getBytesEncoder(), 32)],
-      ["allowedUses", getU8Encoder()],
-      ["pricePerMinute", getU64Encoder()],
+      ["allowedUse", getU8Encoder()],
+      ["priceUsdcMicros", getU64Encoder()],
       ["revoked", getBooleanEncoder()],
+      ["createdAt", getI64Encoder()],
       ["bump", getU8Encoder()],
     ]),
     (value) => ({ ...value, discriminator: VOICE_CONSENT_DISCRIMINATOR }),
@@ -90,11 +95,12 @@ export function getVoiceConsentEncoder(): FixedSizeEncoder<VoiceConsentArgs> {
 export function getVoiceConsentDecoder(): FixedSizeDecoder<VoiceConsent> {
   return getStructDecoder([
     ["discriminator", fixDecoderSize(getBytesDecoder(), 8)],
-    ["author", getAddressDecoder()],
+    ["creator", getAddressDecoder()],
     ["voiceIdHash", fixDecoderSize(getBytesDecoder(), 32)],
-    ["allowedUses", getU8Decoder()],
-    ["pricePerMinute", getU64Decoder()],
+    ["allowedUse", getU8Decoder()],
+    ["priceUsdcMicros", getU64Decoder()],
     ["revoked", getBooleanDecoder()],
+    ["createdAt", getI64Decoder()],
     ["bump", getU8Decoder()],
   ]);
 }
@@ -161,5 +167,5 @@ export async function fetchAllMaybeVoiceConsent(
 }
 
 export function getVoiceConsentSize(): number {
-  return 83;
+  return 91;
 }

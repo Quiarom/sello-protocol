@@ -14,52 +14,28 @@ import {
 } from "@solana/kit";
 import { SELLO_PROGRAM_ADDRESS } from "../programs";
 
-/** MathOverflow: Math overflow occurred */
-export const SELLO_ERROR__MATH_OVERFLOW = 0x1770; // 6000
-/** InsufficientPayment: Insufficient payment */
-export const SELLO_ERROR__INSUFFICIENT_PAYMENT = 0x1771; // 6001
-/** Unauthorized: Unauthorized access */
-export const SELLO_ERROR__UNAUTHORIZED = 0x1772; // 6002
-/** ConfigInactive: Config is inactive or paused */
-export const SELLO_ERROR__CONFIG_INACTIVE = 0x1773; // 6003
-/** InvalidAmount: Invalid amount */
-export const SELLO_ERROR__INVALID_AMOUNT = 0x1774; // 6004
-/** InvalidParameter: Invalid parameter */
-export const SELLO_ERROR__INVALID_PARAMETER = 0x1775; // 6005
-/** ConsentRevoked: Consent has been revoked */
-export const SELLO_ERROR__CONSENT_REVOKED = 0x1776; // 6006
-/** AlreadyRevoked: Already revoked */
-export const SELLO_ERROR__ALREADY_REVOKED = 0x1777; // 6007
-/** InvalidMint: Invalid mint */
-export const SELLO_ERROR__INVALID_MINT = 0x1778; // 6008
-/** UsageTypeNotAllowed: Usage type not permitted by license */
-export const SELLO_ERROR__USAGE_TYPE_NOT_ALLOWED = 0x1779; // 6009
+/** InvalidFee: Protocol fee is too high for the MVP config. */
+export const SELLO_ERROR__INVALID_FEE = 0x1770; // 6000
+/** NoAllowedUses: Content must allow at least one use. */
+export const SELLO_ERROR__NO_ALLOWED_USES = 0x1771; // 6001
+/** ConsentRevoked: This consent record has been revoked. */
+export const SELLO_ERROR__CONSENT_REVOKED = 0x1772; // 6002
+/** UsageCountOverflow: Usage counter overflowed. */
+export const SELLO_ERROR__USAGE_COUNT_OVERFLOW = 0x1773; // 6003
 
 export type SelloError =
-  | typeof SELLO_ERROR__ALREADY_REVOKED
-  | typeof SELLO_ERROR__CONFIG_INACTIVE
   | typeof SELLO_ERROR__CONSENT_REVOKED
-  | typeof SELLO_ERROR__INSUFFICIENT_PAYMENT
-  | typeof SELLO_ERROR__INVALID_AMOUNT
-  | typeof SELLO_ERROR__INVALID_MINT
-  | typeof SELLO_ERROR__INVALID_PARAMETER
-  | typeof SELLO_ERROR__MATH_OVERFLOW
-  | typeof SELLO_ERROR__UNAUTHORIZED
-  | typeof SELLO_ERROR__USAGE_TYPE_NOT_ALLOWED;
+  | typeof SELLO_ERROR__INVALID_FEE
+  | typeof SELLO_ERROR__NO_ALLOWED_USES
+  | typeof SELLO_ERROR__USAGE_COUNT_OVERFLOW;
 
 let selloErrorMessages: Record<SelloError, string> | undefined;
 if (process.env.NODE_ENV !== "production") {
   selloErrorMessages = {
-    [SELLO_ERROR__ALREADY_REVOKED]: `Already revoked`,
-    [SELLO_ERROR__CONFIG_INACTIVE]: `Config is inactive or paused`,
-    [SELLO_ERROR__CONSENT_REVOKED]: `Consent has been revoked`,
-    [SELLO_ERROR__INSUFFICIENT_PAYMENT]: `Insufficient payment`,
-    [SELLO_ERROR__INVALID_AMOUNT]: `Invalid amount`,
-    [SELLO_ERROR__INVALID_MINT]: `Invalid mint`,
-    [SELLO_ERROR__INVALID_PARAMETER]: `Invalid parameter`,
-    [SELLO_ERROR__MATH_OVERFLOW]: `Math overflow occurred`,
-    [SELLO_ERROR__UNAUTHORIZED]: `Unauthorized access`,
-    [SELLO_ERROR__USAGE_TYPE_NOT_ALLOWED]: `Usage type not permitted by license`,
+    [SELLO_ERROR__CONSENT_REVOKED]: `This consent record has been revoked.`,
+    [SELLO_ERROR__INVALID_FEE]: `Protocol fee is too high for the MVP config.`,
+    [SELLO_ERROR__NO_ALLOWED_USES]: `Content must allow at least one use.`,
+    [SELLO_ERROR__USAGE_COUNT_OVERFLOW]: `Usage counter overflowed.`,
   };
 }
 

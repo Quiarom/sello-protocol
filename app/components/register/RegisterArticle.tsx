@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "@/app/lib/wallet/context";
 import { useSendTransaction } from "@/app/lib/hooks/use-send-transaction";
 import {
-  getRegisterSelloInstructionAsync,
-  findSelloPda,
+  getRegisterContentSelloInstructionAsync,
+  findContentSelloPda,
   getInitializeConfigInstructionAsync,
   findConfigPda,
 } from "@/app/generated/sello";
@@ -169,7 +169,6 @@ export function RegisterArticle() {
         authority: signer,
         feeBps: 500,
         treasury: signer.address,
-        usdcMint: DEVNET_USDC_MINT,
       });
       await send({ instructions: [instruction] });
       setConfigExists(true);
@@ -187,7 +186,10 @@ export function RegisterArticle() {
     if (!signer) return;
     try {
       const contentHash = await sha256(articleUrl);
-      const [pda] = await findSelloPda({ author: signer.address, contentHash });
+      const [pda] = await findContentSelloPda({
+        creator: signer.address,
+        contentHash,
+      });
 
       const exists = await checkAccountExists(pda);
 
@@ -200,13 +202,13 @@ export function RegisterArticle() {
           Math.round(parseFloat(priceUSDC) * 1_000_000)
         );
 
-        const instruction = await getRegisterSelloInstructionAsync({
-          author: signer,
+        const instruction = await getRegisterContentSelloInstructionAsync({
+          creator: signer,
           contentHash,
-          termsCid: new Uint8Array(46).fill(0),
-          termsHash: await sha256("{}"),
+          licenseType: 2, // Default for demo
           allowedUses: licenseConfig.allowedUses,
-          basePrice: basePriceUnits,
+          attributionRequired: true,
+          priceUsdcMicros: basePriceUnits,
         });
 
         signature = await send({ instructions: [instruction] });

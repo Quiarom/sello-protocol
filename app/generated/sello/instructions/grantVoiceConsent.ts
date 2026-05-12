@@ -38,25 +38,24 @@ import { findVoiceConsentPda } from "../pdas";
 import { SELLO_PROGRAM_ADDRESS } from "../programs";
 import {
   expectAddress,
-  expectSome,
   getAccountMetaFactory,
   type ResolvedAccount,
 } from "../shared";
 
-export const REGISTER_VOICE_CONSENT_DISCRIMINATOR = new Uint8Array([
-  251, 218, 56, 132, 243, 192, 179, 214,
+export const GRANT_VOICE_CONSENT_DISCRIMINATOR = new Uint8Array([
+  48, 34, 164, 248, 93, 142, 10, 122,
 ]);
 
-export function getRegisterVoiceConsentDiscriminatorBytes() {
+export function getGrantVoiceConsentDiscriminatorBytes() {
   return fixEncoderSize(getBytesEncoder(), 8).encode(
-    REGISTER_VOICE_CONSENT_DISCRIMINATOR,
+    GRANT_VOICE_CONSENT_DISCRIMINATOR,
   );
 }
 
-export type RegisterVoiceConsentInstruction<
+export type GrantVoiceConsentInstruction<
   TProgram extends string = typeof SELLO_PROGRAM_ADDRESS,
   TAccountVoiceConsent extends string | AccountMeta<string> = string,
-  TAccountAuthor extends string | AccountMeta<string> = string,
+  TAccountCreator extends string | AccountMeta<string> = string,
   TAccountSystemProgram extends string | AccountMeta<string> =
     "11111111111111111111111111111111",
   TRemainingAccounts extends readonly AccountMeta<string>[] = [],
@@ -67,10 +66,10 @@ export type RegisterVoiceConsentInstruction<
       TAccountVoiceConsent extends string
         ? WritableAccount<TAccountVoiceConsent>
         : TAccountVoiceConsent,
-      TAccountAuthor extends string
-        ? WritableSignerAccount<TAccountAuthor> &
-            AccountSignerMeta<TAccountAuthor>
-        : TAccountAuthor,
+      TAccountCreator extends string
+        ? WritableSignerAccount<TAccountCreator> &
+            AccountSignerMeta<TAccountCreator>
+        : TAccountCreator,
       TAccountSystemProgram extends string
         ? ReadonlyAccount<TAccountSystemProgram>
         : TAccountSystemProgram,
@@ -78,83 +77,80 @@ export type RegisterVoiceConsentInstruction<
     ]
   >;
 
-export type RegisterVoiceConsentInstructionData = {
+export type GrantVoiceConsentInstructionData = {
   discriminator: ReadonlyUint8Array;
   voiceIdHash: ReadonlyUint8Array;
-  allowedUses: number;
-  pricePerMinute: bigint;
+  allowedUse: number;
+  priceUsdcMicros: bigint;
 };
 
-export type RegisterVoiceConsentInstructionDataArgs = {
+export type GrantVoiceConsentInstructionDataArgs = {
   voiceIdHash: ReadonlyUint8Array;
-  allowedUses: number;
-  pricePerMinute: number | bigint;
+  allowedUse: number;
+  priceUsdcMicros: number | bigint;
 };
 
-export function getRegisterVoiceConsentInstructionDataEncoder(): FixedSizeEncoder<RegisterVoiceConsentInstructionDataArgs> {
+export function getGrantVoiceConsentInstructionDataEncoder(): FixedSizeEncoder<GrantVoiceConsentInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
       ["discriminator", fixEncoderSize(getBytesEncoder(), 8)],
       ["voiceIdHash", fixEncoderSize(getBytesEncoder(), 32)],
-      ["allowedUses", getU8Encoder()],
-      ["pricePerMinute", getU64Encoder()],
+      ["allowedUse", getU8Encoder()],
+      ["priceUsdcMicros", getU64Encoder()],
     ]),
-    (value) => ({
-      ...value,
-      discriminator: REGISTER_VOICE_CONSENT_DISCRIMINATOR,
-    }),
+    (value) => ({ ...value, discriminator: GRANT_VOICE_CONSENT_DISCRIMINATOR }),
   );
 }
 
-export function getRegisterVoiceConsentInstructionDataDecoder(): FixedSizeDecoder<RegisterVoiceConsentInstructionData> {
+export function getGrantVoiceConsentInstructionDataDecoder(): FixedSizeDecoder<GrantVoiceConsentInstructionData> {
   return getStructDecoder([
     ["discriminator", fixDecoderSize(getBytesDecoder(), 8)],
     ["voiceIdHash", fixDecoderSize(getBytesDecoder(), 32)],
-    ["allowedUses", getU8Decoder()],
-    ["pricePerMinute", getU64Decoder()],
+    ["allowedUse", getU8Decoder()],
+    ["priceUsdcMicros", getU64Decoder()],
   ]);
 }
 
-export function getRegisterVoiceConsentInstructionDataCodec(): FixedSizeCodec<
-  RegisterVoiceConsentInstructionDataArgs,
-  RegisterVoiceConsentInstructionData
+export function getGrantVoiceConsentInstructionDataCodec(): FixedSizeCodec<
+  GrantVoiceConsentInstructionDataArgs,
+  GrantVoiceConsentInstructionData
 > {
   return combineCodec(
-    getRegisterVoiceConsentInstructionDataEncoder(),
-    getRegisterVoiceConsentInstructionDataDecoder(),
+    getGrantVoiceConsentInstructionDataEncoder(),
+    getGrantVoiceConsentInstructionDataDecoder(),
   );
 }
 
-export type RegisterVoiceConsentAsyncInput<
+export type GrantVoiceConsentAsyncInput<
   TAccountVoiceConsent extends string = string,
-  TAccountAuthor extends string = string,
+  TAccountCreator extends string = string,
   TAccountSystemProgram extends string = string,
 > = {
   voiceConsent?: Address<TAccountVoiceConsent>;
-  author: TransactionSigner<TAccountAuthor>;
+  creator: TransactionSigner<TAccountCreator>;
   systemProgram?: Address<TAccountSystemProgram>;
-  voiceIdHash: RegisterVoiceConsentInstructionDataArgs["voiceIdHash"];
-  allowedUses: RegisterVoiceConsentInstructionDataArgs["allowedUses"];
-  pricePerMinute: RegisterVoiceConsentInstructionDataArgs["pricePerMinute"];
+  voiceIdHash: GrantVoiceConsentInstructionDataArgs["voiceIdHash"];
+  allowedUse: GrantVoiceConsentInstructionDataArgs["allowedUse"];
+  priceUsdcMicros: GrantVoiceConsentInstructionDataArgs["priceUsdcMicros"];
 };
 
-export async function getRegisterVoiceConsentInstructionAsync<
+export async function getGrantVoiceConsentInstructionAsync<
   TAccountVoiceConsent extends string,
-  TAccountAuthor extends string,
+  TAccountCreator extends string,
   TAccountSystemProgram extends string,
   TProgramAddress extends Address = typeof SELLO_PROGRAM_ADDRESS,
 >(
-  input: RegisterVoiceConsentAsyncInput<
+  input: GrantVoiceConsentAsyncInput<
     TAccountVoiceConsent,
-    TAccountAuthor,
+    TAccountCreator,
     TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
 ): Promise<
-  RegisterVoiceConsentInstruction<
+  GrantVoiceConsentInstruction<
     TProgramAddress,
     TAccountVoiceConsent,
-    TAccountAuthor,
+    TAccountCreator,
     TAccountSystemProgram
   >
 > {
@@ -164,7 +160,7 @@ export async function getRegisterVoiceConsentInstructionAsync<
   // Original accounts.
   const originalAccounts = {
     voiceConsent: { value: input.voiceConsent ?? null, isWritable: true },
-    author: { value: input.author ?? null, isWritable: true },
+    creator: { value: input.creator ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
   const accounts = originalAccounts as Record<
@@ -178,8 +174,7 @@ export async function getRegisterVoiceConsentInstructionAsync<
   // Resolve default values.
   if (!accounts.voiceConsent.value) {
     accounts.voiceConsent.value = await findVoiceConsentPda({
-      author: expectAddress(accounts.author.value),
-      voiceIdHash: expectSome(args.voiceIdHash),
+      creator: expectAddress(accounts.creator.value),
     });
   }
   if (!accounts.systemProgram.value) {
@@ -191,50 +186,50 @@ export async function getRegisterVoiceConsentInstructionAsync<
   return Object.freeze({
     accounts: [
       getAccountMeta(accounts.voiceConsent),
-      getAccountMeta(accounts.author),
+      getAccountMeta(accounts.creator),
       getAccountMeta(accounts.systemProgram),
     ],
-    data: getRegisterVoiceConsentInstructionDataEncoder().encode(
-      args as RegisterVoiceConsentInstructionDataArgs,
+    data: getGrantVoiceConsentInstructionDataEncoder().encode(
+      args as GrantVoiceConsentInstructionDataArgs,
     ),
     programAddress,
-  } as RegisterVoiceConsentInstruction<
+  } as GrantVoiceConsentInstruction<
     TProgramAddress,
     TAccountVoiceConsent,
-    TAccountAuthor,
+    TAccountCreator,
     TAccountSystemProgram
   >);
 }
 
-export type RegisterVoiceConsentInput<
+export type GrantVoiceConsentInput<
   TAccountVoiceConsent extends string = string,
-  TAccountAuthor extends string = string,
+  TAccountCreator extends string = string,
   TAccountSystemProgram extends string = string,
 > = {
   voiceConsent: Address<TAccountVoiceConsent>;
-  author: TransactionSigner<TAccountAuthor>;
+  creator: TransactionSigner<TAccountCreator>;
   systemProgram?: Address<TAccountSystemProgram>;
-  voiceIdHash: RegisterVoiceConsentInstructionDataArgs["voiceIdHash"];
-  allowedUses: RegisterVoiceConsentInstructionDataArgs["allowedUses"];
-  pricePerMinute: RegisterVoiceConsentInstructionDataArgs["pricePerMinute"];
+  voiceIdHash: GrantVoiceConsentInstructionDataArgs["voiceIdHash"];
+  allowedUse: GrantVoiceConsentInstructionDataArgs["allowedUse"];
+  priceUsdcMicros: GrantVoiceConsentInstructionDataArgs["priceUsdcMicros"];
 };
 
-export function getRegisterVoiceConsentInstruction<
+export function getGrantVoiceConsentInstruction<
   TAccountVoiceConsent extends string,
-  TAccountAuthor extends string,
+  TAccountCreator extends string,
   TAccountSystemProgram extends string,
   TProgramAddress extends Address = typeof SELLO_PROGRAM_ADDRESS,
 >(
-  input: RegisterVoiceConsentInput<
+  input: GrantVoiceConsentInput<
     TAccountVoiceConsent,
-    TAccountAuthor,
+    TAccountCreator,
     TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
-): RegisterVoiceConsentInstruction<
+): GrantVoiceConsentInstruction<
   TProgramAddress,
   TAccountVoiceConsent,
-  TAccountAuthor,
+  TAccountCreator,
   TAccountSystemProgram
 > {
   // Program address.
@@ -243,7 +238,7 @@ export function getRegisterVoiceConsentInstruction<
   // Original accounts.
   const originalAccounts = {
     voiceConsent: { value: input.voiceConsent ?? null, isWritable: true },
-    author: { value: input.author ?? null, isWritable: true },
+    creator: { value: input.creator ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
   const accounts = originalAccounts as Record<
@@ -264,42 +259,42 @@ export function getRegisterVoiceConsentInstruction<
   return Object.freeze({
     accounts: [
       getAccountMeta(accounts.voiceConsent),
-      getAccountMeta(accounts.author),
+      getAccountMeta(accounts.creator),
       getAccountMeta(accounts.systemProgram),
     ],
-    data: getRegisterVoiceConsentInstructionDataEncoder().encode(
-      args as RegisterVoiceConsentInstructionDataArgs,
+    data: getGrantVoiceConsentInstructionDataEncoder().encode(
+      args as GrantVoiceConsentInstructionDataArgs,
     ),
     programAddress,
-  } as RegisterVoiceConsentInstruction<
+  } as GrantVoiceConsentInstruction<
     TProgramAddress,
     TAccountVoiceConsent,
-    TAccountAuthor,
+    TAccountCreator,
     TAccountSystemProgram
   >);
 }
 
-export type ParsedRegisterVoiceConsentInstruction<
+export type ParsedGrantVoiceConsentInstruction<
   TProgram extends string = typeof SELLO_PROGRAM_ADDRESS,
   TAccountMetas extends readonly AccountMeta[] = readonly AccountMeta[],
 > = {
   programAddress: Address<TProgram>;
   accounts: {
     voiceConsent: TAccountMetas[0];
-    author: TAccountMetas[1];
+    creator: TAccountMetas[1];
     systemProgram: TAccountMetas[2];
   };
-  data: RegisterVoiceConsentInstructionData;
+  data: GrantVoiceConsentInstructionData;
 };
 
-export function parseRegisterVoiceConsentInstruction<
+export function parseGrantVoiceConsentInstruction<
   TProgram extends string,
   TAccountMetas extends readonly AccountMeta[],
 >(
   instruction: Instruction<TProgram> &
     InstructionWithAccounts<TAccountMetas> &
     InstructionWithData<ReadonlyUint8Array>,
-): ParsedRegisterVoiceConsentInstruction<TProgram, TAccountMetas> {
+): ParsedGrantVoiceConsentInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
     throw new Error("Not enough accounts");
@@ -314,11 +309,9 @@ export function parseRegisterVoiceConsentInstruction<
     programAddress: instruction.programAddress,
     accounts: {
       voiceConsent: getNextAccount(),
-      author: getNextAccount(),
+      creator: getNextAccount(),
       systemProgram: getNextAccount(),
     },
-    data: getRegisterVoiceConsentInstructionDataDecoder().decode(
-      instruction.data,
-    ),
+    data: getGrantVoiceConsentInstructionDataDecoder().decode(instruction.data),
   };
 }

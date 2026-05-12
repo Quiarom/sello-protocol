@@ -16,13 +16,13 @@ import {
   type ReadonlyUint8Array,
 } from "@solana/kit";
 
-export type SelloSeeds = {
-  author: Address;
+export type ContentSelloSeeds = {
+  creator: Address;
   contentHash: ReadonlyUint8Array;
 };
 
-export async function findSelloPda(
-  seeds: SelloSeeds,
+export async function findContentSelloPda(
+  seeds: ContentSelloSeeds,
   config: { programAddress?: Address | undefined } = {},
 ): Promise<ProgramDerivedAddress> {
   const {
@@ -32,7 +32,7 @@ export async function findSelloPda(
     programAddress,
     seeds: [
       getBytesEncoder().encode(new Uint8Array([115, 101, 108, 108, 111])),
-      getAddressEncoder().encode(seeds.author),
+      getAddressEncoder().encode(seeds.creator),
       fixEncoderSize(getBytesEncoder(), 32).encode(seeds.contentHash),
     ],
   });

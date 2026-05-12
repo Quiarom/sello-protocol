@@ -9,20 +9,20 @@
 import {
   getAddressEncoder,
   getBytesEncoder,
+  getI64Encoder,
   getProgramDerivedAddress,
-  getU64Encoder,
   type Address,
   type ProgramDerivedAddress,
 } from "@solana/kit";
 
-export type ReceiptSeeds = {
-  sello: Address;
+export type UsageReceiptSeeds = {
+  contentSello: Address;
   payer: Address;
-  nonce: number | bigint;
+  timestamp: number | bigint;
 };
 
-export async function findReceiptPda(
-  seeds: ReceiptSeeds,
+export async function findUsageReceiptPda(
+  seeds: UsageReceiptSeeds,
   config: { programAddress?: Address | undefined } = {},
 ): Promise<ProgramDerivedAddress> {
   const {
@@ -34,9 +34,9 @@ export async function findReceiptPda(
       getBytesEncoder().encode(
         new Uint8Array([114, 101, 99, 101, 105, 112, 116]),
       ),
-      getAddressEncoder().encode(seeds.sello),
+      getAddressEncoder().encode(seeds.contentSello),
       getAddressEncoder().encode(seeds.payer),
-      getU64Encoder().encode(seeds.nonce),
+      getI64Encoder().encode(seeds.timestamp),
     ],
   });
 }

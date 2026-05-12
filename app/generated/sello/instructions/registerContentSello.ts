@@ -10,6 +10,8 @@ import {
   combineCodec,
   fixDecoderSize,
   fixEncoderSize,
+  getBooleanDecoder,
+  getBooleanEncoder,
   getBytesDecoder,
   getBytesEncoder,
   getStructDecoder,
@@ -34,7 +36,7 @@ import {
   type WritableAccount,
   type WritableSignerAccount,
 } from "@solana/kit";
-import { findSelloPda } from "../pdas";
+import { findContentSelloPda } from "../pdas";
 import { SELLO_PROGRAM_ADDRESS } from "../programs";
 import {
   expectAddress,
@@ -43,20 +45,20 @@ import {
   type ResolvedAccount,
 } from "../shared";
 
-export const REGISTER_SELLO_DISCRIMINATOR = new Uint8Array([
-  220, 112, 137, 24, 97, 204, 76, 142,
+export const REGISTER_CONTENT_SELLO_DISCRIMINATOR = new Uint8Array([
+  196, 228, 103, 149, 196, 223, 180, 63,
 ]);
 
-export function getRegisterSelloDiscriminatorBytes() {
+export function getRegisterContentSelloDiscriminatorBytes() {
   return fixEncoderSize(getBytesEncoder(), 8).encode(
-    REGISTER_SELLO_DISCRIMINATOR,
+    REGISTER_CONTENT_SELLO_DISCRIMINATOR,
   );
 }
 
-export type RegisterSelloInstruction<
+export type RegisterContentSelloInstruction<
   TProgram extends string = typeof SELLO_PROGRAM_ADDRESS,
-  TAccountSello extends string | AccountMeta<string> = string,
-  TAccountAuthor extends string | AccountMeta<string> = string,
+  TAccountContentSello extends string | AccountMeta<string> = string,
+  TAccountCreator extends string | AccountMeta<string> = string,
   TAccountSystemProgram extends string | AccountMeta<string> =
     "11111111111111111111111111111111",
   TRemainingAccounts extends readonly AccountMeta<string>[] = [],
@@ -64,13 +66,13 @@ export type RegisterSelloInstruction<
   InstructionWithData<ReadonlyUint8Array> &
   InstructionWithAccounts<
     [
-      TAccountSello extends string
-        ? WritableAccount<TAccountSello>
-        : TAccountSello,
-      TAccountAuthor extends string
-        ? WritableSignerAccount<TAccountAuthor> &
-            AccountSignerMeta<TAccountAuthor>
-        : TAccountAuthor,
+      TAccountContentSello extends string
+        ? WritableAccount<TAccountContentSello>
+        : TAccountContentSello,
+      TAccountCreator extends string
+        ? WritableSignerAccount<TAccountCreator> &
+            AccountSignerMeta<TAccountCreator>
+        : TAccountCreator,
       TAccountSystemProgram extends string
         ? ReadonlyAccount<TAccountSystemProgram>
         : TAccountSystemProgram,
@@ -78,90 +80,93 @@ export type RegisterSelloInstruction<
     ]
   >;
 
-export type RegisterSelloInstructionData = {
+export type RegisterContentSelloInstructionData = {
   discriminator: ReadonlyUint8Array;
   contentHash: ReadonlyUint8Array;
-  termsCid: ReadonlyUint8Array;
-  termsHash: ReadonlyUint8Array;
+  licenseType: number;
   allowedUses: number;
-  basePrice: bigint;
+  attributionRequired: boolean;
+  priceUsdcMicros: bigint;
 };
 
-export type RegisterSelloInstructionDataArgs = {
+export type RegisterContentSelloInstructionDataArgs = {
   contentHash: ReadonlyUint8Array;
-  termsCid: ReadonlyUint8Array;
-  termsHash: ReadonlyUint8Array;
+  licenseType: number;
   allowedUses: number;
-  basePrice: number | bigint;
+  attributionRequired: boolean;
+  priceUsdcMicros: number | bigint;
 };
 
-export function getRegisterSelloInstructionDataEncoder(): FixedSizeEncoder<RegisterSelloInstructionDataArgs> {
+export function getRegisterContentSelloInstructionDataEncoder(): FixedSizeEncoder<RegisterContentSelloInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
       ["discriminator", fixEncoderSize(getBytesEncoder(), 8)],
       ["contentHash", fixEncoderSize(getBytesEncoder(), 32)],
-      ["termsCid", fixEncoderSize(getBytesEncoder(), 46)],
-      ["termsHash", fixEncoderSize(getBytesEncoder(), 32)],
+      ["licenseType", getU8Encoder()],
       ["allowedUses", getU8Encoder()],
-      ["basePrice", getU64Encoder()],
+      ["attributionRequired", getBooleanEncoder()],
+      ["priceUsdcMicros", getU64Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: REGISTER_SELLO_DISCRIMINATOR }),
+    (value) => ({
+      ...value,
+      discriminator: REGISTER_CONTENT_SELLO_DISCRIMINATOR,
+    }),
   );
 }
 
-export function getRegisterSelloInstructionDataDecoder(): FixedSizeDecoder<RegisterSelloInstructionData> {
+export function getRegisterContentSelloInstructionDataDecoder(): FixedSizeDecoder<RegisterContentSelloInstructionData> {
   return getStructDecoder([
     ["discriminator", fixDecoderSize(getBytesDecoder(), 8)],
     ["contentHash", fixDecoderSize(getBytesDecoder(), 32)],
-    ["termsCid", fixDecoderSize(getBytesDecoder(), 46)],
-    ["termsHash", fixDecoderSize(getBytesDecoder(), 32)],
+    ["licenseType", getU8Decoder()],
     ["allowedUses", getU8Decoder()],
-    ["basePrice", getU64Decoder()],
+    ["attributionRequired", getBooleanDecoder()],
+    ["priceUsdcMicros", getU64Decoder()],
   ]);
 }
 
-export function getRegisterSelloInstructionDataCodec(): FixedSizeCodec<
-  RegisterSelloInstructionDataArgs,
-  RegisterSelloInstructionData
+export function getRegisterContentSelloInstructionDataCodec(): FixedSizeCodec<
+  RegisterContentSelloInstructionDataArgs,
+  RegisterContentSelloInstructionData
 > {
   return combineCodec(
-    getRegisterSelloInstructionDataEncoder(),
-    getRegisterSelloInstructionDataDecoder(),
+    getRegisterContentSelloInstructionDataEncoder(),
+    getRegisterContentSelloInstructionDataDecoder(),
   );
 }
 
-export type RegisterSelloAsyncInput<
-  TAccountSello extends string = string,
-  TAccountAuthor extends string = string,
+export type RegisterContentSelloAsyncInput<
+  TAccountContentSello extends string = string,
+  TAccountCreator extends string = string,
   TAccountSystemProgram extends string = string,
 > = {
-  sello?: Address<TAccountSello>;
-  author: TransactionSigner<TAccountAuthor>;
+  contentSello?: Address<TAccountContentSello>;
+  creator: TransactionSigner<TAccountCreator>;
   systemProgram?: Address<TAccountSystemProgram>;
-  contentHash: RegisterSelloInstructionDataArgs["contentHash"];
-  termsCid: RegisterSelloInstructionDataArgs["termsCid"];
-  termsHash: RegisterSelloInstructionDataArgs["termsHash"];
-  allowedUses: RegisterSelloInstructionDataArgs["allowedUses"];
-  basePrice: RegisterSelloInstructionDataArgs["basePrice"];
+  contentHash: RegisterContentSelloInstructionDataArgs["contentHash"];
+  licenseType: RegisterContentSelloInstructionDataArgs["licenseType"];
+  allowedUses: RegisterContentSelloInstructionDataArgs["allowedUses"];
+  attributionRequired: RegisterContentSelloInstructionDataArgs["attributionRequired"];
+  priceUsdcMicros: RegisterContentSelloInstructionDataArgs["priceUsdcMicros"];
 };
 
-export async function getRegisterSelloInstructionAsync<
-  TAccountSello extends string,
-  TAccountAuthor extends string,
+export async function getRegisterContentSelloInstructionAsync<
+  TAccountContentSello extends string,
+  TAccountCreator extends string,
   TAccountSystemProgram extends string,
   TProgramAddress extends Address = typeof SELLO_PROGRAM_ADDRESS,
 >(
-  input: RegisterSelloAsyncInput<
-    TAccountSello,
-    TAccountAuthor,
+  input: RegisterContentSelloAsyncInput<
+    TAccountContentSello,
+    TAccountCreator,
     TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
 ): Promise<
-  RegisterSelloInstruction<
+  RegisterContentSelloInstruction<
     TProgramAddress,
-    TAccountSello,
-    TAccountAuthor,
+    TAccountContentSello,
+    TAccountCreator,
     TAccountSystemProgram
   >
 > {
@@ -170,8 +175,8 @@ export async function getRegisterSelloInstructionAsync<
 
   // Original accounts.
   const originalAccounts = {
-    sello: { value: input.sello ?? null, isWritable: true },
-    author: { value: input.author ?? null, isWritable: true },
+    contentSello: { value: input.contentSello ?? null, isWritable: true },
+    creator: { value: input.creator ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
   const accounts = originalAccounts as Record<
@@ -183,9 +188,9 @@ export async function getRegisterSelloInstructionAsync<
   const args = { ...input };
 
   // Resolve default values.
-  if (!accounts.sello.value) {
-    accounts.sello.value = await findSelloPda({
-      author: expectAddress(accounts.author.value),
+  if (!accounts.contentSello.value) {
+    accounts.contentSello.value = await findContentSelloPda({
+      creator: expectAddress(accounts.creator.value),
       contentHash: expectSome(args.contentHash),
     });
   }
@@ -197,53 +202,53 @@ export async function getRegisterSelloInstructionAsync<
   const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   return Object.freeze({
     accounts: [
-      getAccountMeta(accounts.sello),
-      getAccountMeta(accounts.author),
+      getAccountMeta(accounts.contentSello),
+      getAccountMeta(accounts.creator),
       getAccountMeta(accounts.systemProgram),
     ],
-    data: getRegisterSelloInstructionDataEncoder().encode(
-      args as RegisterSelloInstructionDataArgs,
+    data: getRegisterContentSelloInstructionDataEncoder().encode(
+      args as RegisterContentSelloInstructionDataArgs,
     ),
     programAddress,
-  } as RegisterSelloInstruction<
+  } as RegisterContentSelloInstruction<
     TProgramAddress,
-    TAccountSello,
-    TAccountAuthor,
+    TAccountContentSello,
+    TAccountCreator,
     TAccountSystemProgram
   >);
 }
 
-export type RegisterSelloInput<
-  TAccountSello extends string = string,
-  TAccountAuthor extends string = string,
+export type RegisterContentSelloInput<
+  TAccountContentSello extends string = string,
+  TAccountCreator extends string = string,
   TAccountSystemProgram extends string = string,
 > = {
-  sello: Address<TAccountSello>;
-  author: TransactionSigner<TAccountAuthor>;
+  contentSello: Address<TAccountContentSello>;
+  creator: TransactionSigner<TAccountCreator>;
   systemProgram?: Address<TAccountSystemProgram>;
-  contentHash: RegisterSelloInstructionDataArgs["contentHash"];
-  termsCid: RegisterSelloInstructionDataArgs["termsCid"];
-  termsHash: RegisterSelloInstructionDataArgs["termsHash"];
-  allowedUses: RegisterSelloInstructionDataArgs["allowedUses"];
-  basePrice: RegisterSelloInstructionDataArgs["basePrice"];
+  contentHash: RegisterContentSelloInstructionDataArgs["contentHash"];
+  licenseType: RegisterContentSelloInstructionDataArgs["licenseType"];
+  allowedUses: RegisterContentSelloInstructionDataArgs["allowedUses"];
+  attributionRequired: RegisterContentSelloInstructionDataArgs["attributionRequired"];
+  priceUsdcMicros: RegisterContentSelloInstructionDataArgs["priceUsdcMicros"];
 };
 
-export function getRegisterSelloInstruction<
-  TAccountSello extends string,
-  TAccountAuthor extends string,
+export function getRegisterContentSelloInstruction<
+  TAccountContentSello extends string,
+  TAccountCreator extends string,
   TAccountSystemProgram extends string,
   TProgramAddress extends Address = typeof SELLO_PROGRAM_ADDRESS,
 >(
-  input: RegisterSelloInput<
-    TAccountSello,
-    TAccountAuthor,
+  input: RegisterContentSelloInput<
+    TAccountContentSello,
+    TAccountCreator,
     TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
-): RegisterSelloInstruction<
+): RegisterContentSelloInstruction<
   TProgramAddress,
-  TAccountSello,
-  TAccountAuthor,
+  TAccountContentSello,
+  TAccountCreator,
   TAccountSystemProgram
 > {
   // Program address.
@@ -251,8 +256,8 @@ export function getRegisterSelloInstruction<
 
   // Original accounts.
   const originalAccounts = {
-    sello: { value: input.sello ?? null, isWritable: true },
-    author: { value: input.author ?? null, isWritable: true },
+    contentSello: { value: input.contentSello ?? null, isWritable: true },
+    creator: { value: input.creator ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
   const accounts = originalAccounts as Record<
@@ -272,43 +277,43 @@ export function getRegisterSelloInstruction<
   const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   return Object.freeze({
     accounts: [
-      getAccountMeta(accounts.sello),
-      getAccountMeta(accounts.author),
+      getAccountMeta(accounts.contentSello),
+      getAccountMeta(accounts.creator),
       getAccountMeta(accounts.systemProgram),
     ],
-    data: getRegisterSelloInstructionDataEncoder().encode(
-      args as RegisterSelloInstructionDataArgs,
+    data: getRegisterContentSelloInstructionDataEncoder().encode(
+      args as RegisterContentSelloInstructionDataArgs,
     ),
     programAddress,
-  } as RegisterSelloInstruction<
+  } as RegisterContentSelloInstruction<
     TProgramAddress,
-    TAccountSello,
-    TAccountAuthor,
+    TAccountContentSello,
+    TAccountCreator,
     TAccountSystemProgram
   >);
 }
 
-export type ParsedRegisterSelloInstruction<
+export type ParsedRegisterContentSelloInstruction<
   TProgram extends string = typeof SELLO_PROGRAM_ADDRESS,
   TAccountMetas extends readonly AccountMeta[] = readonly AccountMeta[],
 > = {
   programAddress: Address<TProgram>;
   accounts: {
-    sello: TAccountMetas[0];
-    author: TAccountMetas[1];
+    contentSello: TAccountMetas[0];
+    creator: TAccountMetas[1];
     systemProgram: TAccountMetas[2];
   };
-  data: RegisterSelloInstructionData;
+  data: RegisterContentSelloInstructionData;
 };
 
-export function parseRegisterSelloInstruction<
+export function parseRegisterContentSelloInstruction<
   TProgram extends string,
   TAccountMetas extends readonly AccountMeta[],
 >(
   instruction: Instruction<TProgram> &
     InstructionWithAccounts<TAccountMetas> &
     InstructionWithData<ReadonlyUint8Array>,
-): ParsedRegisterSelloInstruction<TProgram, TAccountMetas> {
+): ParsedRegisterContentSelloInstruction<TProgram, TAccountMetas> {
   if (instruction.accounts.length < 3) {
     // TODO: Coded error.
     throw new Error("Not enough accounts");
@@ -322,10 +327,12 @@ export function parseRegisterSelloInstruction<
   return {
     programAddress: instruction.programAddress,
     accounts: {
-      sello: getNextAccount(),
-      author: getNextAccount(),
+      contentSello: getNextAccount(),
+      creator: getNextAccount(),
       systemProgram: getNextAccount(),
     },
-    data: getRegisterSelloInstructionDataDecoder().decode(instruction.data),
+    data: getRegisterContentSelloInstructionDataDecoder().decode(
+      instruction.data,
+    ),
   };
 }

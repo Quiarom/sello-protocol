@@ -12,6 +12,8 @@ import {
   fixEncoderSize,
   getBytesDecoder,
   getBytesEncoder,
+  getI64Decoder,
+  getI64Encoder,
   getStructDecoder,
   getStructEncoder,
   getU64Decoder,
@@ -34,7 +36,7 @@ import {
   type WritableAccount,
   type WritableSignerAccount,
 } from "@solana/kit";
-import { findReceiptPda } from "../pdas";
+import { findUsageReceiptPda } from "../pdas";
 import { SELLO_PROGRAM_ADDRESS } from "../programs";
 import {
   expectAddress,
@@ -43,21 +45,20 @@ import {
   type ResolvedAccount,
 } from "../shared";
 
-export const RECORD_USAGE_DISCRIMINATOR = new Uint8Array([
-  185, 5, 42, 72, 185, 187, 202, 147,
+export const RECORD_USAGE_RECEIPT_DISCRIMINATOR = new Uint8Array([
+  208, 70, 129, 14, 143, 196, 31, 254,
 ]);
 
-export function getRecordUsageDiscriminatorBytes() {
+export function getRecordUsageReceiptDiscriminatorBytes() {
   return fixEncoderSize(getBytesEncoder(), 8).encode(
-    RECORD_USAGE_DISCRIMINATOR,
+    RECORD_USAGE_RECEIPT_DISCRIMINATOR,
   );
 }
 
-export type RecordUsageInstruction<
+export type RecordUsageReceiptInstruction<
   TProgram extends string = typeof SELLO_PROGRAM_ADDRESS,
-  TAccountConfig extends string | AccountMeta<string> = string,
-  TAccountSello extends string | AccountMeta<string> = string,
-  TAccountReceipt extends string | AccountMeta<string> = string,
+  TAccountContentSello extends string | AccountMeta<string> = string,
+  TAccountUsageReceipt extends string | AccountMeta<string> = string,
   TAccountPayer extends string | AccountMeta<string> = string,
   TAccountSystemProgram extends string | AccountMeta<string> =
     "11111111111111111111111111111111",
@@ -66,15 +67,12 @@ export type RecordUsageInstruction<
   InstructionWithData<ReadonlyUint8Array> &
   InstructionWithAccounts<
     [
-      TAccountConfig extends string
-        ? ReadonlyAccount<TAccountConfig>
-        : TAccountConfig,
-      TAccountSello extends string
-        ? WritableAccount<TAccountSello>
-        : TAccountSello,
-      TAccountReceipt extends string
-        ? WritableAccount<TAccountReceipt>
-        : TAccountReceipt,
+      TAccountContentSello extends string
+        ? WritableAccount<TAccountContentSello>
+        : TAccountContentSello,
+      TAccountUsageReceipt extends string
+        ? WritableAccount<TAccountUsageReceipt>
+        : TAccountUsageReceipt,
       TAccountPayer extends string
         ? WritableSignerAccount<TAccountPayer> &
             AccountSignerMeta<TAccountPayer>
@@ -86,89 +84,87 @@ export type RecordUsageInstruction<
     ]
   >;
 
-export type RecordUsageInstructionData = {
+export type RecordUsageReceiptInstructionData = {
   discriminator: ReadonlyUint8Array;
   usageType: number;
-  amountPaid: bigint;
-  nonce: bigint;
+  amountPaidMicros: bigint;
+  timestamp: bigint;
 };
 
-export type RecordUsageInstructionDataArgs = {
+export type RecordUsageReceiptInstructionDataArgs = {
   usageType: number;
-  amountPaid: number | bigint;
-  nonce: number | bigint;
+  amountPaidMicros: number | bigint;
+  timestamp: number | bigint;
 };
 
-export function getRecordUsageInstructionDataEncoder(): FixedSizeEncoder<RecordUsageInstructionDataArgs> {
+export function getRecordUsageReceiptInstructionDataEncoder(): FixedSizeEncoder<RecordUsageReceiptInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
       ["discriminator", fixEncoderSize(getBytesEncoder(), 8)],
       ["usageType", getU8Encoder()],
-      ["amountPaid", getU64Encoder()],
-      ["nonce", getU64Encoder()],
+      ["amountPaidMicros", getU64Encoder()],
+      ["timestamp", getI64Encoder()],
     ]),
-    (value) => ({ ...value, discriminator: RECORD_USAGE_DISCRIMINATOR }),
+    (value) => ({
+      ...value,
+      discriminator: RECORD_USAGE_RECEIPT_DISCRIMINATOR,
+    }),
   );
 }
 
-export function getRecordUsageInstructionDataDecoder(): FixedSizeDecoder<RecordUsageInstructionData> {
+export function getRecordUsageReceiptInstructionDataDecoder(): FixedSizeDecoder<RecordUsageReceiptInstructionData> {
   return getStructDecoder([
     ["discriminator", fixDecoderSize(getBytesDecoder(), 8)],
     ["usageType", getU8Decoder()],
-    ["amountPaid", getU64Decoder()],
-    ["nonce", getU64Decoder()],
+    ["amountPaidMicros", getU64Decoder()],
+    ["timestamp", getI64Decoder()],
   ]);
 }
 
-export function getRecordUsageInstructionDataCodec(): FixedSizeCodec<
-  RecordUsageInstructionDataArgs,
-  RecordUsageInstructionData
+export function getRecordUsageReceiptInstructionDataCodec(): FixedSizeCodec<
+  RecordUsageReceiptInstructionDataArgs,
+  RecordUsageReceiptInstructionData
 > {
   return combineCodec(
-    getRecordUsageInstructionDataEncoder(),
-    getRecordUsageInstructionDataDecoder(),
+    getRecordUsageReceiptInstructionDataEncoder(),
+    getRecordUsageReceiptInstructionDataDecoder(),
   );
 }
 
-export type RecordUsageAsyncInput<
-  TAccountConfig extends string = string,
-  TAccountSello extends string = string,
-  TAccountReceipt extends string = string,
+export type RecordUsageReceiptAsyncInput<
+  TAccountContentSello extends string = string,
+  TAccountUsageReceipt extends string = string,
   TAccountPayer extends string = string,
   TAccountSystemProgram extends string = string,
 > = {
-  config: Address<TAccountConfig>;
-  sello: Address<TAccountSello>;
-  receipt?: Address<TAccountReceipt>;
+  contentSello: Address<TAccountContentSello>;
+  usageReceipt?: Address<TAccountUsageReceipt>;
   payer: TransactionSigner<TAccountPayer>;
   systemProgram?: Address<TAccountSystemProgram>;
-  usageType: RecordUsageInstructionDataArgs["usageType"];
-  amountPaid: RecordUsageInstructionDataArgs["amountPaid"];
-  nonce: RecordUsageInstructionDataArgs["nonce"];
+  usageType: RecordUsageReceiptInstructionDataArgs["usageType"];
+  amountPaidMicros: RecordUsageReceiptInstructionDataArgs["amountPaidMicros"];
+  timestamp: RecordUsageReceiptInstructionDataArgs["timestamp"];
 };
 
-export async function getRecordUsageInstructionAsync<
-  TAccountConfig extends string,
-  TAccountSello extends string,
-  TAccountReceipt extends string,
+export async function getRecordUsageReceiptInstructionAsync<
+  TAccountContentSello extends string,
+  TAccountUsageReceipt extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
   TProgramAddress extends Address = typeof SELLO_PROGRAM_ADDRESS,
 >(
-  input: RecordUsageAsyncInput<
-    TAccountConfig,
-    TAccountSello,
-    TAccountReceipt,
+  input: RecordUsageReceiptAsyncInput<
+    TAccountContentSello,
+    TAccountUsageReceipt,
     TAccountPayer,
     TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
 ): Promise<
-  RecordUsageInstruction<
+  RecordUsageReceiptInstruction<
     TProgramAddress,
-    TAccountConfig,
-    TAccountSello,
-    TAccountReceipt,
+    TAccountContentSello,
+    TAccountUsageReceipt,
     TAccountPayer,
     TAccountSystemProgram
   >
@@ -178,9 +174,8 @@ export async function getRecordUsageInstructionAsync<
 
   // Original accounts.
   const originalAccounts = {
-    config: { value: input.config ?? null, isWritable: false },
-    sello: { value: input.sello ?? null, isWritable: true },
-    receipt: { value: input.receipt ?? null, isWritable: true },
+    contentSello: { value: input.contentSello ?? null, isWritable: true },
+    usageReceipt: { value: input.usageReceipt ?? null, isWritable: true },
     payer: { value: input.payer ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
@@ -193,11 +188,11 @@ export async function getRecordUsageInstructionAsync<
   const args = { ...input };
 
   // Resolve default values.
-  if (!accounts.receipt.value) {
-    accounts.receipt.value = await findReceiptPda({
-      sello: expectAddress(accounts.sello.value),
+  if (!accounts.usageReceipt.value) {
+    accounts.usageReceipt.value = await findUsageReceiptPda({
+      contentSello: expectAddress(accounts.contentSello.value),
       payer: expectAddress(accounts.payer.value),
-      nonce: expectSome(args.nonce),
+      timestamp: expectSome(args.timestamp),
     });
   }
   if (!accounts.systemProgram.value) {
@@ -208,64 +203,57 @@ export async function getRecordUsageInstructionAsync<
   const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   return Object.freeze({
     accounts: [
-      getAccountMeta(accounts.config),
-      getAccountMeta(accounts.sello),
-      getAccountMeta(accounts.receipt),
+      getAccountMeta(accounts.contentSello),
+      getAccountMeta(accounts.usageReceipt),
       getAccountMeta(accounts.payer),
       getAccountMeta(accounts.systemProgram),
     ],
-    data: getRecordUsageInstructionDataEncoder().encode(
-      args as RecordUsageInstructionDataArgs,
+    data: getRecordUsageReceiptInstructionDataEncoder().encode(
+      args as RecordUsageReceiptInstructionDataArgs,
     ),
     programAddress,
-  } as RecordUsageInstruction<
+  } as RecordUsageReceiptInstruction<
     TProgramAddress,
-    TAccountConfig,
-    TAccountSello,
-    TAccountReceipt,
+    TAccountContentSello,
+    TAccountUsageReceipt,
     TAccountPayer,
     TAccountSystemProgram
   >);
 }
 
-export type RecordUsageInput<
-  TAccountConfig extends string = string,
-  TAccountSello extends string = string,
-  TAccountReceipt extends string = string,
+export type RecordUsageReceiptInput<
+  TAccountContentSello extends string = string,
+  TAccountUsageReceipt extends string = string,
   TAccountPayer extends string = string,
   TAccountSystemProgram extends string = string,
 > = {
-  config: Address<TAccountConfig>;
-  sello: Address<TAccountSello>;
-  receipt: Address<TAccountReceipt>;
+  contentSello: Address<TAccountContentSello>;
+  usageReceipt: Address<TAccountUsageReceipt>;
   payer: TransactionSigner<TAccountPayer>;
   systemProgram?: Address<TAccountSystemProgram>;
-  usageType: RecordUsageInstructionDataArgs["usageType"];
-  amountPaid: RecordUsageInstructionDataArgs["amountPaid"];
-  nonce: RecordUsageInstructionDataArgs["nonce"];
+  usageType: RecordUsageReceiptInstructionDataArgs["usageType"];
+  amountPaidMicros: RecordUsageReceiptInstructionDataArgs["amountPaidMicros"];
+  timestamp: RecordUsageReceiptInstructionDataArgs["timestamp"];
 };
 
-export function getRecordUsageInstruction<
-  TAccountConfig extends string,
-  TAccountSello extends string,
-  TAccountReceipt extends string,
+export function getRecordUsageReceiptInstruction<
+  TAccountContentSello extends string,
+  TAccountUsageReceipt extends string,
   TAccountPayer extends string,
   TAccountSystemProgram extends string,
   TProgramAddress extends Address = typeof SELLO_PROGRAM_ADDRESS,
 >(
-  input: RecordUsageInput<
-    TAccountConfig,
-    TAccountSello,
-    TAccountReceipt,
+  input: RecordUsageReceiptInput<
+    TAccountContentSello,
+    TAccountUsageReceipt,
     TAccountPayer,
     TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
-): RecordUsageInstruction<
+): RecordUsageReceiptInstruction<
   TProgramAddress,
-  TAccountConfig,
-  TAccountSello,
-  TAccountReceipt,
+  TAccountContentSello,
+  TAccountUsageReceipt,
   TAccountPayer,
   TAccountSystemProgram
 > {
@@ -274,9 +262,8 @@ export function getRecordUsageInstruction<
 
   // Original accounts.
   const originalAccounts = {
-    config: { value: input.config ?? null, isWritable: false },
-    sello: { value: input.sello ?? null, isWritable: true },
-    receipt: { value: input.receipt ?? null, isWritable: true },
+    contentSello: { value: input.contentSello ?? null, isWritable: true },
+    usageReceipt: { value: input.usageReceipt ?? null, isWritable: true },
     payer: { value: input.payer ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
@@ -297,50 +284,47 @@ export function getRecordUsageInstruction<
   const getAccountMeta = getAccountMetaFactory(programAddress, "programId");
   return Object.freeze({
     accounts: [
-      getAccountMeta(accounts.config),
-      getAccountMeta(accounts.sello),
-      getAccountMeta(accounts.receipt),
+      getAccountMeta(accounts.contentSello),
+      getAccountMeta(accounts.usageReceipt),
       getAccountMeta(accounts.payer),
       getAccountMeta(accounts.systemProgram),
     ],
-    data: getRecordUsageInstructionDataEncoder().encode(
-      args as RecordUsageInstructionDataArgs,
+    data: getRecordUsageReceiptInstructionDataEncoder().encode(
+      args as RecordUsageReceiptInstructionDataArgs,
     ),
     programAddress,
-  } as RecordUsageInstruction<
+  } as RecordUsageReceiptInstruction<
     TProgramAddress,
-    TAccountConfig,
-    TAccountSello,
-    TAccountReceipt,
+    TAccountContentSello,
+    TAccountUsageReceipt,
     TAccountPayer,
     TAccountSystemProgram
   >);
 }
 
-export type ParsedRecordUsageInstruction<
+export type ParsedRecordUsageReceiptInstruction<
   TProgram extends string = typeof SELLO_PROGRAM_ADDRESS,
   TAccountMetas extends readonly AccountMeta[] = readonly AccountMeta[],
 > = {
   programAddress: Address<TProgram>;
   accounts: {
-    config: TAccountMetas[0];
-    sello: TAccountMetas[1];
-    receipt: TAccountMetas[2];
-    payer: TAccountMetas[3];
-    systemProgram: TAccountMetas[4];
+    contentSello: TAccountMetas[0];
+    usageReceipt: TAccountMetas[1];
+    payer: TAccountMetas[2];
+    systemProgram: TAccountMetas[3];
   };
-  data: RecordUsageInstructionData;
+  data: RecordUsageReceiptInstructionData;
 };
 
-export function parseRecordUsageInstruction<
+export function parseRecordUsageReceiptInstruction<
   TProgram extends string,
   TAccountMetas extends readonly AccountMeta[],
 >(
   instruction: Instruction<TProgram> &
     InstructionWithAccounts<TAccountMetas> &
     InstructionWithData<ReadonlyUint8Array>,
-): ParsedRecordUsageInstruction<TProgram, TAccountMetas> {
-  if (instruction.accounts.length < 5) {
+): ParsedRecordUsageReceiptInstruction<TProgram, TAccountMetas> {
+  if (instruction.accounts.length < 4) {
     // TODO: Coded error.
     throw new Error("Not enough accounts");
   }
@@ -353,12 +337,13 @@ export function parseRecordUsageInstruction<
   return {
     programAddress: instruction.programAddress,
     accounts: {
-      config: getNextAccount(),
-      sello: getNextAccount(),
-      receipt: getNextAccount(),
+      contentSello: getNextAccount(),
+      usageReceipt: getNextAccount(),
       payer: getNextAccount(),
       systemProgram: getNextAccount(),
     },
-    data: getRecordUsageInstructionDataDecoder().decode(instruction.data),
+    data: getRecordUsageReceiptInstructionDataDecoder().decode(
+      instruction.data,
+    ),
   };
 }

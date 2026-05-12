@@ -6,7 +6,7 @@
  * @see https://github.com/codama-idl/codama
  */
 
-export * from "./config";
 export * from "./contentSello";
+export * from "./protocolConfig";
 export * from "./usageReceipt";
 export * from "./voiceConsent";

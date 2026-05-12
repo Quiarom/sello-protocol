@@ -7,6 +7,6 @@
  */
 
 export * from "./config";
-export * from "./receipt";
-export * from "./sello";
+export * from "./contentSello";
+export * from "./usageReceipt";
 export * from "./voiceConsent";

@@ -6,8 +6,8 @@
  * @see https://github.com/codama-idl/codama
  */
 
+export * from "./grantVoiceConsent";
 export * from "./initializeConfig";
-export * from "./recordUsage";
-export * from "./registerSello";
-export * from "./registerVoiceConsent";
-export * from "./revokeConsent";
+export * from "./recordUsageReceipt";
+export * from "./registerContentSello";
+export * from "./revokeContentSello";

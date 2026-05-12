@@ -258,6 +258,16 @@ export function RegisterArticle() {
     setStep("register");
   };
 
+  if (!mounted) {
+    return (
+      <main className="min-h-screen bg-card/10 animate-pulse border-t border-border-low">
+        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="h-64 rounded-xl border border-border-low bg-background/20" />
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="overflow-x-clip border-t border-border-low bg-card/10">
       <div className="mx-auto max-w-7xl border-x border-border-low bg-background/20 px-4 py-8 sm:px-6 md:px-8 lg:px-12 lg:py-16 space-y-8 md:space-y-12">

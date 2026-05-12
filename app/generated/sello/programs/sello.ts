@@ -30,7 +30,7 @@ import {
 } from "../instructions";
 
 export const SELLO_PROGRAM_ADDRESS =
-  "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC" as Address<"HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC">;
+  "3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY" as Address<"3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY">;
 
 export enum SelloAccount {
   ContentSello,
@@ -165,7 +165,7 @@ export function identifySelloInstruction(
 }
 
 export type ParsedSelloInstruction<
-  TProgram extends string = "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC",
+  TProgram extends string = "3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY",
 > =
   | ({
       instructionType: SelloInstruction.GrantVoiceConsent;

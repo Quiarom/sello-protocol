@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useWallet } from "../lib/wallet/context";
@@ -7,6 +8,11 @@ import { useWallet } from "../lib/wallet/context";
 export function NavigationLinks() {
   const { status } = useWallet();
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isActive = (path: string) => pathname === path;
 
@@ -32,7 +38,7 @@ export function NavigationLinks() {
           Demo Article
         </Link>
 
-        {status === "connected" && (
+        {mounted && status === "connected" && (
           <Link
             href="/dashboard"
             className={`transition-colors hover:text-primary animate-in fade-in slide-in-from-left-2 ${isActive("/dashboard") ? "text-primary underline decoration-primary/30 underline-offset-8" : ""}`}
@@ -61,7 +67,7 @@ export function NavigationLinks() {
         >
           Demo Article
         </Link>
-        {status === "connected" && (
+        {mounted && status === "connected" && (
           <Link
             href="/dashboard"
             className={`shrink-0 border px-3 py-2 transition-colors hover:border-primary hover:text-primary ${isActive("/dashboard") ? "border-primary text-primary" : "border-border-low"}`}

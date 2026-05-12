@@ -5,7 +5,7 @@ import {
 } from "@/app/lib/sello/license-parser";
 import { getCreatorByDomain } from "@/app/lib/appwrite";
 
-const SELLO_PROGRAM_ID = "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC";
+const SELLO_PROGRAM_ID = "3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY";
 
 // ContentSello buffer layout (Anchor 8-byte discriminator prefix):
 // [0..7]   discriminator

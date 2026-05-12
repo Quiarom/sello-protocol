@@ -26,7 +26,7 @@ export async function findContentSelloPda(
   config: { programAddress?: Address | undefined } = {},
 ): Promise<ProgramDerivedAddress> {
   const {
-    programAddress = "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC" as Address<"HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC">,
+    programAddress = "3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY" as Address<"3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY">,
   } = config;
   return await getProgramDerivedAddress({
     programAddress,

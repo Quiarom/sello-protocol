@@ -14,7 +14,7 @@ type NarrationFile = {
   sizeOriginal: number;
 };
 
-const SELLO_PROGRAM_ID = "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC";
+const SELLO_PROGRAM_ID = "3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY";
 const DEMO_ARTICLE_PATH = "/blog/protected-article";
 
 export default function DashboardPage() {

@@ -47,7 +47,7 @@ async function runCheck() {
 
   // 3. Validate Addresses
   try {
-    const programId = process.env.NEXT_PUBLIC_SELLO_PROGRAM_ID || "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC";
+    const programId = process.env.NEXT_PUBLIC_SELLO_PROGRAM_ID || "3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY";
     new PublicKey(programId);
     console.log(`✅ Program ID (${programId}) is valid.`);
   } catch (e) {

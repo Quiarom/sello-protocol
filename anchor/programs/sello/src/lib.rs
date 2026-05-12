@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC");
+declare_id!("3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY");
 
 pub const CONFIG_SEED: &[u8] = b"config";
 pub const CONTENT_SELLO_SEED: &[u8] = b"sello";

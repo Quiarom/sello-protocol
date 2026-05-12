@@ -3,7 +3,7 @@ import type { Address } from "@solana/kit";
 
 export const SELLO_PROGRAM_ID_STRING =
   process.env.NEXT_PUBLIC_PROGRAM_ID ??
-  "HhXvRpC6uDfCF6sHNWv3xD2yzyjpiEW17eeK13tFaycC";
+  "3P8km3sUTKc5EZywxVxPoFFFJzPxWGjVHtKLSU2iy7mY";
 
 export const SELLO_PROGRAM_ID = new PublicKey(SELLO_PROGRAM_ID_STRING);
 

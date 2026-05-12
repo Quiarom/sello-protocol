@@ -19,6 +19,12 @@ export function WalletButton() {
   const address = wallet?.account.address;
   const balance = useBalance(address);
 
+  // Fix Hydration Mismatch
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
 
@@ -38,6 +44,12 @@ export function WalletButton() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  if (!mounted) {
+    return (
+      <div className="h-9 min-w-[118px] bg-card/20 animate-pulse border border-border-low sm:min-w-[140px]" />
+    );
+  }
 
   if (status !== "connected") {
     return (

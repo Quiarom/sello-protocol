@@ -15,8 +15,6 @@ out/
 
 # Large assets or zips
 app/assets/*.zip
-app/assets/*.png
-app/assets/*.jpg
 
 # Git & IDEs
 .git/
